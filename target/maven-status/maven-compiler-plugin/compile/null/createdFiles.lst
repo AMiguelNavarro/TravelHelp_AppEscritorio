@@ -1,0 +1,4 @@
+com\travelhelp\Main.class
+com\travelhelp\controller\AppController.class
+com\travelhelp\domain\Plug.class
+com\travelhelp\utils\R.class
