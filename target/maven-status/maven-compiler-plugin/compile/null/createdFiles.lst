@@ -1,4 +1,10 @@
 com\travelhelp\Main.class
-com\travelhelp\controller\AppController.class
+com\travelhelp\domain\Country.class
 com\travelhelp\domain\Plug.class
+com\travelhelp\utils\Constants.class
 com\travelhelp\utils\R.class
+com\travelhelp\domain\Country$CountryBuilder.class
+com\travelhelp\utils\Alerts.class
+com\travelhelp\controller\AppController.class
+com\travelhelp\service\ICountryApiService.class
+com\travelhelp\service\CountryService.class

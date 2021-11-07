@@ -1,22 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
 
-
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="553.0" prefWidth="930.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1121.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane prefHeight="567.0" prefWidth="930.0">
+      <AnchorPane prefHeight="539.0" prefWidth="1121.0">
          <children>
-            <Button fx:id="button" layoutX="437.0" layoutY="264.0" mnemonicParsing="false" onAction="#saludar" text="Button" />
-            <Text fx:id="text" layoutX="345.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="235.13671875">
-               <font>
-                  <Font name="System Bold" size="29.0" />
-               </font>
-            </Text>
+            <TextField fx:id="tfSearchCountry" layoutX="35.0" layoutY="67.0" />
+            <Button fx:id="btSearchCountry" layoutX="35.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#searchCountry" text="Buscar" />
+            <Text layoutX="35.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Escribe el nombre del país" />
+            <Separator layoutX="241.0" layoutY="29.0" orientation="VERTICAL" prefHeight="453.0" prefWidth="19.0" />
+            <ListView fx:id="lvCountries" layoutX="33.0" layoutY="187.0" onMouseClicked="#getCountryFromListView" prefHeight="302.0" prefWidth="194.0" />
+            <Text layoutX="34.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="o búscalo en la lista" />
+            <Text layoutX="291.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bandera" wrappingWidth="51.0" />
+            <Text layoutX="544.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:" wrappingWidth="51.0" />
+            <Text layoutX="544.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="continente:" wrappingWidth="70.0" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="166.0" layoutX="291.0" layoutY="67.0" stroke="BLACK" strokeType="INSIDE" width="194.0" />
+            <Text layoutX="544.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="siglas:" wrappingWidth="70.0" />
+            <Text layoutX="544.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="numero de habitantes:" wrappingWidth="123.0" />
+            <Text layoutX="830.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="agua potable:" wrappingWidth="85.0" />
+            <Text layoutX="826.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="sanidad pública:" wrappingWidth="94.0" />
+            <Text layoutX="830.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="prefijo:" wrappingWidth="51.0" />
+            <Label fx:id="lbName" layoutX="614.0" layoutY="83.0" prefHeight="17.0" prefWidth="167.0" />
+            <Label fx:id="lbContinent" layoutX="614.0" layoutY="118.0" prefHeight="17.0" prefWidth="167.0" />
+            <Label fx:id="lbAcronym" layoutX="595.0" layoutY="152.0" prefHeight="17.0" prefWidth="167.0" />
+            <Label fx:id="lbNumberOfHabitants" layoutX="679.0" layoutY="188.0" prefHeight="17.0" prefWidth="104.0" />
+            <Label fx:id="lbPublicHealthcare" layoutX="927.0" layoutY="83.0" prefHeight="17.0" prefWidth="104.0" />
+            <Label fx:id="lbDrinkingWater" layoutX="914.0" layoutY="116.0" prefHeight="17.0" prefWidth="104.0" />
+            <Label fx:id="lbPrefix" layoutX="880.0" layoutY="152.0" prefHeight="17.0" prefWidth="104.0" />
+            <Separator layoutX="336.0" layoutY="279.0" prefHeight="0.0" prefWidth="672.0" />
+            <Button layoutX="388.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
+            <Button layoutX="388.0" layoutY="390.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="ELECTRICIDAD" />
+            <Button layoutX="609.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="ENCHUFES" />
+            <Button layoutX="815.0" layoutY="387.0" mnemonicParsing="false" text="TLFS EMERGENCIA" />
+            <Button layoutX="815.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="VACUNAS" />
+            <Button layoutX="609.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="IDIOMAS" />
          </children>
       </AnchorPane>
    </children>
