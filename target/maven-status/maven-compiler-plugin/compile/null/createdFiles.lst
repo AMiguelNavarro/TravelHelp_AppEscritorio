@@ -1,4 +1,5 @@
 com\travelhelp\Main.class
+com\travelhelp\controller\AppAdminController$1.class
 com\travelhelp\domain\Plug.class
 com\travelhelp\domain\Electricity$ElectricityBuilder.class
 com\travelhelp\utils\R.class
