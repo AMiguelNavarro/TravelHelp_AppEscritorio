@@ -5,12 +5,14 @@ com\travelhelp\domain\Electricity$ElectricityBuilder.class
 com\travelhelp\utils\R.class
 com\travelhelp\domain\Country$CountryBuilder.class
 com\travelhelp\domain\Electricity.class
+com\travelhelp\controller\AppAdminController$Action.class
 com\travelhelp\domain\Country.class
 com\travelhelp\service\ElectricityService.class
 com\travelhelp\utils\Constants.class
 com\travelhelp\utils\Alerts.class
 com\travelhelp\controller\AppController.class
 com\travelhelp\service\ICountryApiService.class
+com\travelhelp\controller\AppAdminController$2.class
 com\travelhelp\service\CountryService.class
 com\travelhelp\service\IElectricityService.class
 com\travelhelp\controller\AppAdminController.class

@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Electricity {
 
+    private long id;
     private int voltage;
     private int frecuency;
 

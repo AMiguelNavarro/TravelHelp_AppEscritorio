@@ -2,11 +2,10 @@ package com.travelhelp.service;
 
 
 import com.travelhelp.domain.Electricity;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
+import retrofit2.Response;
+import retrofit2.http.*;
 import rx.Observable;
 import java.util.List;
 
@@ -15,7 +14,11 @@ public interface IElectricityService {
     @GET("/electricity")
     Observable<List<Electricity>> getAllElectricities();
 
-    // ERROR AL AÑADIR COMPROBAR COMO SE DEBE HACER CON RETROFIT Y RX JAVA
+    // Se debe devolver una Call
     @POST("/electricity") @Headers("Content-type: application/json")
     Call<Electricity> addNewElectricity(@Body Electricity newElectricity);
+
+    // Se debe devolver una respuesta
+    @DELETE("/electricity/{id}")
+    Call<ResponseBody> deleteElectricity(@Path("id")long id);
 }
