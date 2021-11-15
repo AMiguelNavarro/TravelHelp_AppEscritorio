@@ -22,6 +22,6 @@ public interface IElectricityService {
     @DELETE("/electricity/{id}")
     Call<ResponseBody> deleteElectricity(@Path("id")long id);
 
-    @PUT("electricity/{id}")
+    @PUT("/electricity/{id}")
     Call<Electricity> modifyElectricity(@Path("id") long id , @Body Electricity newElectricity);
 }

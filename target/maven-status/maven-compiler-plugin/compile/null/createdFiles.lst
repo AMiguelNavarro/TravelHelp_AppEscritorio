@@ -1,11 +1,16 @@
 com\travelhelp\domain\Plug.class
+com\travelhelp\controller\AppAdminController$9.class
+com\travelhelp\service\language\ILanguageService.class
 com\travelhelp\utils\Action.class
 com\travelhelp\controller\AppAdminController$5.class
+com\travelhelp\domain\Language$LanguageBuilder.class
 com\travelhelp\domain\Coin.class
+com\travelhelp\service\language\LanguageService.class
 com\travelhelp\utils\Alerts.class
 com\travelhelp\controller\AppAdminController$6.class
 com\travelhelp\controller\AppController.class
 com\travelhelp\controller\AppAdminController$3.class
+com\travelhelp\domain\Language.class
 com\travelhelp\service\coin\ICoinService.class
 com\travelhelp\service\country\ICountryApiService.class
 com\travelhelp\controller\AppAdminController.class
@@ -15,6 +20,7 @@ com\travelhelp\controller\AppAdminController$1.class
 com\travelhelp\domain\Electricity$ElectricityBuilder.class
 com\travelhelp\utils\R.class
 com\travelhelp\domain\Country$CountryBuilder.class
+com\travelhelp\controller\AppAdminController$8.class
 com\travelhelp\service\country\CountryService.class
 com\travelhelp\service\electricity\ElectricityService.class
 com\travelhelp\domain\Electricity.class
@@ -24,3 +30,4 @@ com\travelhelp\domain\Country.class
 com\travelhelp\utils\Constants.class
 com\travelhelp\controller\AppAdminController$2.class
 com\travelhelp\domain\Coin$CoinBuilder.class
+com\travelhelp\controller\AppAdminController$7.class

@@ -4,8 +4,10 @@ package com.travelhelp.controller;
 import com.google.gson.Gson;
 import com.travelhelp.domain.Coin;
 import com.travelhelp.domain.Electricity;
+import com.travelhelp.domain.Language;
 import com.travelhelp.service.coin.CoinService;
 import com.travelhelp.service.electricity.ElectricityService;
+import com.travelhelp.service.language.LanguageService;
 import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
 import javafx.application.Platform;
@@ -25,8 +27,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
-import static com.travelhelp.utils.Constants.COIN;
-import static com.travelhelp.utils.Constants.ELECTRICITY;
+import static com.travelhelp.utils.Constants.*;
 
 public class AppAdminController implements Initializable {
 
@@ -34,11 +35,13 @@ public class AppAdminController implements Initializable {
     public Tab tabCountries,tabCities,tabPlugs,tabElectricity,tabCoins,tabLanguages,tabVaccines,tabEmergencyPhones;
     public TextField
             tfFrecuency, tfVoltage,
-            tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin ;
-    public ListView lvElectricity,lvCoins;
+            tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin,
+            tfLanguageName;
+    public ListView lvElectricity,lvCoins,lvLanguages;
     public Button
             btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity,
-            btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin;
+            btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin,
+            btNewLanguage,btSaveNewLanguage,btModifyLanguage,btCancelLanguage,btDeleteLanguage;
 
 
 
@@ -47,19 +50,23 @@ public class AppAdminController implements Initializable {
     /** Items selected from List View */
     private Electricity electricitySelected;
     private Coin coinSelected;
+    private Language languageSelected;
 
     /** Services */
     private ElectricityService electricityService;
     private CoinService coinService;
+    private LanguageService languageService;
 
     /** Observables List */
     private ObservableList<Electricity> listElectricities;
     private ObservableList<Coin> listCoins;
+    private ObservableList<Language> listLanguages;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         electricityService = new ElectricityService();
         coinService = new CoinService();
+        languageService = new LanguageService();
 
         listElectricities = FXCollections.observableArrayList();
         lvElectricity.setItems(listElectricities);
@@ -68,6 +75,10 @@ public class AppAdminController implements Initializable {
         listCoins = FXCollections.observableArrayList();
         lvCoins.setItems(listCoins);
         getAllCoins();
+
+        listLanguages = FXCollections.observableArrayList();
+        lvLanguages.setItems(listLanguages);
+        getAllLanguages();
 
         initialViewMode(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
     }
@@ -80,6 +91,206 @@ public class AppAdminController implements Initializable {
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** IDIOMAS ------------------------------------------------------------------------------------------------------*/
+
+    @FXML
+    public void addNewLanguage(Event event) {
+
+        if(action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFields(LANGUAGE)) {
+                return;
+            }
+
+            Language newLanguage = new Language();
+            newLanguage.setName(tfLanguageName.getText());
+
+            Call<Language> languageCall = languageService.addNewLanguage(newLanguage);
+
+            languageCall.enqueue(new Callback<Language>() {
+                @Override
+                public void onResponse(Call<Language> call, Response<Language> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nuevo idioma creado correctamente: " + new Gson().toJson(response.body()));
+                        getAllLanguages();
+                        activateNewLanguageMode(false);
+                        resetTextFields(LANGUAGE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Language> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewLanguageMode(false);
+                        resetTextFields(LANGUAGE);
+                    });
+                }
+            });
+
+        } else { // Modificar
+
+            if (!validateTextFields(LANGUAGE)) {
+                return;
+            }
+
+            if (languageSelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Language newLanguage =  new Language();
+            newLanguage.setId(languageSelected.getId());
+            newLanguage.setName(tfLanguageName.getText());
+
+            Call<Language> languageCall = languageService.modifyLanguage(newLanguage.getId(), newLanguage);
+
+            languageCall.enqueue(new Callback<Language>() {
+                @Override
+                public void onResponse(Call<Language> call, Response<Language> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Idioma monificado correctamente: " + new Gson().toJson(response.body()));
+                        getAllLanguages();
+                        activateEditLanguageMode(false);
+                        resetTextFields(LANGUAGE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Language> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditLanguageMode(false);
+                        resetTextFields(LANGUAGE);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getLanguageFromListView(Event event) {
+        languageSelected = (Language) lvLanguages.getSelectionModel().getSelectedItem();
+        System.out.println(languageSelected.getName());
+        if(!validateItemSelectedFromListView(languageSelected)) {
+            return;
+        }
+        tfLanguageName.setText(languageSelected.getName());
+    }
+
+    @FXML
+    public void activateNewLanguage(Event event) {
+        action = Action.NEW;
+        activateNewLanguageMode(true);
+    }
+
+    @FXML
+    public void activateModifyLanguage(Event event) {
+        action = Action.MODIFY;
+        activateEditLanguageMode(true);
+    }
+
+    @FXML
+    public void deleteLanguage(Event event) {
+
+        if(lvLanguages.isDisable()) {
+            activateDeleteLanguageMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFields(LANGUAGE)) {
+            return;
+        }
+
+        if (languageSelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> callDelete = languageService.deleteLanguage(languageSelected.getId());
+
+        callDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Idioma eliminado correctamente");
+                    getAllLanguages();
+                    resetTextFields(LANGUAGE);
+                    activateEditLanguageMode(false);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    resetTextFields(LANGUAGE);
+                    activateEditLanguageMode(false);
+                });
+            }
+        });
+
+    }
+
+    @FXML
+    public void cancelActionLanguage(Event event) {
+        activateEditLanguageMode(false);
+        resetTextFields(LANGUAGE);
+    }
+
+    private void getAllLanguages() {
+        lvLanguages.getItems().clear();
+        languageService.getAllLanguages()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de idiomaas cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de idiomas"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(language -> {
+                    Platform.runLater(() -> {
+                        listLanguages.add(language);
+                    });
+                });
+    }
+
+    private void activateNewLanguageMode(boolean mode) {
+        btModifyLanguage.setDisable(mode);
+        btDeleteLanguage.setDisable(mode);
+        btNewLanguage.setDisable(mode);
+
+        btCancelLanguage.setDisable(!mode);
+        btSaveNewLanguage.setDisable(!mode);
+
+        tfLanguageName.setDisable(!mode);
+    }
+
+    private void activateEditLanguageMode(boolean mode) {
+        btModifyLanguage.setDisable(mode);
+        btDeleteLanguage.setDisable(mode);
+        btNewLanguage.setDisable(mode);
+
+        btCancelLanguage.setDisable(!mode);
+        btSaveNewLanguage.setDisable(!mode);
+
+        tfLanguageName.setDisable(!mode);
+
+        lvLanguages.setDisable(!mode);
+    }
+
+    private void activateDeleteLanguageMode(boolean mode) {
+        btModifyLanguage.setDisable(mode);
+        btNewLanguage.setDisable(mode);
+        btSaveNewLanguage.setDisable(mode);
+
+        btCancelLanguage.setDisable(!mode);
+        btDeleteLanguage.setDisable(!mode);
+
+        tfLanguageName.setDisable(mode);
+
+
+        lvLanguages.setDisable(!mode);
+    }
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
@@ -529,15 +740,19 @@ public class AppAdminController implements Initializable {
         btCancelElectricity.setDisable(mode);
         btSaveNewCoin.setDisable(mode);
         btCancelCoin.setDisable(mode);
+        btSaveNewLanguage.setDisable(mode);
+        btCancelLanguage.setDisable(mode);
 
         lvElectricity.setDisable(mode);
         lvCoins.setDisable(mode);
+        lvLanguages.setDisable(mode);
 
         tfFrecuency.setDisable(mode);
         tfVoltage.setDisable(mode);
         tfCodeISOCoin.setDisable(mode);
         tfSymbolCoin.setDisable(mode);
         tfMonetaryUnitCoin.setDisable(mode);
+        tfLanguageName.setDisable(mode);
     }
 
     /**
@@ -577,6 +792,17 @@ public class AppAdminController implements Initializable {
 
                 break;
 
+            case LANGUAGE:
+
+                if(tfLanguageName.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar el nombre del lenguaje en blanco");
+                    value = false;
+                } else {
+                    value = true;
+                }
+
+                break;
+
         }
 
         return value;
@@ -599,6 +825,10 @@ public class AppAdminController implements Initializable {
                 tfCodeISOCoin.setText("");
                 tfMonetaryUnitCoin.setText("");
                 tfSymbolCoin.setText("");
+                break;
+
+            case LANGUAGE:
+                tfLanguageName.setText("");
                 break;
         }
     }

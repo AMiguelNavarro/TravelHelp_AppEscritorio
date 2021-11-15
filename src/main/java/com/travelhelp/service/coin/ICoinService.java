@@ -20,7 +20,7 @@ public interface ICoinService {
     @DELETE("/coin/{id}")
     Call<ResponseBody> deleteCoin(@Path("id")long id);
 
-    @PUT("coin/{id}")
+    @PUT("/coin/{id}")
     Call<Coin> modifyCoin(@Path("id") long id , @Body Coin newCoin);
 
 }
