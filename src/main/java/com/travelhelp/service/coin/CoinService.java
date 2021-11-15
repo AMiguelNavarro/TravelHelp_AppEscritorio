@@ -27,5 +27,14 @@ public class CoinService {
     public Observable<List<Coin>> getAllCoins() {
         return coinService.getAllCoins();
     }
+    public Call<Coin> addNewCoin(Coin newCoin) {
+        return coinService.addNewCoin(newCoin);
+    }
+    public Call<ResponseBody> deleteCoin(long id) {
+        return coinService.deleteCoin(id);
+    }
+    public Call<Coin> modifyCoin(long id, Coin newCoin) {
+        return coinService.modifyCoin(id, newCoin);
+    }
 
 }

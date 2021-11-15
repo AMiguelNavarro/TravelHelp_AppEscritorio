@@ -94,25 +94,154 @@ public class AppAdminController implements Initializable {
     /** MONEDAS ------------------------------------------------------------------------------------------------------*/
     @FXML
     public void addNewCoin(Event event) {
+        if (action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFields(COIN)) {
+                return;
+            }
+
+            Coin newCoin = new Coin();
+            newCoin.setIsoCode(tfCodeISOCoin.getText());
+            newCoin.setMonetaryUnit(tfMonetaryUnitCoin.getText());
+            newCoin.setSymbol(tfSymbolCoin.getText());
+
+            Call<Coin> coinCall = coinService.addNewCoin(newCoin);
+            coinCall.enqueue(new Callback<Coin>() {
+                @Override
+                public void onResponse(Call<Coin> call, Response<Coin> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva moneda añadida correctamente: " + new Gson().toJson(response.body()));
+                        getAllCoins();
+                        activateNewCoinMode(false);
+                        resetTextFields(COIN);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Coin> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewCoinMode(false);
+                        resetTextFields(COIN);
+                    });
+                }
+            });
+
+        } else { // Modificar
+
+            if(!validateTextFields(COIN)) {
+                return;
+            }
+
+            if (coinSelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Coin newCoin = new Coin();
+            newCoin.setId(coinSelected.getId());
+            newCoin.setIsoCode(tfCodeISOCoin.getText());
+            newCoin.setMonetaryUnit(tfMonetaryUnitCoin.getText());
+            newCoin.setSymbol(tfSymbolCoin.getText());
+
+            Call<Coin> coinCall = coinService.modifyCoin(newCoin.getId(), newCoin);
+            coinCall.enqueue(new Callback<Coin>() {
+                @Override
+                public void onResponse(Call<Coin> call, Response<Coin> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Moneda monificada correctamente: " + new Gson().toJson(response.body()));
+                        getAllCoins();
+                        activateEditCoinMode(false);
+                        resetTextFields(COIN);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Coin> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditCoinMode(false);
+                        resetTextFields(COIN);
+                    });
+                }
+            });
+
+        }
+    }
+
+    @FXML
+    public void getCoinFromListView(Event event) {
+        coinSelected = (Coin) lvCoins.getSelectionModel().getSelectedItem();
+        if (!validateItemSelectedFromListView(coinSelected)) {
+            return;
+        }
+        tfCodeISOCoin.setText(coinSelected.getIsoCode());
+        tfMonetaryUnitCoin.setText(coinSelected.getMonetaryUnit());
+        tfSymbolCoin.setText(coinSelected.getSymbol());
+    }
+
+    @FXML
+    public void activateNewCoin(Event event) {
+        action = Action.NEW;
+        activateNewCoinMode(true);
+    }
+
+    @FXML
+    public void activateModifyCoin(Event event) {
+        action = Action.MODIFY;
+        activateEditCoinMode(true);
+    }
+
+    @FXML
+    public void deleteCoin(Event event) {
+
+        if(lvCoins.isDisable()) {
+            activateDeleteCoinMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFields(COIN)) {
+            return;
+        }
+
+        if (coinSelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> callDelete = coinService.deleteCoin(coinSelected.getId());
+        callDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Moneda eliminada correctamente");
+                    getAllCoins();
+                    resetTextFields(COIN);
+                    activateEditCoinMode(false);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    getAllCoins();
+                    resetTextFields(COIN);
+                    activateEditCoinMode(false);
+                });
+            }
+        });
 
     }
 
     @FXML
-    public void getCoinFromListView(Event event) {}
+    public void cancelActionCoin(Event event) {
+        activateEditCoinMode(false);
+        resetTextFields(COIN);
+    }
 
-    @FXML
-    public void activateNewCoin(Event event) {}
-
-    @FXML
-    public void activateModifyCoin(Event event) {}
-
-    @FXML
-    public void deleteCoin(Event event) {}
-
-    @FXML
-    public void cancelActionCoin(Event event) {}
-
-
+    /** Devuelve todas las monedas de la base de datos */
     private void getAllCoins() {
         lvCoins.getItems().clear();
         coinService.getAllCoins()
@@ -127,6 +256,51 @@ public class AppAdminController implements Initializable {
                 });
     }
 
+    private void activateNewCoinMode(boolean mode) {
+        btModifyCoin.setDisable(mode);
+        btDeleteCoin.setDisable(mode);
+        btNewCoin.setDisable(mode);
+
+        btCancelCoin.setDisable(!mode);
+        btSaveNewCoin.setDisable(!mode);
+
+        tfSymbolCoin.setDisable(!mode);
+        tfMonetaryUnitCoin.setDisable(!mode);
+        tfCodeISOCoin.setDisable(!mode);
+
+    }
+
+    private void activateEditCoinMode(boolean mode) {
+        btModifyCoin.setDisable(mode);
+        btDeleteCoin.setDisable(mode);
+        btNewCoin.setDisable(mode);
+
+        btCancelCoin.setDisable(!mode);
+        btSaveNewCoin.setDisable(!mode);
+
+        tfSymbolCoin.setDisable(!mode);
+        tfMonetaryUnitCoin.setDisable(!mode);
+        tfCodeISOCoin.setDisable(!mode);
+
+        lvCoins.setDisable(!mode);
+    }
+
+    private void activateDeleteCoinMode(boolean mode) {
+        btModifyCoin.setDisable(mode);
+        btNewCoin.setDisable(mode);
+        btSaveNewCoin.setDisable(mode);
+
+        btCancelCoin.setDisable(!mode);
+        btDeleteCoin.setDisable(!mode);
+
+        tfSymbolCoin.setDisable(mode);
+        tfMonetaryUnitCoin.setDisable(mode);
+        tfCodeISOCoin.setDisable(mode);
+
+        lvCoins.setDisable(!mode);
+    }
+
+
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** PAISES -------------------------------------------------------------------------------------------------------*/
@@ -137,7 +311,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void addNewElectricity(Event event) {
 
-        if (action.equals(Action.NEW)) {
+        if (action.equals(Action.NEW)) { // Nuevo
 
             if (!validateTextFields(ELECTRICITY)) {
                 return;
@@ -158,7 +332,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nueva electricidad creada correctamente: " + new Gson().toJson(response.body()));
                         getAllElectricities();
                         activateNewElectricityMode(false);
-                        resetTextfieldsElectricity();
+                        resetTextFields(ELECTRICITY);
                     });
 
                 }
@@ -168,12 +342,12 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewElectricityMode(false);
-                        resetTextfieldsElectricity();
+                        resetTextFields(ELECTRICITY);
                     });
                 }
             });
 
-        } else { // entonces sera modificar
+        } else { // Modificar
 
             if (!validateTextFields(ELECTRICITY)) {
                 return;
@@ -191,8 +365,8 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showInfoAlert("Electricidad modificada correctamente: " + new Gson().toJson(response.body()));
                         getAllElectricities();
-                        activateEditMode(false);
-                        resetTextfieldsElectricity();
+                        activateEditElectricityMode(false);
+                        resetTextFields(ELECTRICITY);
                     });
                 }
 
@@ -200,8 +374,8 @@ public class AppAdminController implements Initializable {
                 public void onFailure(Call<Electricity> call, Throwable throwable) {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
-                        activateEditMode(false);
-                        resetTextfieldsElectricity();
+                        activateEditElectricityMode(false);
+                        resetTextFields(ELECTRICITY);
                     });
                 }
             });
@@ -228,7 +402,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void activateModifyElectricity(Event event) {
         action = Action.MODIFY;
-        activateEditMode(true);
+        activateEditElectricityMode(true);
     }
 
     @FXML
@@ -237,7 +411,7 @@ public class AppAdminController implements Initializable {
             lvElectricity.setDisable(false);
             tfVoltage.setDisable(true);
             tfFrecuency.setDisable(true);
-            activateDeleteMode(true);
+            activateDeleteElectricityMode(true);
             Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
             return;
         }
@@ -254,7 +428,7 @@ public class AppAdminController implements Initializable {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Electricidad eliminada correctamente");
-                    resetTextfieldsElectricity();
+                    resetTextFields(ELECTRICITY);
                     getAllElectricities();
                     btNewElectricity.setDisable(false);
                     btModifyElectricity.setDisable(false);
@@ -268,7 +442,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert("Error al intentar eliminar la electricidad " + throwable.getLocalizedMessage());
-                    resetTextfieldsElectricity();
+                    resetTextFields(ELECTRICITY);
                     btNewElectricity.setDisable(false);
                     btModifyElectricity.setDisable(false);
                     btDeleteElectricity.setDisable(false);
@@ -282,11 +456,11 @@ public class AppAdminController implements Initializable {
 
     @FXML
     public void cancelActionElectricity(Event event) {
-        activateEditMode(false);
-        resetTextfieldsElectricity();
+        activateEditElectricityMode(false);
+        resetTextFields(ELECTRICITY);
     }
 
-
+    /** Devuelve todas las electricidades de la base de datos */
     private void getAllElectricities() {
         lvElectricity.getItems().clear();
         electricityService.getAllElectricities()
@@ -314,7 +488,7 @@ public class AppAdminController implements Initializable {
         tfVoltage.setDisable(!mode);
     }
 
-    private void activateDeleteMode(boolean mode) {
+    private void activateDeleteElectricityMode(boolean mode) {
         btCancelElectricity.setDisable(!mode);
         btModifyElectricity.setDisable(mode);
         btSaveNewElectricity.setDisable(mode);
@@ -322,12 +496,7 @@ public class AppAdminController implements Initializable {
     }
 
 
-    private void resetTextfieldsElectricity() {
-        tfFrecuency.setText("");
-        tfVoltage.setText("");
-    }
-
-    private void activateEditMode(boolean mode) {
+    private void activateEditElectricityMode(boolean mode) {
         activateNewElectricityMode(mode);
         lvElectricity.setDisable(!mode);
         btDeleteElectricity.setDisable(mode);
@@ -337,6 +506,11 @@ public class AppAdminController implements Initializable {
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
+    /**
+     * Método general que valida si se ha seleccionado un item del list view
+     * @param item
+     * @return
+     */
     private boolean validateItemSelectedFromListView(Object item) {
         if (item == null) {
             Alerts.showErrorAlert("No has seleccionado ningún elemento del listado");
@@ -346,6 +520,10 @@ public class AppAdminController implements Initializable {
         }
     }
 
+    /**
+     * Metodo que establece la vista inicial de botones, listas y cajas de texto
+     * @param mode
+     */
     private void initialViewMode(boolean mode) {
         btSaveNewElectricity.setDisable(mode);
         btCancelElectricity.setDisable(mode);
@@ -362,6 +540,11 @@ public class AppAdminController implements Initializable {
         tfMonetaryUnitCoin.setDisable(mode);
     }
 
+    /**
+     * Metodo general que comprueba los datos de las cajas de texto
+     * @param type
+     * @return
+     */
     private boolean validateTextFields(String type) {
         boolean value = false;
 
@@ -397,6 +580,27 @@ public class AppAdminController implements Initializable {
         }
 
         return value;
+    }
+
+
+    /**
+     * Metodo general que resetea las cajas de texto
+     * @param type
+     */
+    private void resetTextFields(String type) {
+        switch (type) {
+
+            case ELECTRICITY:
+                tfFrecuency.setText("");
+                tfVoltage.setText("");
+                break;
+
+            case COIN:
+                tfCodeISOCoin.setText("");
+                tfMonetaryUnitCoin.setText("");
+                tfSymbolCoin.setText("");
+                break;
+        }
     }
 
 }
