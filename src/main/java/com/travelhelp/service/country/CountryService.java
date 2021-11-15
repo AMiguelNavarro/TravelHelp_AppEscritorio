@@ -1,4 +1,4 @@
-package com.travelhelp.service;
+package com.travelhelp.service.country;
 
 import com.travelhelp.domain.Country;
 import com.travelhelp.utils.Constants;

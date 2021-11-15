@@ -1,7 +1,7 @@
 package com.travelhelp.controller;
 
 import com.travelhelp.domain.Country;
-import com.travelhelp.service.CountryService;
+import com.travelhelp.service.country.CountryService;
 import com.travelhelp.utils.Alerts;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,10 +16,8 @@ import rx.Observable;
 import rx.schedulers.Schedulers;
 
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class AppController implements Initializable {
 

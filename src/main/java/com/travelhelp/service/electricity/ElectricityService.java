@@ -1,11 +1,9 @@
-package com.travelhelp.service;
+package com.travelhelp.service.electricity;
 
-import com.travelhelp.domain.Country;
 import com.travelhelp.domain.Electricity;
 import com.travelhelp.utils.Constants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -35,5 +33,8 @@ public class ElectricityService {
     }
     public Call<ResponseBody> deleteElectricity(long id) {
         return electricityService.deleteElectricity(id);
+    }
+    public Call<Electricity> modifyElectricity(long id, Electricity newElectricity) {
+        return electricityService.modifyElectricity(id, newElectricity);
     }
 }

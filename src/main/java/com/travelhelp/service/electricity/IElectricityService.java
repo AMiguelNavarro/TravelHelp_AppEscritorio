@@ -1,4 +1,4 @@
-package com.travelhelp.service;
+package com.travelhelp.service.electricity;
 
 
 import com.travelhelp.domain.Electricity;
@@ -21,4 +21,7 @@ public interface IElectricityService {
     // Se debe devolver una respuesta
     @DELETE("/electricity/{id}")
     Call<ResponseBody> deleteElectricity(@Path("id")long id);
+
+    @PUT("electricity/{id}")
+    Call<Electricity> modifyElectricity(@Path("id") long id , @Body Electricity newElectricity);
 }

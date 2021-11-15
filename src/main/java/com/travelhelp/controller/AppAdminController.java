@@ -2,8 +2,11 @@ package com.travelhelp.controller;
 
 
 import com.google.gson.Gson;
+import com.travelhelp.domain.Coin;
 import com.travelhelp.domain.Electricity;
-import com.travelhelp.service.ElectricityService;
+import com.travelhelp.service.coin.CoinService;
+import com.travelhelp.service.electricity.ElectricityService;
+import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,38 +25,51 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
+import static com.travelhelp.utils.Constants.COIN;
+import static com.travelhelp.utils.Constants.ELECTRICITY;
+
 public class AppAdminController implements Initializable {
 
     public TabPane tpGeneral;
     public Tab tabCountries,tabCities,tabPlugs,tabElectricity,tabCoins,tabLanguages,tabVaccines,tabEmergencyPhones;
-    public TextField tfFrecuency, tfVoltage;
-    public ListView lvElectricity;
-    public Button btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity;
+    public TextField
+            tfFrecuency, tfVoltage,
+            tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin ;
+    public ListView lvElectricity,lvCoins;
+    public Button
+            btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity,
+            btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin;
 
-    // Para controlar si se debe modificar o añadir un nuevo elemento (¿Se puede generalizar sacándolo fuera y que lo usen todas las clases?)
-    public enum Action {
-        NEW, MODIFY
-    }
+
+
     private Action action;
 
     /** Items selected from List View */
     private Electricity electricitySelected;
+    private Coin coinSelected;
 
     /** Services */
     private ElectricityService electricityService;
+    private CoinService coinService;
 
     /** Observables List */
     private ObservableList<Electricity> listElectricities;
+    private ObservableList<Coin> listCoins;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         electricityService = new ElectricityService();
+        coinService = new CoinService();
 
         listElectricities = FXCollections.observableArrayList();
         lvElectricity.setItems(listElectricities);
         getAllElectricities();
 
-        initialButtonsMood(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
+        listCoins = FXCollections.observableArrayList();
+        lvCoins.setItems(listCoins);
+        getAllCoins();
+
+        initialViewMode(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
     }
     /** ENCHUFES -----------------------------------------------------------------------------------------------------*/
 
@@ -76,6 +92,40 @@ public class AppAdminController implements Initializable {
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** MONEDAS ------------------------------------------------------------------------------------------------------*/
+    @FXML
+    public void addNewCoin(Event event) {
+
+    }
+
+    @FXML
+    public void getCoinFromListView(Event event) {}
+
+    @FXML
+    public void activateNewCoin(Event event) {}
+
+    @FXML
+    public void activateModifyCoin(Event event) {}
+
+    @FXML
+    public void deleteCoin(Event event) {}
+
+    @FXML
+    public void cancelActionCoin(Event event) {}
+
+
+    private void getAllCoins() {
+        lvCoins.getItems().clear();
+        coinService.getAllCoins()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de monedas cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de monedas"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(coin -> {
+                    Platform.runLater(() -> {
+                        listCoins.add(coin);
+                    });
+                });
+    }
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
@@ -89,7 +139,7 @@ public class AppAdminController implements Initializable {
 
         if (action.equals(Action.NEW)) {
 
-            if (!validateElectricityTextFields()) {
+            if (!validateTextFields(ELECTRICITY)) {
                 return;
             }
 
@@ -107,7 +157,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showInfoAlert("Nueva electricidad creada correctamente: " + new Gson().toJson(response.body()));
                         getAllElectricities();
-                        activateNewElectricityMood(false);
+                        activateNewElectricityMode(false);
                         resetTextfieldsElectricity();
                     });
 
@@ -117,6 +167,7 @@ public class AppAdminController implements Initializable {
                 public void onFailure(Call<Electricity> call, Throwable throwable) {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewElectricityMode(false);
                         resetTextfieldsElectricity();
                     });
                 }
@@ -124,6 +175,36 @@ public class AppAdminController implements Initializable {
 
         } else { // entonces sera modificar
 
+            if (!validateTextFields(ELECTRICITY)) {
+                return;
+            }
+
+            Electricity newElectricity = new Electricity();
+            newElectricity.setFrecuency(Integer.parseInt(tfFrecuency.getText()));
+            newElectricity.setVoltage(Integer.parseInt(tfVoltage.getText()));
+            newElectricity.setId(electricitySelected.getId());
+
+            Call<Electricity> electricityCall = electricityService.modifyElectricity(newElectricity.getId(), newElectricity);
+            electricityCall.enqueue(new Callback<Electricity>() {
+                @Override
+                public void onResponse(Call<Electricity> call, Response<Electricity> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Electricidad modificada correctamente: " + new Gson().toJson(response.body()));
+                        getAllElectricities();
+                        activateEditMode(false);
+                        resetTextfieldsElectricity();
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Electricity> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditMode(false);
+                        resetTextfieldsElectricity();
+                    });
+                }
+            });
         }
 
     }
@@ -134,20 +215,20 @@ public class AppAdminController implements Initializable {
         if (!validateItemSelectedFromListView(electricitySelected)) {
             return;
         }
-        tfVoltage.setText(String.valueOf(electricitySelected.getFrecuency()));
+        tfVoltage.setText(String.valueOf(electricitySelected.getVoltage()));
         tfFrecuency.setText(String.valueOf(electricitySelected.getFrecuency()));
     }
 
     @FXML
     public void activateNewElectricity(Event event) {
         action = Action.NEW;
-        activateNewElectricityMood(true);
+        activateNewElectricityMode(true);
     }
 
     @FXML
     public void activateModifyElectricity(Event event) {
         action = Action.MODIFY;
-        activateEditMood(true);
+        activateEditMode(true);
     }
 
     @FXML
@@ -156,11 +237,11 @@ public class AppAdminController implements Initializable {
             lvElectricity.setDisable(false);
             tfVoltage.setDisable(true);
             tfFrecuency.setDisable(true);
-            activateDeleteMood(true);
+            activateDeleteMode(true);
             Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
             return;
         }
-        if (!validateElectricityTextFields()) {
+        if (!validateTextFields(ELECTRICITY)) {
             return;
         }
         if (electricitySelected.getId() == 0) {
@@ -201,7 +282,7 @@ public class AppAdminController implements Initializable {
 
     @FXML
     public void cancelActionElectricity(Event event) {
-        activateEditMood(false);
+        activateEditMode(false);
         resetTextfieldsElectricity();
     }
 
@@ -222,35 +303,22 @@ public class AppAdminController implements Initializable {
 
     }
 
-    private boolean validateElectricityTextFields() {
-        if (tfVoltage.getText().isBlank() || tfFrecuency.getText().isBlank()) {
-            Alerts.showErrorAlert("No puedes dejar los valores en blanco");
-            return false;
-        }
-        // Comprueba si son números, sacado de aquí https://www.delftstack.com/es/howto/java/how-to-check-if-a-string-is-a-number-in-java/
-        else if (!tfVoltage.getText().chars().allMatch(Character::isDigit) || !tfFrecuency.getText().chars().allMatch(Character::isDigit)) {
-            Alerts.showErrorAlert("Los valores introducidos deben de ser números");
-            return false;
-        } else {
-            return true;
-        }
+
+    private void activateNewElectricityMode(boolean mode) {
+        btCancelElectricity.setDisable(!mode);
+        btModifyElectricity.setDisable(mode);
+        btSaveNewElectricity.setDisable(!mode);
+        btNewElectricity.setDisable(mode);
+        btDeleteElectricity.setDisable(mode);
+        tfFrecuency.setDisable(!mode);
+        tfVoltage.setDisable(!mode);
     }
 
-    private void activateNewElectricityMood(boolean mood) {
-        btCancelElectricity.setDisable(!mood);
-        btModifyElectricity.setDisable(mood);
-        btSaveNewElectricity.setDisable(!mood);
-        btNewElectricity.setDisable(mood);
-        btDeleteElectricity.setDisable(mood);
-        tfFrecuency.setDisable(!mood);
-        tfVoltage.setDisable(!mood);
-    }
-
-    private void activateDeleteMood(boolean mood) {
-        btCancelElectricity.setDisable(!mood);
-        btModifyElectricity.setDisable(mood);
-        btSaveNewElectricity.setDisable(mood);
-        btNewElectricity.setDisable(mood);
+    private void activateDeleteMode(boolean mode) {
+        btCancelElectricity.setDisable(!mode);
+        btModifyElectricity.setDisable(mode);
+        btSaveNewElectricity.setDisable(mode);
+        btNewElectricity.setDisable(mode);
     }
 
 
@@ -259,12 +327,12 @@ public class AppAdminController implements Initializable {
         tfVoltage.setText("");
     }
 
-    private void activateEditMood(boolean mood) {
-        activateNewElectricityMood(mood);
-        lvElectricity.setDisable(!mood);
-        btDeleteElectricity.setDisable(mood);
-        tfFrecuency.setDisable(!mood);
-        tfVoltage.setDisable(!mood);
+    private void activateEditMode(boolean mode) {
+        activateNewElectricityMode(mode);
+        lvElectricity.setDisable(!mode);
+        btDeleteElectricity.setDisable(mode);
+        tfFrecuency.setDisable(!mode);
+        tfVoltage.setDisable(!mode);
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -278,12 +346,57 @@ public class AppAdminController implements Initializable {
         }
     }
 
-    private void initialButtonsMood(boolean mood) {
-        btSaveNewElectricity.setDisable(mood);
-        btCancelElectricity.setDisable(mood);
-        btDeleteElectricity.setDisable(!mood);
+    private void initialViewMode(boolean mode) {
+        btSaveNewElectricity.setDisable(mode);
+        btCancelElectricity.setDisable(mode);
+        btSaveNewCoin.setDisable(mode);
+        btCancelCoin.setDisable(mode);
 
-        lvElectricity.setDisable(mood);
+        lvElectricity.setDisable(mode);
+        lvCoins.setDisable(mode);
+
+        tfFrecuency.setDisable(mode);
+        tfVoltage.setDisable(mode);
+        tfCodeISOCoin.setDisable(mode);
+        tfSymbolCoin.setDisable(mode);
+        tfMonetaryUnitCoin.setDisable(mode);
+    }
+
+    private boolean validateTextFields(String type) {
+        boolean value = false;
+
+        switch (type) {
+
+            case ELECTRICITY:
+
+                if (tfVoltage.getText().isBlank() || tfFrecuency.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                // Comprueba si son números, sacado de aquí https://www.delftstack.com/es/howto/java/how-to-check-if-a-string-is-a-number-in-java/
+                else if (!tfVoltage.getText().chars().allMatch(Character::isDigit) || !tfFrecuency.getText().chars().allMatch(Character::isDigit)) {
+                    Alerts.showErrorAlert("Los valores introducidos deben de ser números");
+                    value = false;
+                } else {
+                    value = true;
+                }
+
+                break;
+
+            case COIN:
+
+                if(tfCodeISOCoin.getText().isBlank() || tfMonetaryUnitCoin.getText().isBlank() || tfSymbolCoin.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                } else {
+                    value = true;
+                }
+
+                break;
+
+        }
+
+        return value;
     }
 
 }

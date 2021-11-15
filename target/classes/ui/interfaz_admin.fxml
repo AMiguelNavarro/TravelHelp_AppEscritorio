@@ -97,7 +97,7 @@
                               <ListView fx:id="lvElectricity" layoutX="49.0" layoutY="86.0" onMouseClicked="#getElectricityFromListView" prefHeight="382.0" prefWidth="271.0" />
                               <Button fx:id="btModifyElectricity" layoutX="737.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyElectricity" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
                               <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE TIPOS DE ELECTRICIDAD" />
-                              <Button fx:id="btCancelElectricity" layoutX="49.0" layoutY="485.0" mnemonicParsing="false" onAction="#cancelActionElectricity" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
+                              <Button fx:id="btCancelElectricity" layoutX="49.0" layoutY="487.0" mnemonicParsing="false" onAction="#cancelActionElectricity" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
                               <TextField fx:id="tfVoltage" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="220" />
                               <Label layoutX="523.0" layoutY="132.0" text="Voltaje" />
                               <Label layoutX="680.0" layoutY="132.0" text="Frecuencia" />
@@ -113,17 +113,19 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView layoutX="49.0" layoutY="86.0" prefHeight="382.0" prefWidth="271.0" />
+                              <ListView fx:id="lvCoins" layoutX="49.0" layoutY="86.0" onMouseClicked="#getCoinFromListView" prefHeight="382.0" prefWidth="271.0" />
                               <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE MONEDAS" />
-                              <Button layoutX="737.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button layoutX="860.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <TextField layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="EUR" />
+                              <TextField fx:id="tfCodeISOCoin" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="EUR" />
                               <Label layoutX="523.0" layoutY="132.0" text="Código ISO" />
                               <Label layoutX="525.0" layoutY="178.0" text="Símbolo (Copia y pega el carácter)" />
-                              <Button layoutX="460.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <TextField layoutX="430.0" layoutY="174.0" prefHeight="25.0" prefWidth="74.0" promptText="€" />
-                              <TextField layoutX="430.0" layoutY="222.0" prefHeight="25.0" prefWidth="170.0" promptText="Euro" />
+                              <TextField fx:id="tfSymbolCoin" layoutX="430.0" layoutY="174.0" prefHeight="25.0" prefWidth="74.0" promptText="€" />
+                              <TextField fx:id="tfMonetaryUnitCoin" layoutX="430.0" layoutY="222.0" prefHeight="25.0" prefWidth="170.0" promptText="Euro" />
                               <Label layoutX="624.0" layoutY="226.0" text="Nombre de la moneda" />
+                              <Button fx:id="btModifyCoin" layoutX="729.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyCoin" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
+                              <Button fx:id="btCancelCoin" layoutX="49.0" layoutY="484.0" mnemonicParsing="false" onAction="#cancelActionCoin" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
+                              <Button fx:id="btSaveNewCoin" layoutX="525.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewCoin" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
+                              <Button fx:id="btNewCoin" layoutX="415.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewCoin" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
+                              <Button fx:id="btDeleteCoin" layoutX="841.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteCoin" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
                            </children>
                         </AnchorPane>
                      </content>
