@@ -2,12 +2,14 @@ package com.travelhelp.controller;
 
 
 import com.google.gson.Gson;
-import com.travelhelp.domain.Coin;
-import com.travelhelp.domain.Electricity;
-import com.travelhelp.domain.Language;
+import com.travelhelp.domain.*;
+import com.travelhelp.domain.dto.EmergencyPhoneDTO;
 import com.travelhelp.service.coin.CoinService;
+import com.travelhelp.service.country.CountryService;
 import com.travelhelp.service.electricity.ElectricityService;
+import com.travelhelp.service.emergencyPhone.EmergencyPhoneService;
 import com.travelhelp.service.language.LanguageService;
+import com.travelhelp.service.vaccine.VaccineService;
 import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
 import javafx.application.Platform;
@@ -36,12 +38,17 @@ public class AppAdminController implements Initializable {
     public TextField
             tfFrecuency, tfVoltage,
             tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin,
-            tfLanguageName;
-    public ListView lvElectricity,lvCoins,lvLanguages;
+            tfLanguageName,
+            tfNameVaccine,tfEffectivityVaccine,tfDurabilityVaccine,
+            tfPhoneNumberEmergencyPhone, tfServiceEmergencyPhone;
+    public ListView lvElectricity,lvCoins,lvLanguages,lvVaccines,lvEmergencyPhones;
     public Button
             btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity,
             btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin,
-            btNewLanguage,btSaveNewLanguage,btModifyLanguage,btCancelLanguage,btDeleteLanguage;
+            btNewLanguage,btSaveNewLanguage,btModifyLanguage,btCancelLanguage,btDeleteLanguage,
+            btNewVaccine,btSaveNewVaccine,btModifyVaccine,btCancelVaccine,btDeleteVaccine,
+            btNewEmergencyPhone,btSaveNewEmergencyPhone,btModifyEmergencyPhone,btCancelEmergencyPhone,btDeleteEmergencyPhone;
+    public ComboBox cbCountry;
 
 
 
@@ -51,22 +58,35 @@ public class AppAdminController implements Initializable {
     private Electricity electricitySelected;
     private Coin coinSelected;
     private Language languageSelected;
+    private Vaccine vaccineSelected;
+    private EmergencyPhone emergencyPhoneSelected;
+    private Country countrySelected;
 
     /** Services */
     private ElectricityService electricityService;
     private CoinService coinService;
     private LanguageService languageService;
+    private VaccineService vaccineService;
+    private EmergencyPhoneService emergencyPhoneService;
+    private CountryService countryService;
+
 
     /** Observables List */
     private ObservableList<Electricity> listElectricities;
     private ObservableList<Coin> listCoins;
     private ObservableList<Language> listLanguages;
+    private ObservableList<Vaccine> listVaccines;
+    private ObservableList<EmergencyPhone> listEmergencyPhones;
+    private ObservableList<Country> listComboBoxCountries;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         electricityService = new ElectricityService();
         coinService = new CoinService();
         languageService = new LanguageService();
+        vaccineService = new VaccineService();
+        emergencyPhoneService = new EmergencyPhoneService();
+        countryService = new CountryService();
 
         listElectricities = FXCollections.observableArrayList();
         lvElectricity.setItems(listElectricities);
@@ -79,6 +99,18 @@ public class AppAdminController implements Initializable {
         listLanguages = FXCollections.observableArrayList();
         lvLanguages.setItems(listLanguages);
         getAllLanguages();
+
+        listVaccines = FXCollections.observableArrayList();
+        lvVaccines.setItems(listVaccines);
+        getAllVaccines();
+
+        listEmergencyPhones = FXCollections.observableArrayList();
+        lvEmergencyPhones.setItems(listEmergencyPhones);
+        getAllEmergencyPhones();
+
+        listComboBoxCountries = FXCollections.observableArrayList();
+        cbCountry.setItems(listComboBoxCountries);
+        loadComboBoxCountries();
 
         initialViewMode(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
     }
@@ -97,7 +129,7 @@ public class AppAdminController implements Initializable {
 
         if(action.equals(Action.NEW)) { // Nuevo
 
-            if (!validateTextFields(LANGUAGE)) {
+            if (!validateTextFieldsAndComboBox(LANGUAGE)) {
                 return;
             }
 
@@ -129,7 +161,7 @@ public class AppAdminController implements Initializable {
 
         } else { // Modificar
 
-            if (!validateTextFields(LANGUAGE)) {
+            if (!validateTextFieldsAndComboBox(LANGUAGE)) {
                 return;
             }
 
@@ -172,7 +204,6 @@ public class AppAdminController implements Initializable {
     @FXML
     public void getLanguageFromListView(Event event) {
         languageSelected = (Language) lvLanguages.getSelectionModel().getSelectedItem();
-        System.out.println(languageSelected.getName());
         if(!validateItemSelectedFromListView(languageSelected)) {
             return;
         }
@@ -200,7 +231,7 @@ public class AppAdminController implements Initializable {
             return;
         }
 
-        if (!validateTextFields(LANGUAGE)) {
+        if (!validateTextFieldsAndComboBox(LANGUAGE)) {
             return;
         }
 
@@ -296,9 +327,436 @@ public class AppAdminController implements Initializable {
 
     /** TELEFONOS DE EMERGENCIA --------------------------------------------------------------------------------------*/
 
+    @FXML
+    public void addNewEmergencyPhone(Event event) {
+
+        if(action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFieldsAndComboBox(EMERGENCYPHONE)) {
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountry.getSelectionModel().getSelectedItem();
+            countryComboBox.setId(countryComboBox.getId());
+
+            EmergencyPhoneDTO newEmergencyPhoneDTO = new EmergencyPhoneDTO();
+            newEmergencyPhoneDTO.setIdCountry(countryComboBox.getId());
+            newEmergencyPhoneDTO.setPhoneNumber(tfPhoneNumberEmergencyPhone.getText());
+            newEmergencyPhoneDTO.setService(tfServiceEmergencyPhone.getText());
+
+            Call<EmergencyPhone> emergencyPhoneCall = emergencyPhoneService.addNewEmergencyPhone(newEmergencyPhoneDTO);
+
+            emergencyPhoneCall.enqueue(new Callback<EmergencyPhone>() {
+                @Override
+                public void onResponse(Call<EmergencyPhone> call, Response<EmergencyPhone> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nuevo teléfono de emergencia creado correctamente: " + new Gson().toJson(response.body()));
+                        getAllEmergencyPhones();
+                        activateNewEmergencyPhoneMode(false);
+                        resetTextFields(EMERGENCYPHONE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<EmergencyPhone> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewEmergencyPhoneMode(false);
+                        resetTextFields(EMERGENCYPHONE);
+                    });
+                }
+            });
+
+        } else { // Modificar
+
+            if (!validateTextFieldsAndComboBox(EMERGENCYPHONE)) {
+                return;
+            }
+
+            if (emergencyPhoneSelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountry.getSelectionModel().getSelectedItem();
+            countryComboBox.setId(countryComboBox.getId());
+
+            EmergencyPhoneDTO newEmergencyPhoneDTO = new EmergencyPhoneDTO();
+            newEmergencyPhoneDTO.setIdCountry(countryComboBox.getId());
+            newEmergencyPhoneDTO.setId(emergencyPhoneSelected.getId());
+            newEmergencyPhoneDTO.setPhoneNumber(tfPhoneNumberEmergencyPhone.getText());
+            newEmergencyPhoneDTO.setService(tfServiceEmergencyPhone.getText());
+
+            Call<EmergencyPhone> emergencyPhoneCall = emergencyPhoneService.modifyEmergencyPhone(newEmergencyPhoneDTO.getId(), newEmergencyPhoneDTO);
+
+            emergencyPhoneCall.enqueue(new Callback<EmergencyPhone>() {
+                @Override
+                public void onResponse(Call<EmergencyPhone> call, Response<EmergencyPhone> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nuevo teléfono de emergencia modificado correctamente: " + new Gson().toJson(response.body()));
+                        getAllEmergencyPhones();
+                        activateNewEmergencyPhoneMode(false);
+                        resetTextFields(EMERGENCYPHONE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<EmergencyPhone> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewEmergencyPhoneMode(false);
+                        resetTextFields(EMERGENCYPHONE);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getEmergencyPhoneFromListView(Event event) {
+        emergencyPhoneSelected = (EmergencyPhone) lvEmergencyPhones.getSelectionModel().getSelectedItem();
+        if(!validateItemSelectedFromListView(emergencyPhoneSelected)) {
+            return;
+        }
+        tfPhoneNumberEmergencyPhone.setText(emergencyPhoneSelected.getPhoneNumber());
+        tfServiceEmergencyPhone.setText(emergencyPhoneSelected.getService());
+        cbCountry.setValue(emergencyPhoneSelected.getCountry());
+    }
+
+    @FXML
+    public void activateNewEmergencyPhone(Event event) {
+        action = Action.NEW;
+        activateNewEmergencyPhoneMode(true);
+    }
+
+    @FXML
+    public void activateModifyEmergencyPhone(Event event) {
+        action = Action.MODIFY;
+        activateEditEmergencyPhoneMode(true);
+    }
+
+    @FXML
+    public void deleteEmergencyPhone(Event event) {
+
+        if(lvEmergencyPhones.isDisable()) {
+            activateDeleteEmergencyPhoneMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFieldsAndComboBox(EMERGENCYPHONE)) {
+            return;
+        }
+
+        if (emergencyPhoneSelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> callDelete = emergencyPhoneService.deleteEmergencyPhone(emergencyPhoneSelected.getId());
+
+        callDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Teléfono de emergencia eliminado correctamente");
+                    getAllEmergencyPhones();
+                    resetTextFields(EMERGENCYPHONE);
+                    activateEditEmergencyPhoneMode(false);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    resetTextFields(EMERGENCYPHONE);
+                    activateEditEmergencyPhoneMode(false);
+                });
+            }
+        });
+
+    }
+
+    @FXML
+    public void cancelActionEmergencyPhone(Event event) {
+        activateEditEmergencyPhoneMode(false);
+        resetTextFields(EMERGENCYPHONE);
+    }
+
+    private void getAllEmergencyPhones() {
+        lvEmergencyPhones.getItems().clear();
+        emergencyPhoneService.getAllEmergencyPhones()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de teléfonos de emergencia cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de teléfonos de emergencia"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(emergencyPhone -> {
+                    Platform.runLater(() -> {
+                        listEmergencyPhones.add(emergencyPhone);
+                    });
+                });
+    }
+
+    private void activateNewEmergencyPhoneMode(boolean mode) {
+        btModifyEmergencyPhone.setDisable(mode);
+        btDeleteEmergencyPhone.setDisable(mode);
+        btNewEmergencyPhone.setDisable(mode);
+
+        btCancelEmergencyPhone.setDisable(!mode);
+        btSaveNewEmergencyPhone.setDisable(!mode);
+        cbCountry.setDisable(!mode);
+
+        tfPhoneNumberEmergencyPhone.setDisable(!mode);
+        tfServiceEmergencyPhone.setDisable(!mode);
+    }
+
+    private void activateEditEmergencyPhoneMode(boolean mode) {
+        btModifyEmergencyPhone.setDisable(mode);
+        btDeleteEmergencyPhone.setDisable(mode);
+        btNewEmergencyPhone.setDisable(mode);
+
+        btCancelEmergencyPhone.setDisable(!mode);
+        btSaveNewEmergencyPhone.setDisable(!mode);
+        cbCountry.setDisable(!mode);
+
+        tfPhoneNumberEmergencyPhone.setDisable(!mode);
+        tfServiceEmergencyPhone.setDisable(!mode);
+
+        lvEmergencyPhones.setDisable(!mode);
+    }
+
+    private void activateDeleteEmergencyPhoneMode(boolean mode) {
+        btModifyEmergencyPhone.setDisable(mode);
+        btNewEmergencyPhone.setDisable(mode);
+        btSaveNewEmergencyPhone.setDisable(mode);
+
+        btCancelEmergencyPhone.setDisable(!mode);
+        btDeleteEmergencyPhone.setDisable(!mode);
+        cbCountry.setDisable(!mode);
+
+        tfPhoneNumberEmergencyPhone.setDisable(mode);
+        tfServiceEmergencyPhone.setDisable(mode);
+
+
+        lvEmergencyPhones.setDisable(!mode);
+    }
+
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** VACUNAS ------------------------------------------------------------------------------------------------------*/
+
+    @FXML
+    public void addNewVaccine(Event event) {
+
+        if (action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFieldsAndComboBox(VACCINE)) {
+                return;
+            }
+
+            Vaccine newVaccine = new Vaccine();
+            newVaccine.setDurability(Integer.parseInt(tfDurabilityVaccine.getText()));
+            newVaccine.setEffectivity(Double.parseDouble(tfEffectivityVaccine.getText()));
+            newVaccine.setName(tfNameVaccine.getText());
+
+            Call<Vaccine> vaccineCall = vaccineService.addNewVaccine(newVaccine);
+
+            vaccineCall.enqueue(new Callback<Vaccine>() {
+                @Override
+                public void onResponse(Call<Vaccine> call, Response<Vaccine> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva vacuna añadida correctamente: " + new Gson().toJson(response.body()));
+                        getAllVaccines();
+                        activateNewVaccineMode(false);
+                        resetTextFields(VACCINE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Vaccine> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewVaccineMode(false);
+                        resetTextFields(VACCINE);
+                    });
+                }
+            });
+
+        } else { // Modificar
+
+            if(!validateTextFieldsAndComboBox(VACCINE)) {
+                return;
+            }
+
+            if (vaccineSelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Vaccine newVaccine = new Vaccine();
+            newVaccine.setId(vaccineSelected.getId());
+            newVaccine.setEffectivity(Double.parseDouble(tfEffectivityVaccine.getText()));
+            newVaccine.setDurability(Integer.parseInt(tfDurabilityVaccine.getText()));
+            newVaccine.setName(tfNameVaccine.getText());
+
+            Call<Vaccine> vaccineCall = vaccineService.modifyVaccine(newVaccine.getId(), newVaccine);
+
+            vaccineCall.enqueue(new Callback<Vaccine>() {
+                @Override
+                public void onResponse(Call<Vaccine> call, Response<Vaccine> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Vacuna monificada correctamente: " + new Gson().toJson(response.body()));
+                        getAllVaccines();
+                        activateEditVaccineMode(false);
+                        resetTextFields(VACCINE);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Vaccine> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditVaccineMode(false);
+                        resetTextFields(VACCINE);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getVaccineFromListView(Event event) {
+        vaccineSelected = (Vaccine) lvVaccines.getSelectionModel().getSelectedItem();
+        if(!validateItemSelectedFromListView(vaccineSelected)) {
+            return;
+        }
+        tfNameVaccine.setText(vaccineSelected.getName());
+        tfDurabilityVaccine.setText(String.valueOf(vaccineSelected.getDurability()));
+        tfEffectivityVaccine.setText(String.valueOf(vaccineSelected.getEffectivity()));
+    }
+
+    @FXML
+    public void activateNewVaccine(Event event) {
+        action = Action.NEW;
+        activateNewVaccineMode(true);
+    }
+
+    @FXML
+    public void activateModifyVaccine(Event event) {
+        action = Action.MODIFY;
+        activateEditVaccineMode(true);
+    }
+
+    @FXML
+    public void deleteVaccine(Event event) {
+
+        if(lvVaccines.isDisable()) {
+            activateDeleteVaccineMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFieldsAndComboBox(VACCINE)) {
+            return;
+        }
+
+        if (vaccineSelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> callDelete = vaccineService.deleteVaccine(vaccineSelected.getId());
+
+        callDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Vacuna eliminada correctamente");
+                    getAllVaccines();
+                    resetTextFields(VACCINE);
+                    activateEditVaccineMode(false);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    resetTextFields(VACCINE);
+                    activateEditVaccineMode(false);
+                });
+            }
+        });
+    }
+
+    @FXML
+    public void cancelActionVaccine(Event event) {
+        activateEditVaccineMode(false);
+        resetTextFields(VACCINE);
+    }
+
+    private void getAllVaccines() {
+        lvVaccines.getItems().clear();
+        vaccineService.getAllVaccines()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de vacunas cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de vacunas"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(vaccine -> {
+                    Platform.runLater(() -> {
+                        listVaccines.add(vaccine);
+                    });
+                });
+    }
+
+    private void activateNewVaccineMode(boolean mode) {
+        btModifyVaccine.setDisable(mode);
+        btDeleteVaccine.setDisable(mode);
+        btNewVaccine.setDisable(mode);
+
+        btCancelVaccine.setDisable(!mode);
+        btSaveNewVaccine.setDisable(!mode);
+
+        tfDurabilityVaccine.setDisable(!mode);
+        tfEffectivityVaccine.setDisable(!mode);
+        tfNameVaccine.setDisable(!mode);
+    }
+
+    private void activateEditVaccineMode(boolean mode) {
+        btModifyVaccine.setDisable(mode);
+        btDeleteVaccine.setDisable(mode);
+        btNewVaccine.setDisable(mode);
+
+        btCancelVaccine.setDisable(!mode);
+        btSaveNewVaccine.setDisable(!mode);
+
+        tfDurabilityVaccine.setDisable(!mode);
+        tfEffectivityVaccine.setDisable(!mode);
+        tfNameVaccine.setDisable(!mode);
+
+        lvVaccines.setDisable(!mode);
+    }
+
+    private void activateDeleteVaccineMode(boolean mode) {
+        btModifyVaccine.setDisable(mode);
+        btNewVaccine.setDisable(mode);
+        btSaveNewVaccine.setDisable(mode);
+
+        btCancelVaccine.setDisable(!mode);
+        btDeleteVaccine.setDisable(!mode);
+
+        tfDurabilityVaccine.setDisable(mode);
+        tfEffectivityVaccine.setDisable(mode);
+        tfNameVaccine.setDisable(mode);
+
+
+        lvVaccines.setDisable(!mode);
+    }
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
@@ -307,7 +765,7 @@ public class AppAdminController implements Initializable {
     public void addNewCoin(Event event) {
         if (action.equals(Action.NEW)) { // Nuevo
 
-            if (!validateTextFields(COIN)) {
+            if (!validateTextFieldsAndComboBox(COIN)) {
                 return;
             }
 
@@ -340,7 +798,7 @@ public class AppAdminController implements Initializable {
 
         } else { // Modificar
 
-            if(!validateTextFields(COIN)) {
+            if(!validateTextFieldsAndComboBox(COIN)) {
                 return;
             }
 
@@ -412,7 +870,7 @@ public class AppAdminController implements Initializable {
             return;
         }
 
-        if (!validateTextFields(COIN)) {
+        if (!validateTextFieldsAndComboBox(COIN)) {
             return;
         }
 
@@ -516,6 +974,19 @@ public class AppAdminController implements Initializable {
 
     /** PAISES -------------------------------------------------------------------------------------------------------*/
 
+    private void loadComboBoxCountries() {
+        countryService.getAllCountries()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de paises COMBOBOX cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de idiomas"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(country -> {
+                    Platform.runLater(() -> {
+                        listComboBoxCountries.add(country);
+                    });
+                });
+    }
+
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** ELECTRICIDAD -------------------------------------------------------------------------------------------------*/
@@ -524,7 +995,7 @@ public class AppAdminController implements Initializable {
 
         if (action.equals(Action.NEW)) { // Nuevo
 
-            if (!validateTextFields(ELECTRICITY)) {
+            if (!validateTextFieldsAndComboBox(ELECTRICITY)) {
                 return;
             }
 
@@ -560,7 +1031,7 @@ public class AppAdminController implements Initializable {
 
         } else { // Modificar
 
-            if (!validateTextFields(ELECTRICITY)) {
+            if (!validateTextFieldsAndComboBox(ELECTRICITY)) {
                 return;
             }
 
@@ -626,7 +1097,7 @@ public class AppAdminController implements Initializable {
             Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
             return;
         }
-        if (!validateTextFields(ELECTRICITY)) {
+        if (!validateTextFieldsAndComboBox(ELECTRICITY)) {
             return;
         }
         if (electricitySelected.getId() == 0) {
@@ -742,10 +1213,16 @@ public class AppAdminController implements Initializable {
         btCancelCoin.setDisable(mode);
         btSaveNewLanguage.setDisable(mode);
         btCancelLanguage.setDisable(mode);
+        btSaveNewVaccine.setDisable(mode);
+        btCancelVaccine.setDisable(mode);
+        btSaveNewEmergencyPhone.setDisable(mode);
+        btCancelEmergencyPhone.setDisable(mode);
 
         lvElectricity.setDisable(mode);
         lvCoins.setDisable(mode);
         lvLanguages.setDisable(mode);
+        lvVaccines.setDisable(mode);
+        lvEmergencyPhones.setDisable(mode);
 
         tfFrecuency.setDisable(mode);
         tfVoltage.setDisable(mode);
@@ -753,6 +1230,13 @@ public class AppAdminController implements Initializable {
         tfSymbolCoin.setDisable(mode);
         tfMonetaryUnitCoin.setDisable(mode);
         tfLanguageName.setDisable(mode);
+        tfNameVaccine.setDisable(mode);
+        tfDurabilityVaccine.setDisable(mode);
+        tfEffectivityVaccine.setDisable(mode);
+        tfPhoneNumberEmergencyPhone.setDisable(mode);
+        tfServiceEmergencyPhone.setDisable(mode);
+
+        cbCountry.setDisable(mode);
     }
 
     /**
@@ -760,7 +1244,7 @@ public class AppAdminController implements Initializable {
      * @param type
      * @return
      */
-    private boolean validateTextFields(String type) {
+    private boolean validateTextFieldsAndComboBox(String type) {
         boolean value = false;
 
         switch (type) {
@@ -803,6 +1287,32 @@ public class AppAdminController implements Initializable {
 
                 break;
 
+            case VACCINE:
+
+                if (tfDurabilityVaccine.getText().isBlank() || tfEffectivityVaccine.getText().isBlank() || tfNameVaccine.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                else {
+                    value = true;
+                }
+
+                break;
+
+            case EMERGENCYPHONE:
+
+                if (tfServiceEmergencyPhone.getText().isBlank() || tfPhoneNumberEmergencyPhone.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                else if(cbCountry.getSelectionModel().getSelectedItem() == null) {
+                    Alerts.showErrorAlert("Debes seleccionar un país del combo box");
+                    value = false;
+                }
+                else {
+                    value = true;
+                }
+
         }
 
         return value;
@@ -829,6 +1339,18 @@ public class AppAdminController implements Initializable {
 
             case LANGUAGE:
                 tfLanguageName.setText("");
+                break;
+
+            case VACCINE:
+                tfEffectivityVaccine.setText("");
+                tfDurabilityVaccine.setText("");
+                tfNameVaccine.setText("");
+                break;
+
+            case EMERGENCYPHONE:
+                tfServiceEmergencyPhone.setText("");
+                tfPhoneNumberEmergencyPhone.setText("");
+                cbCountry.valueProperty().set(null);
                 break;
         }
     }
