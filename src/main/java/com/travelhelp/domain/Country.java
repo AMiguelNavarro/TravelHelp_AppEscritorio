@@ -17,6 +17,8 @@ public class Country {
     private boolean publicHealthcare;
     private boolean drinkingWater;
     private String prefix;
+    private Coin coin;
+    private Electricity electricity;
 
     @Override
     public String toString() {
