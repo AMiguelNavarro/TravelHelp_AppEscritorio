@@ -1,21 +1,21 @@
 package com.travelhelp.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class Plug {
+public class City {
     private long id;
-    private char type;
-    private String image;
+    private String name;
+    private float extension;
+    private int numberOfHabitants;
+    private Country country;
 
     @Override
     public String toString() {
-        return "Tipo " + type;
+        return name;
     }
 }

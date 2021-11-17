@@ -35,7 +35,7 @@
                               <Label layoutX="597.0" layoutY="275.0" text="Continente" />
                               <Label layoutX="837.0" layoutY="191.0" text="Url imagen de la bandera" />
                               <Label layoutX="597.0" layoutY="312.0" text="Siglas" />
-                              <Label layoutX="597.0" layoutY="354.0" text="Número de habitantes" />
+                              <Label layoutX="597.0" layoutY="354.0" text="Nº Habitantes" />
                               <Label layoutX="792.0" layoutY="235.0" text="Prefijo" />
                               <Label layoutX="904.0" layoutY="314.0" text="Moneda" />
                               <Label layoutX="904.0" layoutY="354.0" text="Electricidad" />
@@ -54,19 +54,21 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView layoutX="49.0" layoutY="86.0" prefHeight="382.0" prefWidth="271.0" />
+                              <ListView fx:id="lvCities" layoutX="49.0" layoutY="86.0" onMouseClicked="#getCityFromListView" prefHeight="382.0" prefWidth="271.0" />
                               <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE CIUDADES" />
-                              <Button layoutX="737.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button layoutX="860.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <TextField layoutX="430.0" layoutY="137.0" promptText="Zaragoza" />
-                              <TextField layoutX="430.0" layoutY="178.0" promptText="973.8" />
-                              <TextField layoutX="430.0" layoutY="218.0" promptText="670000" />
+                              <TextField fx:id="tfNameCity" layoutX="430.0" layoutY="137.0" promptText="Zaragoza" />
+                              <TextField fx:id="tfExtensionCity" layoutX="430.0" layoutY="178.0" promptText="973.8" />
+                              <TextField fx:id="tfNumberOfHabitantsCity" layoutX="430.0" layoutY="218.0" promptText="670000" />
                               <Label layoutX="597.0" layoutY="141.0" text="Nombre" />
                               <Label layoutX="597.0" layoutY="182.0" text="Extensión" />
                               <Label layoutX="597.0" layoutY="222.0" text="Número de habitantes" />
                               <Label layoutX="600.0" layoutY="264.0" text="País al que pertenece" />
-                              <ComboBox layoutX="430.0" layoutY="260.0" prefHeight="25.0" prefWidth="149.0" />
-                              <Button layoutX="460.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
+                              <ComboBox fx:id="cbCountriesCity" layoutX="430.0" layoutY="260.0" prefHeight="25.0" prefWidth="149.0" />
+                              <Button fx:id="btModifyCity" layoutX="686.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyCity" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
+                              <Button fx:id="btCancelCity" layoutX="49.0" layoutY="490.0" mnemonicParsing="false" onAction="#cancelActionCity" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
+                              <Button fx:id="btSaveNewCity" layoutX="517.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewCity" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
+                              <Button fx:id="btNewCity" layoutX="405.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewCity" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
+                              <Button fx:id="btDeleteCity" layoutX="799.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteCity" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -75,16 +77,18 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ListView layoutX="49.0" layoutY="86.0" prefHeight="382.0" prefWidth="271.0" />
+                              <ListView fx:id="lvPlug" layoutX="49.0" layoutY="86.0" onMouseClicked="#getPlugFromListView" prefHeight="382.0" prefWidth="271.0" />
                               <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE ENCHUFES" />
-                              <Button layoutX="737.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button layoutX="860.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <TextField layoutX="430.0" layoutY="137.0" prefHeight="25.0" prefWidth="364.0" />
+                              <TextField fx:id="tfImageUrlPlug" layoutX="430.0" layoutY="137.0" prefHeight="25.0" prefWidth="364.0" />
                               <Label layoutX="814.0" layoutY="141.0" text="Url imagen" />
-                              <Label layoutX="493.0" layoutY="182.0" text="Tipo" />
-                              <Button layoutX="460.0" layoutY="428.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <WebView layoutX="430.0" layoutY="243.0" prefHeight="128.0" prefWidth="141.0" />
-                              <ComboBox layoutX="430.0" layoutY="178.0" prefHeight="25.0" prefWidth="38.0" />
+                              <Label layoutX="505.0" layoutY="182.0" text="Tipo" />
+                              <WebView fx:id="wbTypePlugImage" layoutX="430.0" layoutY="243.0" prefHeight="128.0" prefWidth="141.0" />
+                              <ComboBox fx:id="cbPlugType" layoutX="430.0" layoutY="178.0" prefHeight="25.0" prefWidth="68.0" />
+                              <Button fx:id="btModifyPlug" layoutX="733.0" layoutY="434.0" mnemonicParsing="false" onAction="#activateModifyPlug" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
+                              <Button fx:id="btCancelPlug" layoutX="49.0" layoutY="488.0" mnemonicParsing="false" onAction="#cancelActionPlug" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
+                              <Button fx:id="btSaveNewPlug" layoutX="549.0" layoutY="434.0" mnemonicParsing="false" onAction="#addNewPlug" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
+                              <Button fx:id="btNewPlug" layoutX="435.0" layoutY="434.0" mnemonicParsing="false" onAction="#activateNewPlug" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
+                              <Button fx:id="btDeletePlug" layoutX="846.0" layoutY="434.0" mnemonicParsing="false" onAction="#deletePlug" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
                            </children>
                         </AnchorPane>
                      </content>

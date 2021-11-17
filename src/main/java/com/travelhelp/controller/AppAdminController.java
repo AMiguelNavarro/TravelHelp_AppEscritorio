@@ -3,12 +3,15 @@ package com.travelhelp.controller;
 
 import com.google.gson.Gson;
 import com.travelhelp.domain.*;
+import com.travelhelp.domain.dto.CityDTO;
 import com.travelhelp.domain.dto.EmergencyPhoneDTO;
+import com.travelhelp.service.city.CityService;
 import com.travelhelp.service.coin.CoinService;
 import com.travelhelp.service.country.CountryService;
 import com.travelhelp.service.electricity.ElectricityService;
 import com.travelhelp.service.emergencyPhone.EmergencyPhoneService;
 import com.travelhelp.service.language.LanguageService;
+import com.travelhelp.service.plug.PlugService;
 import com.travelhelp.service.vaccine.VaccineService;
 import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
@@ -19,6 +22,7 @@ import javafx.event.Event; // NO USAR ACTION EVENT, DA ERROR Exception in thread
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.web.WebView;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,15 +44,21 @@ public class AppAdminController implements Initializable {
             tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin,
             tfLanguageName,
             tfNameVaccine,tfEffectivityVaccine,tfDurabilityVaccine,
-            tfPhoneNumberEmergencyPhone, tfServiceEmergencyPhone;
-    public ListView lvElectricity,lvCoins,lvLanguages,lvVaccines,lvEmergencyPhones;
+            tfPhoneNumberEmergencyPhone,tfServiceEmergencyPhone,
+            tfImageUrlPlug,
+            tfNameCity,tfExtensionCity,tfNumberOfHabitantsCity;
+    public ListView lvElectricity,lvCoins,lvLanguages,lvVaccines,lvEmergencyPhones,lvPlug,lvCities;
     public Button
             btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity,
             btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin,
             btNewLanguage,btSaveNewLanguage,btModifyLanguage,btCancelLanguage,btDeleteLanguage,
             btNewVaccine,btSaveNewVaccine,btModifyVaccine,btCancelVaccine,btDeleteVaccine,
-            btNewEmergencyPhone,btSaveNewEmergencyPhone,btModifyEmergencyPhone,btCancelEmergencyPhone,btDeleteEmergencyPhone;
-    public ComboBox cbCountry;
+            btNewEmergencyPhone,btSaveNewEmergencyPhone,btModifyEmergencyPhone,btCancelEmergencyPhone,btDeleteEmergencyPhone,
+            btNewPlug,btSaveNewPlug,btModifyPlug,btCancelPlug,btDeletePlug,
+            btNewCity,btSaveNewCity,btModifyCity,btCancelCity,btDeleteCity;
+    public ComboBox<Country> cbCountry,cbCountriesCity;
+    public ComboBox<Character> cbPlugType;
+    public WebView wbTypePlugImage;
 
 
 
@@ -61,6 +71,8 @@ public class AppAdminController implements Initializable {
     private Vaccine vaccineSelected;
     private EmergencyPhone emergencyPhoneSelected;
     private Country countrySelected;
+    private Plug plugSelected;
+    private City citySelected;
 
     /** Services */
     private ElectricityService electricityService;
@@ -69,6 +81,8 @@ public class AppAdminController implements Initializable {
     private VaccineService vaccineService;
     private EmergencyPhoneService emergencyPhoneService;
     private CountryService countryService;
+    private PlugService plugService;
+    private CityService cityService;
 
 
     /** Observables List */
@@ -77,7 +91,12 @@ public class AppAdminController implements Initializable {
     private ObservableList<Language> listLanguages;
     private ObservableList<Vaccine> listVaccines;
     private ObservableList<EmergencyPhone> listEmergencyPhones;
+    private ObservableList<Plug> listPlugs;
+    private ObservableList<City> listCities;
     private ObservableList<Country> listComboBoxCountries;
+    private ObservableList<Character> listComboBoxPlugTypes;
+    private ObservableList<Country> listComboBoxCountriesCity;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,6 +106,8 @@ public class AppAdminController implements Initializable {
         vaccineService = new VaccineService();
         emergencyPhoneService = new EmergencyPhoneService();
         countryService = new CountryService();
+        plugService = new PlugService();
+        cityService = new CityService();
 
         listElectricities = FXCollections.observableArrayList();
         lvElectricity.setItems(listElectricities);
@@ -108,17 +129,467 @@ public class AppAdminController implements Initializable {
         lvEmergencyPhones.setItems(listEmergencyPhones);
         getAllEmergencyPhones();
 
+        listPlugs = FXCollections.observableArrayList();
+        lvPlug.setItems(listPlugs);
+        getAllPlugs();
+
+        listCities = FXCollections.observableArrayList();
+        lvCities.setItems(listCities);
+        getAllCities();
+
         listComboBoxCountries = FXCollections.observableArrayList();
+        listComboBoxCountriesCity = FXCollections.observableArrayList();
         cbCountry.setItems(listComboBoxCountries);
+        cbCountriesCity.setItems(listComboBoxCountriesCity);
         loadComboBoxCountries();
+
+        listComboBoxPlugTypes = FXCollections.observableArrayList();
+        for(Character c : PLUG_LIST) {
+            listComboBoxPlugTypes.add(c);
+        }
+        cbPlugType.setItems(listComboBoxPlugTypes);
 
         initialViewMode(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
     }
     /** ENCHUFES -----------------------------------------------------------------------------------------------------*/
 
+    @FXML
+    public void addNewPlug(Event event) {
+
+        if(action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFieldsAndComboBox(PLUG)) {
+                return;
+            }
+
+            Plug newPlug = new Plug();
+            newPlug.setImage(tfImageUrlPlug.getText());
+            newPlug.setType(cbPlugType.getValue());
+
+            Call<Plug> plugCall = plugService.addNewPlug(newPlug);
+
+            plugCall.enqueue(new Callback<Plug>() {
+                @Override
+                public void onResponse(Call<Plug> call, Response<Plug> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Enchufe añadido correctamente: " + new Gson().toJson(response.body()));
+                        getAllPlugs();
+                        activateNewPlugMode(false);
+                        resetTextFieldsComboBoxAndWebViews(PLUG);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Plug> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewPlugMode(false);
+                        resetTextFieldsComboBoxAndWebViews(PLUG);
+                    });
+                }
+            });
+
+        } else { // Modificar
+
+            if (!validateTextFieldsAndComboBox(PLUG)) {
+                return;
+            }
+
+            if (plugSelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Plug newPlug = new Plug();
+            newPlug.setId(plugSelected.getId());
+            newPlug.setImage(tfImageUrlPlug.getText());
+            newPlug.setType(cbPlugType.getValue());
+
+            Call<Plug> plugCall = plugService.modifyPlug(newPlug.getId(), newPlug);
+
+            plugCall.enqueue(new Callback<Plug>() {
+                @Override
+                public void onResponse(Call<Plug> call, Response<Plug> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Enchufe modificado correctamente: " + new Gson().toJson(response.body()));
+                        getAllPlugs();
+                        activateEditPlugMode(false);
+                        resetTextFieldsComboBoxAndWebViews(PLUG);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Plug> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditPlugMode(false);
+                        resetTextFieldsComboBoxAndWebViews(PLUG);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getPlugFromListView(Event event) {
+        plugSelected = (Plug) lvPlug.getSelectionModel().getSelectedItem();
+        if(!validateItemSelectedFromListView(plugSelected)) {
+            return;
+        }
+        tfImageUrlPlug.setText(plugSelected.getImage());
+        cbPlugType.setValue(plugSelected.getType());
+        wbTypePlugImage.getEngine().load(plugSelected.getImage());
+    }
+
+    @FXML
+    public void activateNewPlug(Event event) {
+        action = Action.NEW;
+        activateNewPlugMode(true);
+    }
+
+    @FXML
+    public void activateModifyPlug(Event event) {
+        action = Action.MODIFY;
+        activateEditPlugMode(true);
+    }
+
+    @FXML
+    public void deletePlug(Event event) {
+
+        if(lvPlug.isDisable()) {
+            activateDeletePlugMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFieldsAndComboBox(PLUG)) {
+            return;
+        }
+
+        if (plugSelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> callDelete = plugService.deletePlug(plugSelected.getId());
+
+        callDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Enchufe eliminado correctamente");
+                    getAllPlugs();
+                    resetTextFieldsComboBoxAndWebViews(PLUG);
+                    activateEditPlugMode(false);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    resetTextFieldsComboBoxAndWebViews(PLUG);
+                    activateEditPlugMode(false);
+                });
+            }
+        });
+
+    }
+
+    @FXML
+    public void cancelActionPlug(Event event) {
+        activateEditPlugMode(false);
+        resetTextFieldsComboBoxAndWebViews(PLUG);
+    }
+
+    private void getAllPlugs() {
+        lvPlug.getItems().clear();
+        plugService.getAllPlugs()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de enchufes cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de enchufes"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(plug -> {
+                    Platform.runLater(() -> {
+                        listPlugs.add(plug);
+                    });
+                });
+    }
+
+    private void activateNewPlugMode(boolean mode) {
+        btModifyPlug.setDisable(mode);
+        btDeletePlug.setDisable(mode);
+        btNewPlug.setDisable(mode);
+
+        btCancelPlug.setDisable(!mode);
+        btSaveNewPlug.setDisable(!mode);
+
+        tfImageUrlPlug.setDisable(!mode);
+        cbPlugType.setDisable(!mode);
+
+        wbTypePlugImage.setVisible(mode);
+
+    }
+
+    private void activateEditPlugMode(boolean mode) {
+        btModifyPlug.setDisable(mode);
+        btDeletePlug.setDisable(mode);
+        btNewPlug.setDisable(mode);
+
+        btCancelPlug.setDisable(!mode);
+        btSaveNewPlug.setDisable(!mode);
+
+        tfImageUrlPlug.setDisable(!mode);
+        cbPlugType.setDisable(!mode);
+
+        wbTypePlugImage.setVisible(mode);
+
+        lvPlug.setDisable(!mode);
+    }
+
+    private void activateDeletePlugMode(boolean mode) {
+        btModifyPlug.setDisable(mode);
+        btNewPlug.setDisable(mode);
+        btSaveNewPlug.setDisable(mode);
+
+        btCancelPlug.setDisable(!mode);
+        btDeletePlug.setDisable(!mode);
+
+        tfImageUrlPlug.setDisable(mode);
+        cbPlugType.setDisable(mode);
+
+        wbTypePlugImage.setVisible(mode);
+
+        lvPlug.setDisable(!mode);
+    }
+
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** CIUDADES -----------------------------------------------------------------------------------------------------*/
+
+    @FXML
+    public void addNewCity(Event event) {
+
+        if(action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFieldsAndComboBox(CITY)) {
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountriesCity.getSelectionModel().getSelectedItem();
+            CityDTO newCityDTO = new CityDTO();
+            newCityDTO.setIdCountry(countryComboBox.getId());
+            newCityDTO.setName(tfNameCity.getText());
+            newCityDTO.setNumberOfHabitants(Integer.parseInt(tfNumberOfHabitantsCity.getText()));
+            newCityDTO.setExtension(Float.parseFloat(tfExtensionCity.getText()));
+
+            Call<City> cityCall = cityService.addNewCity(newCityDTO);
+
+            cityCall.enqueue(new Callback<City>() {
+                @Override
+                public void onResponse(Call<City> call, Response<City> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva ciudad creada correctamente: " + new Gson().toJson(response.body()));
+                        getAllCities();
+                        activateNewCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<City> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+            });
+
+
+        } else { // Modificar
+
+            if (!validateTextFieldsAndComboBox(CITY)) {
+                return;
+            }
+
+            if (citySelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountriesCity.getSelectionModel().getSelectedItem();
+            CityDTO newCityDTO = new CityDTO();
+            newCityDTO.setIdCountry(countryComboBox.getId());
+            newCityDTO.setId(citySelected.getId());
+            newCityDTO.setName(tfNameCity.getText());
+            newCityDTO.setNumberOfHabitants(Integer.parseInt(tfNumberOfHabitantsCity.getText()));
+            newCityDTO.setExtension(Float.parseFloat(tfExtensionCity.getText()));
+
+            Call<City> cityCall = cityService.modifyCity(newCityDTO.getId(), newCityDTO);
+
+            cityCall.enqueue(new Callback<City>() {
+                @Override
+                public void onResponse(Call<City> call, Response<City> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva ciudad modificada correctamente: " + new Gson().toJson(response.body()));
+                        getAllCities();
+                        activateEditCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<City> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getCityFromListView(Event event) {
+        citySelected = (City) lvCities.getSelectionModel().getSelectedItem();
+        if(!validateItemSelectedFromListView(citySelected)) {
+            return;
+        }
+        tfExtensionCity.setText(String.valueOf(citySelected.getExtension()));
+        tfNameCity.setText(citySelected.getName());
+        tfNumberOfHabitantsCity.setText(String.valueOf(citySelected.getNumberOfHabitants()));
+        cbCountriesCity.setValue(citySelected.getCountry());
+    }
+
+    @FXML
+    public void activateNewCity(Event event) {
+        action = Action.NEW;
+        activateNewCityMode(true);
+    }
+
+    @FXML
+    public void activateModifyCity(Event event) {
+        action = Action.MODIFY;
+        activateEditCityMode(true);
+    }
+
+    @FXML
+    public void deleteCity(Event event) {
+
+        if(lvCities.isDisable()) {
+            activateDeleteCityMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFieldsAndComboBox(CITY)) {
+            return;
+        }
+
+        if (citySelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> cityCallDelete = cityService.deleteCity(citySelected.getId());
+
+        cityCallDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Ciudad eliminada correctamente");
+                    getAllCities();
+                    activateDeleteCityMode(false);
+                    resetTextFieldsComboBoxAndWebViews(CITY);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    activateDeleteCityMode(false);
+                    resetTextFieldsComboBoxAndWebViews(CITY);
+                });
+            }
+        });
+    }
+
+    @FXML
+    public void cancelActionCity(Event event) {
+        activateEditCityMode(false);
+        resetTextFieldsComboBoxAndWebViews(CITY);
+    }
+
+    private void getAllCities() {
+        lvCities.getItems().clear();
+        cityService.getAllCities()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de ciudades cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de ciudades"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(city -> {
+                    Platform.runLater(() -> {
+                        listCities.add(city);
+                    });
+                });
+    }
+
+    private void activateNewCityMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btDeleteCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btSaveNewCity.setDisable(!mode);
+
+        tfNameCity.setDisable(!mode);
+        tfExtensionCity.setDisable(!mode);
+        tfNumberOfHabitantsCity.setDisable(!mode);
+
+        cbCountriesCity.setDisable(!mode);
+
+    }
+
+    private void activateEditCityMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btDeleteCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btSaveNewCity.setDisable(!mode);
+
+        tfNameCity.setDisable(!mode);
+        tfExtensionCity.setDisable(!mode);
+        tfNumberOfHabitantsCity.setDisable(!mode);
+
+        cbCountriesCity.setDisable(!mode);
+
+        lvCities.setDisable(!mode);
+    }
+
+    private void activateDeleteCityMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+        btSaveNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btDeleteCity.setDisable(!mode);
+
+        tfExtensionCity.setDisable(mode);
+        tfNameCity.setDisable(mode);
+        tfNumberOfHabitantsCity.setDisable(mode);
+
+        cbCountriesCity.setDisable(mode);
+
+        lvCities.setDisable(!mode);
+    }
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
@@ -145,7 +616,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nuevo idioma creado correctamente: " + new Gson().toJson(response.body()));
                         getAllLanguages();
                         activateNewLanguageMode(false);
-                        resetTextFields(LANGUAGE);
+                        resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     });
                 }
 
@@ -154,7 +625,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewLanguageMode(false);
-                        resetTextFields(LANGUAGE);
+                        resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     });
                 }
             });
@@ -183,7 +654,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Idioma monificado correctamente: " + new Gson().toJson(response.body()));
                         getAllLanguages();
                         activateEditLanguageMode(false);
-                        resetTextFields(LANGUAGE);
+                        resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     });
                 }
 
@@ -192,7 +663,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateEditLanguageMode(false);
-                        resetTextFields(LANGUAGE);
+                        resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     });
                 }
             });
@@ -248,7 +719,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Idioma eliminado correctamente");
                     getAllLanguages();
-                    resetTextFields(LANGUAGE);
+                    resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     activateEditLanguageMode(false);
                 });
             }
@@ -257,7 +728,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert(throwable.getMessage());
-                    resetTextFields(LANGUAGE);
+                    resetTextFieldsComboBoxAndWebViews(LANGUAGE);
                     activateEditLanguageMode(false);
                 });
             }
@@ -268,7 +739,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionLanguage(Event event) {
         activateEditLanguageMode(false);
-        resetTextFields(LANGUAGE);
+        resetTextFieldsComboBoxAndWebViews(LANGUAGE);
     }
 
     private void getAllLanguages() {
@@ -353,7 +824,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nuevo teléfono de emergencia creado correctamente: " + new Gson().toJson(response.body()));
                         getAllEmergencyPhones();
                         activateNewEmergencyPhoneMode(false);
-                        resetTextFields(EMERGENCYPHONE);
+                        resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     });
                 }
 
@@ -362,7 +833,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewEmergencyPhoneMode(false);
-                        resetTextFields(EMERGENCYPHONE);
+                        resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     });
                 }
             });
@@ -396,7 +867,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nuevo teléfono de emergencia modificado correctamente: " + new Gson().toJson(response.body()));
                         getAllEmergencyPhones();
                         activateNewEmergencyPhoneMode(false);
-                        resetTextFields(EMERGENCYPHONE);
+                        resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     });
                 }
 
@@ -405,7 +876,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewEmergencyPhoneMode(false);
-                        resetTextFields(EMERGENCYPHONE);
+                        resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     });
                 }
             });
@@ -463,7 +934,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Teléfono de emergencia eliminado correctamente");
                     getAllEmergencyPhones();
-                    resetTextFields(EMERGENCYPHONE);
+                    resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     activateEditEmergencyPhoneMode(false);
                 });
             }
@@ -472,7 +943,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert(throwable.getMessage());
-                    resetTextFields(EMERGENCYPHONE);
+                    resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
                     activateEditEmergencyPhoneMode(false);
                 });
             }
@@ -483,7 +954,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionEmergencyPhone(Event event) {
         activateEditEmergencyPhoneMode(false);
-        resetTextFields(EMERGENCYPHONE);
+        resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
     }
 
     private void getAllEmergencyPhones() {
@@ -571,7 +1042,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nueva vacuna añadida correctamente: " + new Gson().toJson(response.body()));
                         getAllVaccines();
                         activateNewVaccineMode(false);
-                        resetTextFields(VACCINE);
+                        resetTextFieldsComboBoxAndWebViews(VACCINE);
                     });
                 }
 
@@ -580,7 +1051,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewVaccineMode(false);
-                        resetTextFields(VACCINE);
+                        resetTextFieldsComboBoxAndWebViews(VACCINE);
                     });
                 }
             });
@@ -611,7 +1082,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Vacuna monificada correctamente: " + new Gson().toJson(response.body()));
                         getAllVaccines();
                         activateEditVaccineMode(false);
-                        resetTextFields(VACCINE);
+                        resetTextFieldsComboBoxAndWebViews(VACCINE);
                     });
                 }
 
@@ -620,7 +1091,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateEditVaccineMode(false);
-                        resetTextFields(VACCINE);
+                        resetTextFieldsComboBoxAndWebViews(VACCINE);
                     });
                 }
             });
@@ -678,7 +1149,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Vacuna eliminada correctamente");
                     getAllVaccines();
-                    resetTextFields(VACCINE);
+                    resetTextFieldsComboBoxAndWebViews(VACCINE);
                     activateEditVaccineMode(false);
                 });
             }
@@ -687,7 +1158,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert(throwable.getMessage());
-                    resetTextFields(VACCINE);
+                    resetTextFieldsComboBoxAndWebViews(VACCINE);
                     activateEditVaccineMode(false);
                 });
             }
@@ -697,7 +1168,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionVaccine(Event event) {
         activateEditVaccineMode(false);
-        resetTextFields(VACCINE);
+        resetTextFieldsComboBoxAndWebViews(VACCINE);
     }
 
     private void getAllVaccines() {
@@ -782,7 +1253,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nueva moneda añadida correctamente: " + new Gson().toJson(response.body()));
                         getAllCoins();
                         activateNewCoinMode(false);
-                        resetTextFields(COIN);
+                        resetTextFieldsComboBoxAndWebViews(COIN);
                     });
                 }
 
@@ -791,7 +1262,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewCoinMode(false);
-                        resetTextFields(COIN);
+                        resetTextFieldsComboBoxAndWebViews(COIN);
                     });
                 }
             });
@@ -821,7 +1292,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Moneda monificada correctamente: " + new Gson().toJson(response.body()));
                         getAllCoins();
                         activateEditCoinMode(false);
-                        resetTextFields(COIN);
+                        resetTextFieldsComboBoxAndWebViews(COIN);
                     });
                 }
 
@@ -830,7 +1301,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateEditCoinMode(false);
-                        resetTextFields(COIN);
+                        resetTextFieldsComboBoxAndWebViews(COIN);
                     });
                 }
             });
@@ -886,7 +1357,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Moneda eliminada correctamente");
                     getAllCoins();
-                    resetTextFields(COIN);
+                    resetTextFieldsComboBoxAndWebViews(COIN);
                     activateEditCoinMode(false);
                 });
             }
@@ -896,7 +1367,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert(throwable.getMessage());
                     getAllCoins();
-                    resetTextFields(COIN);
+                    resetTextFieldsComboBoxAndWebViews(COIN);
                     activateEditCoinMode(false);
                 });
             }
@@ -907,7 +1378,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionCoin(Event event) {
         activateEditCoinMode(false);
-        resetTextFields(COIN);
+        resetTextFieldsComboBoxAndWebViews(COIN);
     }
 
     /** Devuelve todas las monedas de la base de datos */
@@ -983,6 +1454,7 @@ public class AppAdminController implements Initializable {
                 .subscribe(country -> {
                     Platform.runLater(() -> {
                         listComboBoxCountries.add(country);
+                        listComboBoxCountriesCity.add(country);
                     });
                 });
     }
@@ -1014,7 +1486,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Nueva electricidad creada correctamente: " + new Gson().toJson(response.body()));
                         getAllElectricities();
                         activateNewElectricityMode(false);
-                        resetTextFields(ELECTRICITY);
+                        resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     });
 
                 }
@@ -1024,7 +1496,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateNewElectricityMode(false);
-                        resetTextFields(ELECTRICITY);
+                        resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     });
                 }
             });
@@ -1048,7 +1520,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Electricidad modificada correctamente: " + new Gson().toJson(response.body()));
                         getAllElectricities();
                         activateEditElectricityMode(false);
-                        resetTextFields(ELECTRICITY);
+                        resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     });
                 }
 
@@ -1057,7 +1529,7 @@ public class AppAdminController implements Initializable {
                     Platform.runLater(() -> {
                         Alerts.showErrorAlert(throwable.getMessage());
                         activateEditElectricityMode(false);
-                        resetTextFields(ELECTRICITY);
+                        resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     });
                 }
             });
@@ -1110,7 +1582,7 @@ public class AppAdminController implements Initializable {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Electricidad eliminada correctamente");
-                    resetTextFields(ELECTRICITY);
+                    resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     getAllElectricities();
                     btNewElectricity.setDisable(false);
                     btModifyElectricity.setDisable(false);
@@ -1124,7 +1596,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert("Error al intentar eliminar la electricidad " + throwable.getLocalizedMessage());
-                    resetTextFields(ELECTRICITY);
+                    resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
                     btNewElectricity.setDisable(false);
                     btModifyElectricity.setDisable(false);
                     btDeleteElectricity.setDisable(false);
@@ -1139,7 +1611,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionElectricity(Event event) {
         activateEditElectricityMode(false);
-        resetTextFields(ELECTRICITY);
+        resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
     }
 
     /** Devuelve todas las electricidades de la base de datos */
@@ -1217,12 +1689,18 @@ public class AppAdminController implements Initializable {
         btCancelVaccine.setDisable(mode);
         btSaveNewEmergencyPhone.setDisable(mode);
         btCancelEmergencyPhone.setDisable(mode);
+        btSaveNewPlug.setDisable(mode);
+        btCancelPlug.setDisable(mode);
+        btSaveNewCity.setDisable(mode);
+        btCancelCity.setDisable(mode);
 
         lvElectricity.setDisable(mode);
         lvCoins.setDisable(mode);
         lvLanguages.setDisable(mode);
         lvVaccines.setDisable(mode);
         lvEmergencyPhones.setDisable(mode);
+        lvPlug.setDisable(mode);
+        lvCities.setDisable(mode);
 
         tfFrecuency.setDisable(mode);
         tfVoltage.setDisable(mode);
@@ -1235,8 +1713,16 @@ public class AppAdminController implements Initializable {
         tfEffectivityVaccine.setDisable(mode);
         tfPhoneNumberEmergencyPhone.setDisable(mode);
         tfServiceEmergencyPhone.setDisable(mode);
+        tfImageUrlPlug.setDisable(mode);
+        tfNameCity.setDisable(mode);
+        tfExtensionCity.setDisable(mode);
+        tfNumberOfHabitantsCity.setDisable(mode);
 
         cbCountry.setDisable(mode);
+        cbPlugType.setDisable(mode);
+        cbCountriesCity.setDisable(mode);
+
+        wbTypePlugImage.setVisible(!mode);
     }
 
     /**
@@ -1313,6 +1799,40 @@ public class AppAdminController implements Initializable {
                     value = true;
                 }
 
+                break;
+
+            case PLUG:
+
+                if (tfImageUrlPlug.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                else if(cbPlugType.getSelectionModel().getSelectedItem() == null) {
+                    Alerts.showErrorAlert("Debes seleccionar un tipo del combo box");
+                    value = false;
+                }
+                else {
+                    value = true;
+                }
+
+                break;
+
+            case CITY:
+
+                if(tfExtensionCity.getText().isBlank() || tfNameCity.getText().isBlank() || tfNumberOfHabitantsCity.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                else if(cbCountriesCity.getSelectionModel().getSelectedItem() == null) {
+                    Alerts.showErrorAlert("Debes vincular la ciudad a un país del combo box");
+                    value = false;
+                }
+                else {
+                    value = true;
+                }
+
+                break;
+
         }
 
         return value;
@@ -1323,7 +1843,7 @@ public class AppAdminController implements Initializable {
      * Metodo general que resetea las cajas de texto
      * @param type
      */
-    private void resetTextFields(String type) {
+    private void resetTextFieldsComboBoxAndWebViews(String type) {
         switch (type) {
 
             case ELECTRICITY:
@@ -1352,6 +1872,20 @@ public class AppAdminController implements Initializable {
                 tfPhoneNumberEmergencyPhone.setText("");
                 cbCountry.valueProperty().set(null);
                 break;
+
+            case PLUG:
+                tfImageUrlPlug.setText("");
+                cbPlugType.valueProperty().set(null);
+                wbTypePlugImage.getEngine().loadContent("");
+                break;
+
+            case CITY:
+                tfExtensionCity.setText("");
+                tfNameCity.setText("");
+                tfNumberOfHabitantsCity.setText("");
+                cbCountriesCity.valueProperty().set(null);
+                break;
+
         }
     }
 
