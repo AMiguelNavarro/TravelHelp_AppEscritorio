@@ -17,6 +17,6 @@ public class Coin {
 
     @Override
     public String toString() {
-        return monetaryUnit + "(" + symbol + " -> " + isoCode + ")";
+        return monetaryUnit;
     }
 }

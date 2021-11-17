@@ -17,6 +17,6 @@ public class Electricity {
 
     @Override
     public String toString() {
-        return "Voltaje -> " + voltage + " || Frecuencia -> " + frecuency;
+        return voltage + " | " + frecuency;
     }
 }

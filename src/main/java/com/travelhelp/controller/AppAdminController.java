@@ -15,6 +15,7 @@ import com.travelhelp.service.plug.PlugService;
 import com.travelhelp.service.vaccine.VaccineService;
 import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
+import com.travelhelp.utils.Constants;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,8 +47,16 @@ public class AppAdminController implements Initializable {
             tfNameVaccine,tfEffectivityVaccine,tfDurabilityVaccine,
             tfPhoneNumberEmergencyPhone,tfServiceEmergencyPhone,
             tfImageUrlPlug,
-            tfNameCity,tfExtensionCity,tfNumberOfHabitantsCity;
-    public ListView lvElectricity,lvCoins,lvLanguages,lvVaccines,lvEmergencyPhones,lvPlug,lvCities;
+            tfNameCity,tfExtensionCity,tfNumberOfHabitantsCity,
+            tfUrlImageCountry,tfNameCountry,tfPrefixCountry,tfAcronymCountry,tfNumberOfHabitantsCountry;
+    public ListView lvElectricity,
+                    lvCoins,
+                    lvLanguages,
+                    lvVaccines,
+                    lvEmergencyPhones,
+                    lvPlug,
+                    lvCities,
+                    lvCountries;
     public Button
             btNewElectricity,btSaveNewElectricity,btModifyElectricity,btCancelElectricity, btDeleteElectricity,
             btNewCoin,btSaveNewCoin,btModifyCoin,btCancelCoin,btDeleteCoin,
@@ -55,10 +64,16 @@ public class AppAdminController implements Initializable {
             btNewVaccine,btSaveNewVaccine,btModifyVaccine,btCancelVaccine,btDeleteVaccine,
             btNewEmergencyPhone,btSaveNewEmergencyPhone,btModifyEmergencyPhone,btCancelEmergencyPhone,btDeleteEmergencyPhone,
             btNewPlug,btSaveNewPlug,btModifyPlug,btCancelPlug,btDeletePlug,
-            btNewCity,btSaveNewCity,btModifyCity,btCancelCity,btDeleteCity;
+            btNewCity,btSaveNewCity,btModifyCity,btCancelCity,btDeleteCity,
+            btNewCountry,btSaveNewCountry,btModifyCountry,btCancelCountry,btDeleteCountry,
+            btLogOut;
     public ComboBox<Country> cbCountry,cbCountriesCity;
+    public ComboBox<Electricity> cbElectricityCountry;
+    public ComboBox<Coin> cbCoinCountry;
     public ComboBox<Character> cbPlugType;
-    public WebView wbTypePlugImage;
+    public ComboBox<String> cbContinentCountry;
+    public WebView wbTypePlugImage,wbImageCountry;
+    public CheckBox checkBoxDrinkingWater, checkBoxPublicHealthcare;
 
 
 
@@ -96,6 +111,9 @@ public class AppAdminController implements Initializable {
     private ObservableList<Country> listComboBoxCountries;
     private ObservableList<Character> listComboBoxPlugTypes;
     private ObservableList<Country> listComboBoxCountriesCity;
+    private ObservableList<Electricity> listComboBoxElectricitiesCountry;
+    private ObservableList<Coin> listComboBoxCoinsCountry;
+    private ObservableList<String> listComboBoxContinentsCountry;
 
 
     @Override
@@ -108,6 +126,16 @@ public class AppAdminController implements Initializable {
         countryService = new CountryService();
         plugService = new PlugService();
         cityService = new CityService();
+
+        listComboBoxCountries = FXCollections.observableArrayList();
+        listComboBoxCountriesCity = FXCollections.observableArrayList();
+        listComboBoxElectricitiesCountry = FXCollections.observableArrayList();
+        listComboBoxCoinsCountry = FXCollections.observableArrayList();
+
+        cbCountry.setItems(listComboBoxCountries);
+        cbCountriesCity.setItems(listComboBoxCountriesCity);
+        cbCoinCountry.setItems(listComboBoxCoinsCountry);
+        cbElectricityCountry.setItems(listComboBoxElectricitiesCountry);
 
         listElectricities = FXCollections.observableArrayList();
         lvElectricity.setItems(listElectricities);
@@ -137,10 +165,6 @@ public class AppAdminController implements Initializable {
         lvCities.setItems(listCities);
         getAllCities();
 
-        listComboBoxCountries = FXCollections.observableArrayList();
-        listComboBoxCountriesCity = FXCollections.observableArrayList();
-        cbCountry.setItems(listComboBoxCountries);
-        cbCountriesCity.setItems(listComboBoxCountriesCity);
         loadComboBoxCountries();
 
         listComboBoxPlugTypes = FXCollections.observableArrayList();
@@ -148,6 +172,12 @@ public class AppAdminController implements Initializable {
             listComboBoxPlugTypes.add(c);
         }
         cbPlugType.setItems(listComboBoxPlugTypes);
+
+        listComboBoxContinentsCountry = FXCollections.observableArrayList();
+        for(String continent : CONTINENT_LIST) {
+            listComboBoxContinentsCountry.add(continent);
+        }
+        cbContinentCountry.setItems(listComboBoxContinentsCountry);
 
         initialViewMode(true); // Botones Modificar, cancelar y eliminar desabilitados así como listViews
     }
@@ -1392,6 +1422,7 @@ public class AppAdminController implements Initializable {
                 .subscribe(coin -> {
                     Platform.runLater(() -> {
                         listCoins.add(coin);
+                        listComboBoxCoinsCountry.add(coin);
                     });
                 });
     }
@@ -1444,6 +1475,228 @@ public class AppAdminController implements Initializable {
     /** --------------------------------------------------------------------------------------------------------------*/
 
     /** PAISES -------------------------------------------------------------------------------------------------------*/
+
+    @FXML
+    public void addNewCountry(Event event) {
+
+        if(action.equals(Action.NEW)) { // Nuevo
+
+            if (!validateTextFieldsAndComboBox(CITY)) {
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountriesCity.getSelectionModel().getSelectedItem();
+            CityDTO newCityDTO = new CityDTO();
+            newCityDTO.setIdCountry(countryComboBox.getId());
+            newCityDTO.setName(tfNameCity.getText());
+            newCityDTO.setNumberOfHabitants(Integer.parseInt(tfNumberOfHabitantsCity.getText()));
+            newCityDTO.setExtension(Float.parseFloat(tfExtensionCity.getText()));
+
+            Call<City> cityCall = cityService.addNewCity(newCityDTO);
+
+            cityCall.enqueue(new Callback<City>() {
+                @Override
+                public void onResponse(Call<City> call, Response<City> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva ciudad creada correctamente: " + new Gson().toJson(response.body()));
+                        getAllCities();
+                        activateNewCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<City> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateNewCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+            });
+
+
+        } else { // Modificar
+
+            if (!validateTextFieldsAndComboBox(CITY)) {
+                return;
+            }
+
+            if (citySelected.getId() == 0) {
+                Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+                return;
+            }
+
+            Country countryComboBox = (Country) cbCountriesCity.getSelectionModel().getSelectedItem();
+            CityDTO newCityDTO = new CityDTO();
+            newCityDTO.setIdCountry(countryComboBox.getId());
+            newCityDTO.setId(citySelected.getId());
+            newCityDTO.setName(tfNameCity.getText());
+            newCityDTO.setNumberOfHabitants(Integer.parseInt(tfNumberOfHabitantsCity.getText()));
+            newCityDTO.setExtension(Float.parseFloat(tfExtensionCity.getText()));
+
+            Call<City> cityCall = cityService.modifyCity(newCityDTO.getId(), newCityDTO);
+
+            cityCall.enqueue(new Callback<City>() {
+                @Override
+                public void onResponse(Call<City> call, Response<City> response) {
+                    Platform.runLater(() -> {
+                        Alerts.showInfoAlert("Nueva ciudad modificada correctamente: " + new Gson().toJson(response.body()));
+                        getAllCities();
+                        activateEditCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<City> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert(throwable.getMessage());
+                        activateEditCityMode(false);
+                        resetTextFieldsComboBoxAndWebViews(CITY);
+                    });
+                }
+            });
+
+        }
+
+    }
+
+    @FXML
+    public void getCountryFromListView(Event event) {
+        citySelected = (City) lvCities.getSelectionModel().getSelectedItem();
+        if(!validateItemSelectedFromListView(citySelected)) {
+            return;
+        }
+        tfExtensionCity.setText(String.valueOf(citySelected.getExtension()));
+        tfNameCity.setText(citySelected.getName());
+        tfNumberOfHabitantsCity.setText(String.valueOf(citySelected.getNumberOfHabitants()));
+        cbCountriesCity.setValue(citySelected.getCountry());
+    }
+
+    @FXML
+    public void activateNewCountry(Event event) {
+        action = Action.NEW;
+        activateNewCityMode(true);
+    }
+
+    @FXML
+    public void activateModifyCountry(Event event) {
+        action = Action.MODIFY;
+        activateEditCityMode(true);
+    }
+
+    @FXML
+    public void deleteCountry(Event event) {
+
+        if(lvCities.isDisable()) {
+            activateDeleteCityMode(true);
+            Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
+            return;
+        }
+
+        if (!validateTextFieldsAndComboBox(CITY)) {
+            return;
+        }
+
+        if (citySelected.getId() == 0) {
+            Alerts.showErrorAlert("Debes seleccionar un item de la lista");
+            return;
+        }
+
+        Call<ResponseBody> cityCallDelete = cityService.deleteCity(citySelected.getId());
+
+        cityCallDelete.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Platform.runLater(() -> {
+                    Alerts.showInfoAlert("Ciudad eliminada correctamente");
+                    getAllCities();
+                    activateDeleteCityMode(false);
+                    resetTextFieldsComboBoxAndWebViews(CITY);
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable throwable) {
+                Platform.runLater(() -> {
+                    Alerts.showErrorAlert(throwable.getMessage());
+                    activateDeleteCityMode(false);
+                    resetTextFieldsComboBoxAndWebViews(CITY);
+                });
+            }
+        });
+    }
+
+    @FXML
+    public void cancelActionCountry(Event event) {
+        activateEditCityMode(false);
+        resetTextFieldsComboBoxAndWebViews(CITY);
+    }
+
+    private void getAllCountries() {
+        lvCities.getItems().clear();
+        cityService.getAllCities()
+                .flatMap(Observable::from)
+                .doOnCompleted(() -> System.out.println("Listado de ciudades cargado correctamente"))
+                .doOnError(throwable -> Alerts.showErrorAlert("Error al mostrar el listado de ciudades"))
+                .subscribeOn(Schedulers.from(Executors.newCachedThreadPool()))
+                .subscribe(city -> {
+                    Platform.runLater(() -> {
+                        listCities.add(city);
+                    });
+                });
+    }
+
+    private void activateNewCountryMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btDeleteCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btSaveNewCity.setDisable(!mode);
+
+        tfNameCity.setDisable(!mode);
+        tfExtensionCity.setDisable(!mode);
+        tfNumberOfHabitantsCity.setDisable(!mode);
+
+        cbCountriesCity.setDisable(!mode);
+
+    }
+
+    private void activateEditCountryMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btDeleteCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btSaveNewCity.setDisable(!mode);
+
+        tfNameCity.setDisable(!mode);
+        tfExtensionCity.setDisable(!mode);
+        tfNumberOfHabitantsCity.setDisable(!mode);
+
+        cbCountriesCity.setDisable(!mode);
+
+        lvCities.setDisable(!mode);
+    }
+
+    private void activateDeleteCountryMode(boolean mode) {
+        btModifyCity.setDisable(mode);
+        btNewCity.setDisable(mode);
+        btSaveNewCity.setDisable(mode);
+
+        btCancelCity.setDisable(!mode);
+        btDeleteCity.setDisable(!mode);
+
+        tfExtensionCity.setDisable(mode);
+        tfNameCity.setDisable(mode);
+        tfNumberOfHabitantsCity.setDisable(mode);
+
+        cbCountriesCity.setDisable(mode);
+
+        lvCities.setDisable(!mode);
+    }
 
     private void loadComboBoxCountries() {
         countryService.getAllCountries()
@@ -1626,6 +1879,7 @@ public class AppAdminController implements Initializable {
                 // Para evitar el IllegalStateException por actualizar la vista en un hilo distinto de JAVAFX
                 Platform.runLater(() -> {
                     listElectricities.add(electricity);
+                    listComboBoxElectricitiesCountry.add(electricity);
                 });
             });
 
@@ -1660,6 +1914,12 @@ public class AppAdminController implements Initializable {
 
     /** --------------------------------------------------------------------------------------------------------------*/
 
+    @FXML
+    public void logOut(Event event) {
+        System.out.println("...cerrando sesión...");
+    }
+
+
     /**
      * Método general que valida si se ha seleccionado un item del list view
      * @param item
@@ -1693,6 +1953,8 @@ public class AppAdminController implements Initializable {
         btCancelPlug.setDisable(mode);
         btSaveNewCity.setDisable(mode);
         btCancelCity.setDisable(mode);
+        btSaveNewCountry.setDisable(mode);
+        btCancelCountry.setDisable(mode);
 
         lvElectricity.setDisable(mode);
         lvCoins.setDisable(mode);
@@ -1701,6 +1963,7 @@ public class AppAdminController implements Initializable {
         lvEmergencyPhones.setDisable(mode);
         lvPlug.setDisable(mode);
         lvCities.setDisable(mode);
+        lvCountries.setDisable(mode);
 
         tfFrecuency.setDisable(mode);
         tfVoltage.setDisable(mode);
@@ -1717,12 +1980,24 @@ public class AppAdminController implements Initializable {
         tfNameCity.setDisable(mode);
         tfExtensionCity.setDisable(mode);
         tfNumberOfHabitantsCity.setDisable(mode);
+        tfUrlImageCountry.setDisable(mode);
+        tfNameCountry.setDisable(mode);
+        tfAcronymCountry.setDisable(mode);
+        tfNumberOfHabitantsCountry.setDisable(mode);
+        tfPrefixCountry.setDisable(mode);
 
         cbCountry.setDisable(mode);
         cbPlugType.setDisable(mode);
         cbCountriesCity.setDisable(mode);
+        cbContinentCountry.setDisable(mode);
+        cbCoinCountry.setDisable(mode);
+        cbElectricityCountry.setDisable(mode);
+
+        checkBoxDrinkingWater.setDisable(mode);
+        checkBoxPublicHealthcare.setDisable(mode);
 
         wbTypePlugImage.setVisible(!mode);
+        wbImageCountry.setVisible(!mode);
     }
 
     /**
@@ -1833,6 +2108,22 @@ public class AppAdminController implements Initializable {
 
                 break;
 
+            case COUNTRY:
+
+                if (tfUrlImageCountry.getText().isBlank() || tfNameCountry.getText().isBlank() || tfPrefixCountry.getText().isBlank() || tfAcronymCountry.getText().isBlank() || tfNumberOfHabitantsCountry.getText().isBlank()) {
+                    Alerts.showErrorAlert("No puedes dejar los valores en blanco");
+                    value = false;
+                }
+                else if (cbElectricityCountry.getSelectionModel().getSelectedItem() == null || cbCoinCountry.getSelectionModel().getSelectedItem() == null || cbContinentCountry.getSelectionModel().getSelectedItem() == null) {
+                    Alerts.showErrorAlert("Debes seleccionar los items del del combo box");
+                    value = false;
+                }
+                else {
+                    value = true;
+                }
+
+                break;
+
         }
 
         return value;
@@ -1884,6 +2175,19 @@ public class AppAdminController implements Initializable {
                 tfNameCity.setText("");
                 tfNumberOfHabitantsCity.setText("");
                 cbCountriesCity.valueProperty().set(null);
+                break;
+
+            case COUNTRY:
+                tfUrlImageCountry.setText("");
+                tfNameCountry.setText("");
+                tfAcronymCountry.setText("");
+                tfPrefixCountry.setText("");
+                tfNumberOfHabitantsCountry.setText("");
+                cbContinentCountry.valueProperty().set(null);
+                cbCoinCountry.valueProperty().set(null);
+                cbElectricityCountry.valueProperty().set(null);
+                checkBoxDrinkingWater.setSelected(false);
+                checkBoxPublicHealthcare.setSelected(false);
                 break;
 
         }

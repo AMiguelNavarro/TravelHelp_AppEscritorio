@@ -2,6 +2,7 @@ com\travelhelp\domain\Plug.class
 com\travelhelp\controller\AppAdminController$9.class
 com\travelhelp\domain\dto\CityDTO.class
 com\travelhelp\controller\AppAdminController$14.class
+com\travelhelp\controller\AppAdminController$24.class
 com\travelhelp\service\emergencyPhone\EmergencyPhoneService.class
 com\travelhelp\utils\Action.class
 com\travelhelp\controller\AppAdminController$18.class
@@ -9,6 +10,7 @@ com\travelhelp\controller\AppAdminController$5.class
 com\travelhelp\domain\Plug$PlugBuilder.class
 com\travelhelp\domain\Language$LanguageBuilder.class
 com\travelhelp\domain\Coin.class
+com\travelhelp\service\country\ICountryService.class
 com\travelhelp\utils\Alerts.class
 com\travelhelp\controller\AppAdminController$6.class
 com\travelhelp\controller\AppAdminController$11.class
@@ -34,12 +36,12 @@ com\travelhelp\service\city\ICityService.class
 com\travelhelp\service\language\ILanguageService.class
 com\travelhelp\controller\AppAdminController$13.class
 com\travelhelp\controller\AppAdminController$19.class
+com\travelhelp\controller\AppAdminController$23.class
 com\travelhelp\service\language\LanguageService.class
 com\travelhelp\controller\AppController.class
 com\travelhelp\controller\AppAdminController$3.class
 com\travelhelp\domain\Language.class
 com\travelhelp\service\vaccine\VaccineService.class
-com\travelhelp\service\country\ICountryApiService.class
 com\travelhelp\controller\AppAdminController$16.class
 com\travelhelp\controller\AppAdminController.class
 com\travelhelp\service\electricity\IElectricityService.class
@@ -51,7 +53,9 @@ com\travelhelp\service\city\CityService.class
 com\travelhelp\service\country\CountryService.class
 com\travelhelp\domain\Electricity.class
 com\travelhelp\service\coin\CoinService.class
+com\travelhelp\domain\dto\CountryDTO.class
 com\travelhelp\domain\EmergencyPhone$EmergencyPhoneBuilder.class
+com\travelhelp\controller\AppAdminController$22.class
 com\travelhelp\controller\AppAdminController$4.class
 com\travelhelp\domain\Country.class
 com\travelhelp\domain\City.class

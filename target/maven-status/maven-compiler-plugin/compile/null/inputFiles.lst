@@ -10,7 +10,7 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Plug.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Alerts.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\language\ILanguageService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\city\ICityService.java
-D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\country\ICountryApiService.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\country\ICountryService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\coin\CoinService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\vaccine\VaccineService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\City.java
@@ -29,5 +29,6 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Electricity.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\vaccine\IVaccineService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\AppController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\dto\CityDTO.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\dto\CountryDTO.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\emergencyPhone\IEmergencyPhoneService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Constants.java
