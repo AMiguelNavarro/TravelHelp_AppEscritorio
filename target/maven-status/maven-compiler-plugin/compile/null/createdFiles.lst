@@ -31,6 +31,7 @@ com\travelhelp\service\plug\IPlugService.class
 com\travelhelp\controller\AppAdminController$12.class
 com\travelhelp\controller\AppAdminController$2.class
 com\travelhelp\domain\Vaccine.class
+com\travelhelp\controller\LogInController.class
 com\travelhelp\service\emergencyPhone\IEmergencyPhoneService.class
 com\travelhelp\service\city\ICityService.class
 com\travelhelp\service\language\ILanguageService.class
@@ -47,10 +48,12 @@ com\travelhelp\controller\AppAdminController.class
 com\travelhelp\service\electricity\IElectricityService.class
 com\travelhelp\controller\AppAdminController$1.class
 com\travelhelp\controller\AppAdminController$10.class
+com\travelhelp\controller\SignInController.class
 com\travelhelp\domain\Electricity$ElectricityBuilder.class
 com\travelhelp\controller\AppAdminController$17.class
 com\travelhelp\service\city\CityService.class
 com\travelhelp\service\country\CountryService.class
+com\travelhelp\controller\HomeController.class
 com\travelhelp\domain\Electricity.class
 com\travelhelp\service\coin\CoinService.class
 com\travelhelp\domain\dto\CountryDTO.class

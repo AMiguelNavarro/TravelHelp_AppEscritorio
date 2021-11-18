@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="400.0" prefWidth="627.0" style="-fx-background-color: #30373e;" HBox.hgrow="ALWAYS">
+         <children>
+            <ImageView fitHeight="632.0" fitWidth="637.0" layoutX="-192.0" layoutY="-343.0" opacity="0.11" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/logoblanco.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btLogInHome" layoutX="405.0" layoutY="54.0" mnemonicParsing="false" onAction="#navigateLogIn" prefHeight="23.0" prefWidth="80.0" text="Inicia Sesión">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Button fx:id="btAplication" layoutX="391.0" layoutY="289.0" mnemonicParsing="false" onAction="#navigateAplication" prefHeight="76.0" prefWidth="156.0" text="APLICACIÓN">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <ImageView fitHeight="38.0" fitWidth="326.0" layoutX="20.0" layoutY="327.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/letras.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="btSignInHome" layoutX="500.0" layoutY="54.0" mnemonicParsing="false" onAction="#navigateSignIn" prefHeight="18.0" prefWidth="80.0" text="Regístrate">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Button>
+            <Text fill="WHITE" layoutX="405.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Quieres colaborar?" textAlignment="CENTER" wrappingWidth="174.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</HBox>

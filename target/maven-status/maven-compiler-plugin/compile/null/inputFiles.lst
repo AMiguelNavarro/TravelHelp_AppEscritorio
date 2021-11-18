@@ -12,9 +12,11 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\language\ILanguage
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\city\ICityService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\country\ICountryService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\coin\CoinService.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\LogInController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\vaccine\VaccineService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\City.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\Main.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\SignInController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\coin\ICoinService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Action.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\R.java
@@ -26,6 +28,7 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\electricity\IElect
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\AppAdminController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Vaccine.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Electricity.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\HomeController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\vaccine\IVaccineService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\AppController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\dto\CityDTO.java
