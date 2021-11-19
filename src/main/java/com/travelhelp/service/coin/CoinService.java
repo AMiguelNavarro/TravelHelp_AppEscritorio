@@ -1,6 +1,7 @@
 package com.travelhelp.service.coin;
 
 import com.travelhelp.domain.Coin;
+import com.travelhelp.domain.Plug;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -26,6 +27,9 @@ public class CoinService {
 
     public Observable<List<Coin>> getAllCoins() {
         return coinService.getAllCoins();
+    }
+    public Call<Coin> getCoinFromCountry(long idCountry) {
+        return coinService.getCoinFromCountry(idCountry);
     }
     public Call<Coin> addNewCoin(Coin newCoin) {
         return coinService.addNewCoin(newCoin);

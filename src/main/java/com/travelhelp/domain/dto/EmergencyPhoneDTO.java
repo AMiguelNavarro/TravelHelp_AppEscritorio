@@ -12,4 +12,9 @@ public class EmergencyPhoneDTO {
     private String phoneNumber;
     private String service;
     private long idCountry;
+
+    @Override
+    public String toString() {
+        return service;
+    }
 }

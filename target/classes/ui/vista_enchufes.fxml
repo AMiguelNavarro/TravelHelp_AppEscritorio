@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.web.WebView?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="479.0" prefWidth="600.0">
+         <children>
+            <Label fx:id="lbType" layoutX="266.0" layoutY="53.0" prefHeight="30.0" prefWidth="71.0" textAlignment="CENTER">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <WebView fx:id="wbImage" layoutX="149.0" layoutY="114.0" prefHeight="246.0" prefWidth="306.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

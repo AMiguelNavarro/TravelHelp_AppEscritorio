@@ -1,6 +1,7 @@
 package com.travelhelp.service.plug;
 
 import com.travelhelp.domain.Plug;
+import com.travelhelp.domain.dto.EmergencyPhoneDTO;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -28,6 +29,9 @@ public class PlugService {
 
     public Observable<List<Plug>> getAllPlugs() {
         return plugService.getAllPlugs();
+    }
+    public Call<Plug> getPlugsFromCountry(long idCountry) {
+        return plugService.getPlugsFromCountry(idCountry);
     }
     public Call<Plug> addNewPlug(Plug newPlug) {
         return plugService.addNewPlug(newPlug);

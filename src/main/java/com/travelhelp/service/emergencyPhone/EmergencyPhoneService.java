@@ -1,5 +1,6 @@
 package com.travelhelp.service.emergencyPhone;
 
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.EmergencyPhone;
 import com.travelhelp.domain.Language;
 import com.travelhelp.domain.dto.EmergencyPhoneDTO;
@@ -30,6 +31,9 @@ public class EmergencyPhoneService {
 
     public Observable<List<EmergencyPhone>> getAllEmergencyPhones() {
         return emergencyPhoneService.getAllEmergencyPhones();
+    }
+    public Observable<List<EmergencyPhoneDTO>> getEmergencyPhonesFromCountry(long idCountry) {
+        return emergencyPhoneService.getEmergencyPhonesFromCountry(idCountry);
     }
     public Call<EmergencyPhone> addNewEmergencyPhone(EmergencyPhoneDTO newEmergencyPhoneDTO) {
         return emergencyPhoneService.addNewEmergencyPhone(newEmergencyPhoneDTO);

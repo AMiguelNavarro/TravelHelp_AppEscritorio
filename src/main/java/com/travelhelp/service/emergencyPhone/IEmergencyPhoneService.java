@@ -1,5 +1,6 @@
 package com.travelhelp.service.emergencyPhone;
 
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.EmergencyPhone;
 import com.travelhelp.domain.Language;
 import com.travelhelp.domain.dto.EmergencyPhoneDTO;
@@ -14,6 +15,9 @@ public interface IEmergencyPhoneService {
 
     @GET("/emergencyphone")
     Observable<List<EmergencyPhone>> getAllEmergencyPhones();
+
+    @GET("/emergencyphone/idCountry/{idCountry}")
+    Observable<List<EmergencyPhoneDTO>> getEmergencyPhonesFromCountry(@Path("idCountry") long idCountry);
 
     // Se debe devolver una Call
     @POST("/emergencyphone") @Headers("Content-type: application/json")

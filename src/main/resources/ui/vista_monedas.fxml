@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="273.0" prefWidth="554.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane prefHeight="479.0" prefWidth="600.0">
+         <children>
+            <Label layoutX="178.0" layoutY="88.0" text="Código ISO:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="198.0" layoutY="125.0" text="Símbolo:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="137.0" layoutY="158.0" text="Unidad monetaria:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label fx:id="lbIsoCode" layoutX="269.0" layoutY="90.0" />
+            <Label fx:id="lbSymbol" layoutX="269.0" layoutY="127.0" />
+            <Label fx:id="lbMonetaryUnit" layoutX="269.0" layoutY="160.0" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

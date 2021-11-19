@@ -15,7 +15,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import rx.Observable;
 import rx.schedulers.Schedulers;
@@ -80,10 +79,62 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void showCoinView(Event event) { }
+    public void showCoinView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        CoinViewController controller = new CoinViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_monedas"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
-    public void showPlugView(Event event) { }
+    public void showPlugView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        PlugViewController controller = new PlugViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_enchufes"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
     public void showVaccineView(Event event) { }
@@ -95,7 +146,33 @@ public class AppController implements Initializable {
     public void showLanguageView(Event event) { }
 
     @FXML
-    public void showEmergencyPhoneView(Event event) { }
+    public void showEmergencyPhoneView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        EmergencyPhoneViewController controller = new EmergencyPhoneViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_telefonos"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
     public void showCityView(Event event) throws IOException {
