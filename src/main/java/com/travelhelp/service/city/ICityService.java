@@ -14,6 +14,9 @@ public interface ICityService {
     @GET("/city")
     Observable<List<City>> getAllCities();
 
+    @GET("/city/idcountry/{idCountry}")
+    Observable<List<City>> getCitiesFromCountry(@Path("idCountry") long idCountry);
+
     // Se debe devolver una Call
     @POST("/city") @Headers("Content-type: application/json")
     Call<City> addNewCity(@Body CityDTO newCityDTO);

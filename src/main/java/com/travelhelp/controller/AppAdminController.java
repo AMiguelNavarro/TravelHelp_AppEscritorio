@@ -17,20 +17,27 @@ import com.travelhelp.service.vaccine.VaccineService;
 import com.travelhelp.utils.Action;
 import com.travelhelp.utils.Alerts;
 import com.travelhelp.utils.Constants;
+import com.travelhelp.utils.R;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event; // NO USAR ACTION EVENT, DA ERROR Exception in thread "JavaFX Application Thread" java.lang.IllegalArgumentException: argument type mismatch
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
@@ -1988,7 +1995,25 @@ public class AppAdminController implements Initializable {
 
     @FXML
     public void logOut(Event event) {
-        System.out.println("...cerrando sesión...");
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            HomeController controller = new HomeController();
+            loader.setLocation(R.getUI("interfaz_home"));
+            loader.setController(controller);
+            Parent root = null;
+
+            root = loader.load();
+
+            Stage stage = new Stage();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+            Stage actualStage = (Stage) btLogOut.getScene().getWindow();
+            actualStage.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -30,6 +30,9 @@ public class CityService {
     public Observable<List<City>> getAllCities() {
         return cityService.getAllCities();
     }
+    public Observable<List<City>> getCitiesFromCountry(long idCountry) {
+        return cityService.getCitiesFromCountry(idCountry);
+    }
     public Call<City> addNewCity(CityDTO newCityDTO) {
         return cityService.addNewCity(newCityDTO);
     }

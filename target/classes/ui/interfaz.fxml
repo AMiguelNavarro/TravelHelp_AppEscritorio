@@ -4,7 +4,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
@@ -14,12 +15,8 @@
    <children>
       <AnchorPane prefHeight="539.0" prefWidth="1121.0">
          <children>
-            <TextField fx:id="tfSearchCountry" layoutX="35.0" layoutY="67.0" />
-            <Button fx:id="btSearchCountry" layoutX="35.0" layoutY="108.0" mnemonicParsing="false" onMouseClicked="#searchCountry" text="Buscar" />
-            <Text layoutX="35.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Escribe el nombre del país" />
             <Separator layoutX="241.0" layoutY="29.0" orientation="VERTICAL" prefHeight="453.0" prefWidth="19.0" />
-            <ListView fx:id="lvCountries" layoutX="33.0" layoutY="187.0" onMouseClicked="#getCountryFromListView" prefHeight="302.0" prefWidth="194.0" />
-            <Text layoutX="34.0" layoutY="163.0" strokeType="OUTSIDE" strokeWidth="0.0" text="o búscalo en la lista" />
+            <ListView fx:id="lvCountries" layoutX="33.0" layoutY="65.0" onMouseClicked="#getCountryFromListView" prefHeight="424.0" prefWidth="194.0" />
             <Text layoutX="291.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bandera" wrappingWidth="51.0" />
             <Text layoutX="544.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:" wrappingWidth="51.0" />
             <Text layoutX="544.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="continente:" wrappingWidth="70.0" />
@@ -37,12 +34,23 @@
             <Label fx:id="lbDrinkingWater" layoutX="914.0" layoutY="116.0" prefHeight="17.0" prefWidth="104.0" />
             <Label fx:id="lbPrefix" layoutX="880.0" layoutY="152.0" prefHeight="17.0" prefWidth="104.0" />
             <Separator layoutX="336.0" layoutY="279.0" prefHeight="0.0" prefWidth="672.0" />
-            <Button layoutX="388.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
-            <Button layoutX="388.0" layoutY="390.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="ELECTRICIDAD" />
-            <Button layoutX="609.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="ENCHUFES" />
-            <Button layoutX="815.0" layoutY="387.0" mnemonicParsing="false" text="TLFS EMERGENCIA" />
-            <Button layoutX="815.0" layoutY="333.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="VACUNAS" />
-            <Button layoutX="609.0" layoutY="387.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="116.0" text="IDIOMAS" />
+            <Button fx:id="btShowCoinView" layoutX="328.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCoinView" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
+            <Button fx:id="btShowElectricityView" layoutX="328.0" layoutY="390.0" mnemonicParsing="false" onAction="#showElectricityView" prefHeight="25.0" prefWidth="116.0" text="ELECTRICIDAD" />
+            <Button fx:id="btShowPlugView" layoutX="549.0" layoutY="333.0" mnemonicParsing="false" onAction="#showPlugView" prefHeight="25.0" prefWidth="116.0" text="ENCHUFES" />
+            <Button fx:id="btShowEmergencyPhoneView" layoutX="755.0" layoutY="390.0" mnemonicParsing="false" onAction="#showEmergencyPhoneView" text="TLFS EMERGENCIA" />
+            <Button fx:id="btShowVaccineView" layoutX="755.0" layoutY="333.0" mnemonicParsing="false" onAction="#showVaccineView" prefHeight="25.0" prefWidth="116.0" text="VACUNAS" />
+            <Button fx:id="btShowLanguageView" layoutX="549.0" layoutY="390.0" mnemonicParsing="false" onAction="#showLanguageView" prefHeight="25.0" prefWidth="116.0" text="IDIOMAS" />
+            <Button fx:id="btHome" layoutX="1055.0" layoutY="11.0" mnemonicParsing="false" onAction="#goHome" prefHeight="46.0" prefWidth="43.0">
+               <graphic>
+                  <ImageView fitHeight="38.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/casa.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="btShowCityView" layoutX="936.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCityView" prefHeight="25.0" prefWidth="116.0" text="CIUDADES" />
+            <Text layoutX="33.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona un país" wrappingWidth="194.0" />
          </children>
       </AnchorPane>
    </children>

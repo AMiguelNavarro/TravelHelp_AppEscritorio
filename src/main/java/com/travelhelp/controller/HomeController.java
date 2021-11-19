@@ -32,9 +32,35 @@ public class HomeController {
     }
 
     @FXML
-    public void navigateLogIn(Event event) {}
+    public void navigateLogIn(Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        LogInController controller = new LogInController();
+        loader.setLocation(R.getUI("interfaz_login"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        Stage actualStage = (Stage) this.btAplication.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
-    public void navigateSignIn(Event event) {}
+    public void navigateSignIn(Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        SignInController controller = new SignInController();
+        loader.setLocation(R.getUI("interfaz_singin"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        Stage actualStage = (Stage) this.btAplication.getScene().getWindow();
+        actualStage.close();
+    }
 
 }

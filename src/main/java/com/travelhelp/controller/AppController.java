@@ -3,26 +3,31 @@ package com.travelhelp.controller;
 import com.travelhelp.domain.Country;
 import com.travelhelp.service.country.CountryService;
 import com.travelhelp.utils.Alerts;
+import com.travelhelp.utils.R;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.Executors;
 
 public class AppController implements Initializable {
 
-    public Button btSearchCountry;
-    public TextField tfSearchCountry;
+    public Button btHome,btShowCoinView,btShowPlugView,btShowVaccineView,btShowElectricityView,btShowLanguageView,btShowEmergencyPhoneView,btShowCityView;
     public ListView lvCountries;
     public Label lbName, lbContinent, lbAcronym, lbDrinkingWater, lbPublicHealthcare, lbNumberOfHabitants, lbPrefix;
 
@@ -32,7 +37,6 @@ public class AppController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // TODO actualizar datos lista
         apiService = new CountryService();
 
         listAllCountries = FXCollections.observableArrayList();
@@ -51,18 +55,78 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void searchCountry(Event event){
-        loadDataOfCountry(tfSearchCountry.getText());
-    }
-
-    @FXML
     public void getCountryFromListView(Event event) {
         countrySelected = (Country) lvCountries.getSelectionModel().getSelectedItem();
         if (!validateSelectedCountry()) {
             return;
         }
-        tfSearchCountry.setText(countrySelected.getName());
+        loadDataOfCountry(countrySelected.getName());
     }
+
+    @FXML
+    public void goHome(Event event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        HomeController controller = new HomeController();
+        loader.setLocation(R.getUI("interfaz_home"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
+
+    @FXML
+    public void showCoinView(Event event) { }
+
+    @FXML
+    public void showPlugView(Event event) { }
+
+    @FXML
+    public void showVaccineView(Event event) { }
+
+    @FXML
+    public void showElectricityView(Event event) { }
+
+    @FXML
+    public void showLanguageView(Event event) { }
+
+    @FXML
+    public void showEmergencyPhoneView(Event event) { }
+
+    @FXML
+    public void showCityView(Event event) throws IOException {
+
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        CitiesViewController controller = new CitiesViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_ciudades"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
+
 
     private void loadDataOfCountry(String name) {
 
@@ -75,7 +139,6 @@ public class AppController implements Initializable {
 
         if (countrySearched == null) {
             Alerts.showErrorAlert("El país " + name + " no existe");
-            tfSearchCountry.setText("");
             cleanCountryInformationLabels();
             return;
         }

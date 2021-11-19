@@ -12,6 +12,7 @@ com\travelhelp\domain\Language$LanguageBuilder.class
 com\travelhelp\domain\Coin.class
 com\travelhelp\service\country\ICountryService.class
 com\travelhelp\utils\Alerts.class
+com\travelhelp\service\user\IUserService.class
 com\travelhelp\controller\AppAdminController$6.class
 com\travelhelp\controller\AppAdminController$11.class
 com\travelhelp\controller\AppAdminController$21.class
@@ -26,6 +27,7 @@ com\travelhelp\controller\AppAdminController$8.class
 com\travelhelp\domain\Vaccine$VaccineBuilder.class
 com\travelhelp\domain\EmergencyPhone.class
 com\travelhelp\service\electricity\ElectricityService.class
+com\travelhelp\domain\User.class
 com\travelhelp\utils\Constants.class
 com\travelhelp\service\plug\IPlugService.class
 com\travelhelp\controller\AppAdminController$12.class
@@ -33,6 +35,7 @@ com\travelhelp\controller\AppAdminController$2.class
 com\travelhelp\domain\Vaccine.class
 com\travelhelp\controller\LogInController.class
 com\travelhelp\service\emergencyPhone\IEmergencyPhoneService.class
+com\travelhelp\controller\SignInController$1.class
 com\travelhelp\service\city\ICityService.class
 com\travelhelp\service\language\ILanguageService.class
 com\travelhelp\controller\AppAdminController$13.class
@@ -52,8 +55,10 @@ com\travelhelp\controller\SignInController.class
 com\travelhelp\domain\Electricity$ElectricityBuilder.class
 com\travelhelp\controller\AppAdminController$17.class
 com\travelhelp\service\city\CityService.class
+com\travelhelp\controller\CitiesViewController.class
 com\travelhelp\service\country\CountryService.class
 com\travelhelp\controller\HomeController.class
+com\travelhelp\controller\LogInController$1.class
 com\travelhelp\domain\Electricity.class
 com\travelhelp\service\coin\CoinService.class
 com\travelhelp\domain\dto\CountryDTO.class
@@ -64,5 +69,6 @@ com\travelhelp\domain\Country.class
 com\travelhelp\domain\City.class
 com\travelhelp\domain\Coin$CoinBuilder.class
 com\travelhelp\service\plug\PlugService.class
+com\travelhelp\service\user\UserService.class
 com\travelhelp\controller\AppAdminController$7.class
 com\travelhelp\domain\dto\EmergencyPhoneDTO.class

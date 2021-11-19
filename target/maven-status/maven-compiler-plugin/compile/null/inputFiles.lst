@@ -1,5 +1,6 @@
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Language.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\plug\PlugService.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\user\UserService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\emergencyPhone\EmergencyPhoneService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\plug\IPlugService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\country\CountryService.java
@@ -9,6 +10,7 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\language\LanguageS
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Plug.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Alerts.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\language\ILanguageService.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\User.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\city\ICityService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\country\ICountryService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\coin\CoinService.java
@@ -21,6 +23,7 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\coin\ICoinService.
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Action.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\R.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\electricity\ElectricityService.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\user\IUserService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\Coin.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\EmergencyPhone.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\city\CityService.java
@@ -32,6 +35,7 @@ D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\HomeController.
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\vaccine\IVaccineService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\AppController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\dto\CityDTO.java
+D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\controller\CitiesViewController.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\domain\dto\CountryDTO.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\service\emergencyPhone\IEmergencyPhoneService.java
 D:\TFG\desarrollo\JavaFX\src\main\java\com\travelhelp\utils\Constants.java
