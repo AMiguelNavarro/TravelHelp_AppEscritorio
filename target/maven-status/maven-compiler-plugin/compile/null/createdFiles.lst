@@ -78,6 +78,7 @@ com\travelhelp\controller\LogInController$1.class
 com\travelhelp\service\coin\CoinService.class
 com\travelhelp\domain\EmergencyPhone$EmergencyPhoneBuilder.class
 com\travelhelp\domain\City.class
+com\travelhelp\controller\AppController$1.class
 com\travelhelp\service\plug\PlugService.class
 com\travelhelp\service\user\UserService.class
 com\travelhelp\controller\AppAdminController$7.class

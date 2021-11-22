@@ -29,6 +29,7 @@ public class CountryService {
     public Observable<List<Country>> getAllCountries() {
         return countryService.getAllCountries();
     }
+    public Call<Country> getCountryById(long idCountry) { return  countryService.getCountryById(idCountry); }
     public Call<Country> addNewCountry(CountryDTO newCountryDTO) {
         return  countryService.addNewCountry(newCountryDTO);
     }

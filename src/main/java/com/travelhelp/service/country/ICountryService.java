@@ -1,6 +1,7 @@
 package com.travelhelp.service.country;
 
 import com.travelhelp.domain.Country;
+import com.travelhelp.domain.Electricity;
 import com.travelhelp.domain.Plug;
 import com.travelhelp.domain.dto.CountryDTO;
 import okhttp3.ResponseBody;
@@ -14,6 +15,9 @@ public interface ICountryService {
 
     @GET("/country")
     Observable<List<Country>> getAllCountries();
+
+    @GET("/country/{idCountry}")
+    Call<Country> getCountryById(@Path("idCountry") long idCountry);
 
     // Se debe devolver una Call
     @POST("/country") @Headers("Content-type: application/json")

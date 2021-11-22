@@ -8,8 +8,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.web.WebView?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1121.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -20,7 +20,6 @@
             <Text layoutX="291.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bandera" wrappingWidth="51.0" />
             <Text layoutX="544.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:" wrappingWidth="51.0" />
             <Text layoutX="544.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="continente:" wrappingWidth="70.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="166.0" layoutX="291.0" layoutY="67.0" stroke="BLACK" strokeType="INSIDE" width="194.0" />
             <Text layoutX="544.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="siglas:" wrappingWidth="70.0" />
             <Text layoutX="544.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="numero de habitantes:" wrappingWidth="123.0" />
             <Text layoutX="830.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="agua potable:" wrappingWidth="85.0" />
@@ -34,7 +33,7 @@
             <Label fx:id="lbDrinkingWater" layoutX="914.0" layoutY="116.0" prefHeight="17.0" prefWidth="104.0" />
             <Label fx:id="lbPrefix" layoutX="880.0" layoutY="152.0" prefHeight="17.0" prefWidth="104.0" />
             <Separator layoutX="336.0" layoutY="279.0" prefHeight="0.0" prefWidth="672.0" />
-            <Button fx:id="btShowCoinView" layoutX="328.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCoinView" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
+            <Button fx:id="btShowCoinView" layoutX="330.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCoinView" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
             <Button fx:id="btShowElectricityView" layoutX="328.0" layoutY="390.0" mnemonicParsing="false" onAction="#showElectricityView" prefHeight="25.0" prefWidth="116.0" text="ELECTRICIDAD" />
             <Button fx:id="btShowPlugView" layoutX="549.0" layoutY="333.0" mnemonicParsing="false" onAction="#showPlugView" prefHeight="25.0" prefWidth="116.0" text="ENCHUFES" />
             <Button fx:id="btShowEmergencyPhoneView" layoutX="755.0" layoutY="390.0" mnemonicParsing="false" onAction="#showEmergencyPhoneView" text="TLFS EMERGENCIA" />
@@ -51,6 +50,7 @@
             </Button>
             <Button fx:id="btShowCityView" layoutX="936.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCityView" prefHeight="25.0" prefWidth="116.0" text="CIUDADES" />
             <Text layoutX="33.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona un país" wrappingWidth="194.0" />
+            <WebView fx:id="wbFlagImage" layoutX="288.0" layoutY="80.0" prefHeight="144.0" prefWidth="200.0" />
          </children>
       </AnchorPane>
    </children>

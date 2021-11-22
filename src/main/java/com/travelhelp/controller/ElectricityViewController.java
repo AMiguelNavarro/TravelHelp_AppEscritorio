@@ -27,12 +27,10 @@ public class ElectricityViewController implements Initializable {
     public Label lbVoltage,lbFrecuency;
 
     private long idCountry;
-    private String name;
     private ElectricityService electricityService;
 
-    public ElectricityViewController(long idCountry, String name) {
+    public ElectricityViewController(long idCountry) {
         this.idCountry = idCountry;
-        this.name = name;
     }
 
     @Override
@@ -60,7 +58,7 @@ public class ElectricityViewController implements Initializable {
 
     public void closeWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        AppController controller = new AppController();
+        AppController controller = new AppController(this.idCountry);
         loader.setLocation(R.getUI("interfaz"));
         loader.setController(controller);
         Parent root = loader.load();

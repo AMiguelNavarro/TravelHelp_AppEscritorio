@@ -1676,7 +1676,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("País eliminado correctamente");
                     reloadAllDatas();
-                    activateDeleteCountryMode(false);
+                    activateEditCountryMode(false);
                     resetTextFieldsComboBoxAndWebViews(COUNTRY);
                 });
             }
@@ -1685,7 +1685,7 @@ public class AppAdminController implements Initializable {
             public void onFailure(Call<ResponseBody> call, Throwable throwable) {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert(throwable.getMessage());
-                    activateDeleteCountryMode(false);
+                    activateEditCountryMode(false);
                     resetTextFieldsComboBoxAndWebViews(COUNTRY);
                 });
             }

@@ -4,6 +4,7 @@ import com.travelhelp.domain.Country;
 import com.travelhelp.service.country.CountryService;
 import com.travelhelp.utils.Alerts;
 import com.travelhelp.utils.R;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
@@ -15,7 +16,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import rx.Observable;
 import rx.schedulers.Schedulers;
 
@@ -29,12 +34,19 @@ public class AppController implements Initializable {
     public Button btHome,btShowCoinView,btShowPlugView,btShowVaccineView,btShowElectricityView,btShowLanguageView,btShowEmergencyPhoneView,btShowCityView;
     public ListView lvCountries;
     public Label lbName, lbContinent, lbAcronym, lbDrinkingWater, lbPublicHealthcare, lbNumberOfHabitants, lbPrefix;
+    public WebView wbFlagImage;
 
     private CountryService apiService;
     private ObservableList<Country> listAllCountries;
     private Country countrySelected;
+    private long idCountry;
 
+    public AppController() {
+    }
 
+    public AppController(long idCountry) {
+        this.idCountry = idCountry;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -43,6 +55,40 @@ public class AppController implements Initializable {
         listAllCountries = FXCollections.observableArrayList();
         lvCountries.setItems(listAllCountries);
         getAllCountries();
+
+        if (idCountry != 0) {
+            Call<Country> countryCall = apiService.getCountryById(this.idCountry);
+            countryCall.enqueue(new Callback<Country>() {
+                @Override
+                public void onResponse(Call<Country> call, Response<Country> response) {
+                    Platform.runLater(() -> {
+                        lbName.setText(response.body().getName());
+                        lbAcronym.setText(response.body().getAcronym());
+                        lbContinent.setText(response.body().getContinent());
+                        if (response.body().isPublicHealthcare()) {
+                            lbPublicHealthcare.setText("SI");
+                        } else {
+                            lbPublicHealthcare.setText("NO");
+                        }
+                        if (response.body().isDrinkingWater()) {
+                            lbDrinkingWater.setText("SI");
+                        } else {
+                            lbDrinkingWater.setText("NO");
+                        }
+                        lbNumberOfHabitants.setText(String.valueOf(response.body().getNumberOfHabitants()));
+                        lbPrefix.setText(response.body().getPrefix());
+                        wbFlagImage.getEngine().load(response.body().getFlagImage());
+                    });
+                }
+
+                @Override
+                public void onFailure(Call<Country> call, Throwable throwable) {
+                    Platform.runLater(() -> {
+                        Alerts.showErrorAlert("ERROR al cargar los datos del país con id " + idCountry);
+                    });
+                }
+            });
+        }
 
     }
 
@@ -62,7 +108,8 @@ public class AppController implements Initializable {
         if (!validateSelectedCountry()) {
             return;
         }
-        loadDataOfCountry(countrySelected.getName());
+        loadDataOfCountry();
+        idCountry = countrySelected.getId();
     }
 
     @FXML
@@ -83,13 +130,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showCoinView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        CoinViewController controller = new CoinViewController(countrySelected.getId());
+        CoinViewController controller = new CoinViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_monedas"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -112,13 +159,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showPlugView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        PlugViewController controller = new PlugViewController(countrySelected.getId());
+        PlugViewController controller = new PlugViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_enchufes"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -141,13 +188,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showVaccineView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        VaccineViewController controller = new VaccineViewController(countrySelected.getId());
+        VaccineViewController controller = new VaccineViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_vacunas"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -170,13 +217,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showElectricityView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        ElectricityViewController controller = new ElectricityViewController(countrySelected.getId(), countrySelected.getName());
+        ElectricityViewController controller = new ElectricityViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_electricidades"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -199,13 +246,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showLanguageView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        LanguageViewController controller = new LanguageViewController(countrySelected.getId());
+        LanguageViewController controller = new LanguageViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_lenguajes"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -229,13 +276,13 @@ public class AppController implements Initializable {
 
     @FXML
     public void showEmergencyPhoneView(Event event) throws IOException {
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        EmergencyPhoneViewController controller = new EmergencyPhoneViewController(countrySelected.getId());
+        EmergencyPhoneViewController controller = new EmergencyPhoneViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_telefonos"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -259,13 +306,13 @@ public class AppController implements Initializable {
     @FXML
     public void showCityView(Event event) throws IOException {
 
-        if (countrySelected == null) {
+        if (idCountry == 0) {
             Alerts.showErrorAlert("Debes seleccionar un país de la lista");
             return;
         }
 
         FXMLLoader loader = new FXMLLoader();
-        CitiesViewController controller = new CitiesViewController(countrySelected.getId());
+        CitiesViewController controller = new CitiesViewController(this.idCountry);
         loader.setLocation(R.getUI("vista_ciudades"));
         loader.setController(controller);
         Parent root = loader.load();
@@ -287,37 +334,25 @@ public class AppController implements Initializable {
     }
 
 
-    private void loadDataOfCountry(String name) {
 
-        // Se aprovecha la consulta inicial que recoge todos los paises y se filtra por el nombre introducido en el text field
-        /* INFORMACION SACADA DE AQUI https://www.baeldung.com/find-list-element-java */
-        Country countrySearched = listAllCountries.stream()
-                .filter(country -> country.getName().equals(name))
-                .findAny()
-                .orElse(null);
 
-        if (countrySearched == null) {
-            Alerts.showErrorAlert("El país " + name + " no existe");
-            cleanCountryInformationLabels();
-            return;
-        }
-
-        lbName.setText(countrySearched.getName());
-        lbAcronym.setText(countrySearched.getAcronym());
-        lbContinent.setText(countrySearched.getContinent());
-        if (countrySearched.isPublicHealthcare()) {
+    private void loadDataOfCountry() {
+        lbName.setText(countrySelected.getName());
+        lbAcronym.setText(countrySelected.getAcronym());
+        lbContinent.setText(countrySelected.getContinent());
+        if (countrySelected.isPublicHealthcare()) {
             lbPublicHealthcare.setText("SI");
         } else {
             lbPublicHealthcare.setText("NO");
         }
-        if (countrySearched.isDrinkingWater()) {
+        if (countrySelected.isDrinkingWater()) {
             lbDrinkingWater.setText("SI");
         } else {
             lbDrinkingWater.setText("NO");
         }
-        lbNumberOfHabitants.setText(String.valueOf(countrySearched.getNumberOfHabitants()));
-        lbPrefix.setText(countrySearched.getPrefix());
-
+        lbNumberOfHabitants.setText(String.valueOf(countrySelected.getNumberOfHabitants()));
+        lbPrefix.setText(countrySelected.getPrefix());
+        wbFlagImage.getEngine().load(countrySelected.getFlagImage());
     }
 
     private void cleanCountryInformationLabels() {

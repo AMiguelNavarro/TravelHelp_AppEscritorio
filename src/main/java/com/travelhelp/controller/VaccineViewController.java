@@ -75,7 +75,7 @@ public class VaccineViewController implements Initializable {
 
     public void closeWindow() throws IOException {
         FXMLLoader loader = new FXMLLoader();
-        AppController controller = new AppController();
+        AppController controller = new AppController(this.idCountry);
         loader.setLocation(R.getUI("interfaz"));
         loader.setController(controller);
         Parent root = loader.load();
