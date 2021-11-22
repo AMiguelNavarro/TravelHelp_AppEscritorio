@@ -1,5 +1,6 @@
 package com.travelhelp.service.electricity;
 
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.Electricity;
 import com.travelhelp.utils.Constants;
 import okhttp3.ResponseBody;
@@ -27,6 +28,9 @@ public class ElectricityService {
 
     public Observable<List<Electricity>> getAllElectricities() {
         return electricityService.getAllElectricities();
+    }
+    public Call<Electricity> getElectricityFromCountry(long idCountry) {
+        return electricityService.getElectricityFromCountry(idCountry);
     }
     public Call<Electricity>  addNewElectrivity(Electricity newElectricity) {
         return electricityService.addNewElectricity(newElectricity);

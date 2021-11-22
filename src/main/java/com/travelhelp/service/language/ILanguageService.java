@@ -1,6 +1,8 @@
 package com.travelhelp.service.language;
 
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.Language;
+import com.travelhelp.domain.dto.LanguageDTO;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
@@ -11,6 +13,9 @@ public interface ILanguageService {
 
     @GET("/language")
     Observable<List<Language>> getAllLanguages();
+
+    @GET("/language/idCountry/{idCountry}")
+    Observable<List<LanguageDTO>> getLanguagesFromCountry(@Path("idCountry") long idCountry);
 
     // Se debe devolver una Call
     @POST("/language") @Headers("Content-type: application/json")

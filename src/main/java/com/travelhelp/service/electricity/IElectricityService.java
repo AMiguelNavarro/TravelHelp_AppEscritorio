@@ -1,7 +1,9 @@
 package com.travelhelp.service.electricity;
 
 
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.Electricity;
+import com.travelhelp.domain.Plug;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -13,6 +15,9 @@ public interface IElectricityService {
 
     @GET("/electricity")
     Observable<List<Electricity>> getAllElectricities();
+
+    @GET("/electricity/idCountry/{idCountry}")
+    Call<Electricity> getElectricityFromCountry(@Path("idCountry") long idCountry);
 
     // Se debe devolver una Call
     @POST("/electricity") @Headers("Content-type: application/json")

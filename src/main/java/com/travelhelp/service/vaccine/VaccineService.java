@@ -1,6 +1,8 @@
 package com.travelhelp.service.vaccine;
 
 import com.travelhelp.domain.Vaccine;
+import com.travelhelp.domain.dto.LanguageDTO;
+import com.travelhelp.domain.dto.VaccineDTO;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -28,6 +30,9 @@ public class VaccineService {
 
     public Observable<List<Vaccine>>getAllVaccines() {
         return vaccineService.getAllVaccines();
+    }
+    public Observable<List<VaccineDTO>> getVaccinesFromCountry(long idCountry) {
+        return vaccineService.getVaccinesFromCountry(idCountry);
     }
     public Call<Vaccine> addNewVaccine(Vaccine newVaccine) {
         return vaccineService.addNewVaccine(newVaccine);

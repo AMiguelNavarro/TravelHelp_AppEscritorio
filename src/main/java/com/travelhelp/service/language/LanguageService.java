@@ -1,7 +1,9 @@
 package com.travelhelp.service.language;
 
 import com.google.gson.Gson;
+import com.travelhelp.domain.City;
 import com.travelhelp.domain.Language;
+import com.travelhelp.domain.dto.LanguageDTO;
 import com.travelhelp.utils.Constants;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -33,6 +35,9 @@ public class LanguageService {
     }
     public Call<Language> addNewLanguage(Language newLanguage) {
         return languageService.addNewLanguage(newLanguage);
+    }
+    public Observable<List<LanguageDTO>> getLanguagesFromCountry(long idCountry) {
+        return languageService.getLanguagesFromCountry(idCountry);
     }
     public Call<ResponseBody> deleteLanguage(long id){
         return languageService.deleteLanguage(id);

@@ -34,6 +34,8 @@ public class AppController implements Initializable {
     private ObservableList<Country> listAllCountries;
     private Country countrySelected;
 
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         apiService = new CountryService();
@@ -41,6 +43,7 @@ public class AppController implements Initializable {
         listAllCountries = FXCollections.observableArrayList();
         lvCountries.setItems(listAllCountries);
         getAllCountries();
+
     }
 
     private void getAllCountries() {
@@ -137,13 +140,92 @@ public class AppController implements Initializable {
     }
 
     @FXML
-    public void showVaccineView(Event event) { }
+    public void showVaccineView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        VaccineViewController controller = new VaccineViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_vacunas"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
-    public void showElectricityView(Event event) { }
+    public void showElectricityView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        ElectricityViewController controller = new ElectricityViewController(countrySelected.getId(), countrySelected.getName());
+        loader.setLocation(R.getUI("vista_electricidades"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+    }
 
     @FXML
-    public void showLanguageView(Event event) { }
+    public void showLanguageView(Event event) throws IOException {
+        if (countrySelected == null) {
+            Alerts.showErrorAlert("Debes seleccionar un país de la lista");
+            return;
+        }
+
+        FXMLLoader loader = new FXMLLoader();
+        LanguageViewController controller = new LanguageViewController(countrySelected.getId());
+        loader.setLocation(R.getUI("vista_lenguajes"));
+        loader.setController(controller);
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+
+        stage.setOnCloseRequest(e -> {
+            try {
+                controller.closeWindow();
+            } catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+        });
+
+        Stage actualStage = (Stage) this.btHome.getScene().getWindow();
+        actualStage.close();
+
+    }
 
     @FXML
     public void showEmergencyPhoneView(Event event) throws IOException {
