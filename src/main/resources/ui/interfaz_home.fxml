@@ -17,9 +17,9 @@
                   <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/logoblanco.png" />
                </image>
             </ImageView>
-            <Button fx:id="btLogInHome" layoutX="421.0" layoutY="74.0" mnemonicParsing="false" onAction="#navigateLogIn" prefHeight="38.0" prefWidth="102.0" text="Inicia Sesión">
+            <Button fx:id="btLogInHome" layoutX="401.0" layoutY="74.0" mnemonicParsing="false" onAction="#navigateLogIn" prefHeight="38.0" prefWidth="124.0" text="Inicia Sesión">
                <font>
-                  <Font size="10.0" />
+                  <Font size="13.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
@@ -39,9 +39,9 @@
                   <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/letras.png" />
                </image>
             </ImageView>
-            <Button fx:id="btSignInHome" layoutX="547.0" layoutY="74.0" mnemonicParsing="false" onAction="#navigateSignIn" prefHeight="38.0" prefWidth="102.0" text="Regístrate">
+            <Button fx:id="btSignInHome" layoutX="545.0" layoutY="74.0" mnemonicParsing="false" onAction="#navigateSignIn" prefHeight="38.0" prefWidth="124.0" text="Regístrate">
                <font>
-                  <Font size="10.0" />
+                  <Font size="13.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="30.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
@@ -51,7 +51,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Text fill="WHITE" layoutX="415.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Quieres colaborar?" textAlignment="CENTER" wrappingWidth="231.599853515625">
+            <Text fill="WHITE" layoutX="409.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Quieres colaborar?" textAlignment="CENTER" wrappingWidth="231.599853515625">
                <font>
                   <Font size="14.0" />
                </font>

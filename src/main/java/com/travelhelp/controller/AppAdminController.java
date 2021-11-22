@@ -28,6 +28,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import okhttp3.ResponseBody;
@@ -48,6 +49,7 @@ public class AppAdminController implements Initializable {
 
     public TabPane tpGeneral;
     public Tab tabCountries,tabCities,tabPlugs,tabElectricity,tabCoins,tabLanguages,tabVaccines,tabEmergencyPhones;
+    public Label lbUrl,lbname,lbPrefix,lbContinent,lbSiglas,lbNumberHabitants,lbCoin,lbElectricity;
     public TextField
             tfFrecuency, tfVoltage,
             tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin,
@@ -1525,9 +1527,10 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Country> call, Response<Country> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nuevo país creado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nuevo país creado correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateEditCountryMode(false);
+                        wbImageCountry.setVisible(false);
                         resetTextFieldsComboBoxAndWebViews(COUNTRY);
                     });
                 }
@@ -1586,9 +1589,10 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Country> call, Response<Country> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nuevo país modificado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nuevo país modificado correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateEditCountryMode(false);
+                        wbImageCountry.setVisible(false);
                         resetTextFieldsComboBoxAndWebViews(COUNTRY);
                     });
                 }
@@ -1677,6 +1681,7 @@ public class AppAdminController implements Initializable {
                     Alerts.showInfoAlert("País eliminado correctamente");
                     reloadAllDatas();
                     activateEditCountryMode(false);
+                    wbImageCountry.setVisible(false);
                     resetTextFieldsComboBoxAndWebViews(COUNTRY);
                 });
             }
@@ -1695,6 +1700,7 @@ public class AppAdminController implements Initializable {
     @FXML
     public void cancelActionCountry(Event event) {
         activateEditCountryMode(false);
+        wbImageCountry.setVisible(false);
         resetTextFieldsComboBoxAndWebViews(COUNTRY);
     }
 
@@ -1715,36 +1721,55 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewCountryMode(boolean mode) {
-        btModifyCountry.setDisable(mode);
-        btDeleteCountry.setDisable(mode);
-        btNewCountry.setDisable(mode);
+        btModifyCountry.setVisible(!mode);
+        btDeleteCountry.setVisible(!mode);
+        btNewCountry.setVisible(!mode);
 
-        btCancelCountry.setDisable(!mode);
-        btSaveNewCountry.setDisable(!mode);
+        btCancelCountry.setVisible(mode);
+        btSaveNewCountry.setVisible(mode);
 
-        tfUrlImageCountry.setDisable(!mode);
-        tfAcronymCountry.setDisable(!mode);
-        tfNameCountry.setDisable(!mode);
-        tfNumberOfHabitantsCountry.setDisable(!mode);
-        tfPrefixCountry.setDisable(!mode);
+        tfUrlImageCountry.setVisible(mode);
+        tfAcronymCountry.setVisible(mode);
+        tfNameCountry.setVisible(mode);
+        tfNumberOfHabitantsCountry.setVisible(mode);
+        tfPrefixCountry.setVisible(mode);
 
-        cbCoinCountry.setDisable(!mode);
-        cbElectricityCountry.setDisable(!mode);
-        cbContinentCountry.setDisable(!mode);
+        cbCoinCountry.setVisible(mode);
+        cbElectricityCountry.setVisible(mode);
+        cbContinentCountry.setVisible(mode);
 
         wbImageCountry.setVisible(!mode);
 
-        checkBoxDrinkingWater.setDisable(!mode);
-        checkBoxPublicHealthcare.setDisable(!mode);
+        checkBoxDrinkingWater.setVisible(mode);
+        checkBoxPublicHealthcare.setVisible(mode);
+
+        lbUrl.setVisible(mode);
+        lbCoin.setVisible(mode);
+        lbContinent.setVisible(mode);
+        lbname.setVisible(mode);
+        lbElectricity.setVisible(mode);
+        lbNumberHabitants.setVisible(mode);
+        lbPrefix.setVisible(mode);
+        lbSiglas.setVisible(mode);
     }
 
     private void activateEditCountryMode(boolean mode) {
-        btModifyCountry.setDisable(mode);
-        btDeleteCountry.setDisable(mode);
-        btNewCountry.setDisable(mode);
 
-        btCancelCountry.setDisable(!mode);
-        btSaveNewCountry.setDisable(!mode);
+        btDeleteCountry.setLayoutX(561);
+        btDeleteCountry.setLayoutY(95);
+
+        btModifyCountry.setVisible(!mode);
+        btDeleteCountry.setVisible(!mode);
+        btNewCountry.setVisible(!mode);
+
+        btCancelCountry.setVisible(mode);
+        btSaveNewCountry.setVisible(mode);
+
+        tfUrlImageCountry.setVisible(mode);
+        tfAcronymCountry.setVisible(mode);
+        tfNameCountry.setVisible(mode);
+        tfNumberOfHabitantsCountry.setVisible(mode);
+        tfPrefixCountry.setVisible(mode);
 
         tfUrlImageCountry.setDisable(!mode);
         tfAcronymCountry.setDisable(!mode);
@@ -1752,42 +1777,85 @@ public class AppAdminController implements Initializable {
         tfNumberOfHabitantsCountry.setDisable(!mode);
         tfPrefixCountry.setDisable(!mode);
 
+        cbCoinCountry.setVisible(mode);
+        cbElectricityCountry.setVisible(mode);
+        cbContinentCountry.setVisible(mode);
+
         cbCoinCountry.setDisable(!mode);
         cbElectricityCountry.setDisable(!mode);
         cbContinentCountry.setDisable(!mode);
 
+
         wbImageCountry.setVisible(mode);
+        wbImageCountry.getEngine().load("");
+
+        checkBoxDrinkingWater.setVisible(mode);
+        checkBoxPublicHealthcare.setVisible(mode);
 
         checkBoxDrinkingWater.setDisable(!mode);
         checkBoxPublicHealthcare.setDisable(!mode);
 
         lvCountries.setDisable(!mode);
+
+        lbUrl.setVisible(mode);
+        lbCoin.setVisible(mode);
+        lbContinent.setVisible(mode);
+        lbname.setVisible(mode);
+        lbElectricity.setVisible(mode);
+        lbNumberHabitants.setVisible(mode);
+        lbPrefix.setVisible(mode);
+        lbSiglas.setVisible(mode);
     }
 
     private void activateDeleteCountryMode(boolean mode) {
-        btModifyCountry.setDisable(mode);
-        btNewCountry.setDisable(mode);
-        btSaveNewCountry.setDisable(mode);
+        btDeleteCountry.setLayoutX(835);
+        btDeleteCountry.setLayoutY(641);
 
-        btCancelCountry.setDisable(!mode);
-        btDeleteCountry.setDisable(!mode);
+        btModifyCountry.setVisible(!mode);
+        btNewCountry.setVisible(!mode);
+        btSaveNewCountry.setVisible(!mode);
+
+        btCancelCountry.setVisible(mode);
+        btDeleteCountry.setVisible(mode);
+
+        tfUrlImageCountry.setVisible(mode);
+        tfAcronymCountry.setVisible(mode);
+        tfNameCountry.setVisible(mode);
+        tfNumberOfHabitantsCountry.setVisible(mode);
+        tfPrefixCountry.setVisible(mode);
+
+        cbCoinCountry.setVisible(mode);
+        cbElectricityCountry.setVisible(mode);
+        cbContinentCountry.setVisible(mode);
+
+        wbImageCountry.setVisible(mode);
+        wbImageCountry.getEngine().load("");
+
+        checkBoxDrinkingWater.setVisible(mode);
+        checkBoxPublicHealthcare.setVisible(mode);
+
+        lvCountries.setDisable(!mode);
+
+        lbUrl.setVisible(mode);
+        lbCoin.setVisible(mode);
+        lbContinent.setVisible(mode);
+        lbname.setVisible(mode);
+        lbElectricity.setVisible(mode);
+        lbNumberHabitants.setVisible(mode);
+        lbPrefix.setVisible(mode);
+        lbSiglas.setVisible(mode);
+
 
         tfUrlImageCountry.setDisable(mode);
         tfAcronymCountry.setDisable(mode);
         tfNameCountry.setDisable(mode);
         tfNumberOfHabitantsCountry.setDisable(mode);
         tfPrefixCountry.setDisable(mode);
-
         cbCoinCountry.setDisable(mode);
         cbElectricityCountry.setDisable(mode);
         cbContinentCountry.setDisable(mode);
-
-        wbImageCountry.setVisible(mode);
-
         checkBoxDrinkingWater.setDisable(mode);
         checkBoxPublicHealthcare.setDisable(mode);
-
-        lvCountries.setDisable(!mode);
     }
 
 
@@ -2036,6 +2104,7 @@ public class AppAdminController implements Initializable {
      * @param mode
      */
     private void initialViewMode(boolean mode) {
+
         btSaveNewElectricity.setDisable(mode);
         btCancelElectricity.setDisable(mode);
         btSaveNewCoin.setDisable(mode);
@@ -2050,8 +2119,8 @@ public class AppAdminController implements Initializable {
         btCancelPlug.setDisable(mode);
         btSaveNewCity.setDisable(mode);
         btCancelCity.setDisable(mode);
-        btSaveNewCountry.setDisable(mode);
-        btCancelCountry.setDisable(mode);
+        btSaveNewCountry.setVisible(!mode);
+        btCancelCountry.setVisible(!mode);
 
         lvElectricity.setDisable(mode);
         lvCoins.setDisable(mode);
@@ -2077,24 +2146,34 @@ public class AppAdminController implements Initializable {
         tfNameCity.setDisable(mode);
         tfExtensionCity.setDisable(mode);
         tfNumberOfHabitantsCity.setDisable(mode);
-        tfUrlImageCountry.setDisable(mode);
-        tfNameCountry.setDisable(mode);
-        tfAcronymCountry.setDisable(mode);
-        tfNumberOfHabitantsCountry.setDisable(mode);
-        tfPrefixCountry.setDisable(mode);
+
+        tfUrlImageCountry.setVisible(!mode);
+        tfNameCountry.setVisible(!mode);
+        tfAcronymCountry.setVisible(!mode);
+        tfNumberOfHabitantsCountry.setVisible(!mode);
+        tfPrefixCountry.setVisible(!mode);
 
         cbCountry.setDisable(mode);
         cbPlugType.setDisable(mode);
         cbCountriesCity.setDisable(mode);
-        cbContinentCountry.setDisable(mode);
-        cbCoinCountry.setDisable(mode);
-        cbElectricityCountry.setDisable(mode);
+        cbContinentCountry.setVisible(!mode);
+        cbCoinCountry.setVisible(!mode);
+        cbElectricityCountry.setVisible(!mode);
 
-        checkBoxDrinkingWater.setDisable(mode);
-        checkBoxPublicHealthcare.setDisable(mode);
+        checkBoxDrinkingWater.setVisible(!mode);
+        checkBoxPublicHealthcare.setVisible(!mode);
 
         wbTypePlugImage.setVisible(!mode);
         wbImageCountry.setVisible(!mode);
+
+        lbUrl.setVisible(!mode);
+        lbCoin.setVisible(!mode);
+        lbContinent.setVisible(!mode);
+        lbname.setVisible(!mode);
+        lbElectricity.setVisible(!mode);
+        lbNumberHabitants.setVisible(!mode);
+        lbPrefix.setVisible(!mode);
+        lbSiglas.setVisible(!mode);
     }
 
     /**
