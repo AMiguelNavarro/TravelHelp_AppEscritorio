@@ -26,10 +26,6 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
                               <ListView fx:id="lvCountries" layoutX="49.0" layoutY="97.0" onMouseClicked="#getCountryFromListView" prefHeight="486.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE PAISES">
-                                 <font>
-                                    <Font name="System Bold" size="15.0" />
-                                 </font></Label>
                               <TextField fx:id="tfNameCountry" layoutX="390.0" layoutY="398.0" promptText="España" />
                               <TextField fx:id="tfUrlImageCountry" layoutX="390.0" layoutY="345.0" prefHeight="25.0" prefWidth="381.0" />
                               <TextField fx:id="tfAcronymCountry" layoutX="390.0" layoutY="500.0" promptText="ESP" />
@@ -128,6 +124,11 @@
                                     </ImageView>
                                  </graphic></Button>
                               <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE PAÍSES">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Label>
                            </children>
                         </AnchorPane>
                   </content>
@@ -136,21 +137,68 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvCities" layoutX="49.0" layoutY="86.0" onMouseClicked="#getCityFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE CIUDADES" />
-                              <TextField fx:id="tfNameCity" layoutX="430.0" layoutY="137.0" promptText="Zaragoza" />
-                              <TextField fx:id="tfExtensionCity" layoutX="430.0" layoutY="178.0" promptText="973.8" />
-                              <TextField fx:id="tfNumberOfHabitantsCity" layoutX="430.0" layoutY="218.0" promptText="670000" />
-                              <Label layoutX="597.0" layoutY="141.0" text="Nombre" />
-                              <Label layoutX="597.0" layoutY="182.0" text="Extensión" />
-                              <Label layoutX="597.0" layoutY="222.0" text="Número de habitantes" />
-                              <Label layoutX="600.0" layoutY="264.0" text="País al que pertenece" />
-                              <ComboBox fx:id="cbCountriesCity" layoutX="430.0" layoutY="260.0" prefHeight="25.0" prefWidth="149.0" />
-                              <Button fx:id="btModifyCity" layoutX="686.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyCity" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btCancelCity" layoutX="49.0" layoutY="490.0" mnemonicParsing="false" onAction="#cancelActionCity" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btSaveNewCity" layoutX="517.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewCity" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewCity" layoutX="405.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewCity" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteCity" layoutX="799.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteCity" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvCities" layoutX="49.0" layoutY="97.0" onMouseClicked="#getCityFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE CIUDADES">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfNameCity" layoutX="470.0" layoutY="267.0" promptText="Zaragoza" />
+                              <TextField fx:id="tfExtensionCity" layoutX="470.0" layoutY="308.0" promptText="973.8" />
+                              <TextField fx:id="tfNumberOfHabitantsCity" layoutX="470.0" layoutY="348.0" promptText="670000" />
+                              <Label fx:id="lbNameC" layoutX="637.0" layoutY="271.0" text="Nombre">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbExtC" layoutX="637.0" layoutY="312.0" text="Extensión">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbNumberHabC" layoutX="637.0" layoutY="352.0" text="Número de habitantes">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbComboCity" layoutX="640.0" layoutY="394.0" text="País al que pertenece">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <ComboBox fx:id="cbCountriesCity" layoutX="470.0" layoutY="390.0" prefHeight="25.0" prefWidth="149.0" />
+                              <Button fx:id="btModifyCity" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyCity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btCancelCity" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionCity" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <Button fx:id="btSaveNewCity" layoutX="517.0" layoutY="474.0" mnemonicParsing="false" onAction="#addNewCity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewCity" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewCity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteCity" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteCity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -159,18 +207,59 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvPlug" layoutX="49.0" layoutY="86.0" onMouseClicked="#getPlugFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE ENCHUFES" />
-                              <TextField fx:id="tfImageUrlPlug" layoutX="430.0" layoutY="137.0" prefHeight="25.0" prefWidth="364.0" />
-                              <Label layoutX="814.0" layoutY="141.0" text="Url imagen" />
-                              <Label layoutX="505.0" layoutY="182.0" text="Tipo" />
-                              <WebView fx:id="wbTypePlugImage" layoutX="430.0" layoutY="243.0" prefHeight="128.0" prefWidth="141.0" />
-                              <ComboBox fx:id="cbPlugType" layoutX="430.0" layoutY="178.0" prefHeight="25.0" prefWidth="68.0" />
-                              <Button fx:id="btModifyPlug" layoutX="733.0" layoutY="434.0" mnemonicParsing="false" onAction="#activateModifyPlug" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btCancelPlug" layoutX="49.0" layoutY="488.0" mnemonicParsing="false" onAction="#cancelActionPlug" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btSaveNewPlug" layoutX="549.0" layoutY="434.0" mnemonicParsing="false" onAction="#addNewPlug" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewPlug" layoutX="435.0" layoutY="434.0" mnemonicParsing="false" onAction="#activateNewPlug" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeletePlug" layoutX="846.0" layoutY="434.0" mnemonicParsing="false" onAction="#deletePlug" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvPlug" layoutX="49.0" layoutY="97.0" onMouseClicked="#getPlugFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE ENCHUFES">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfImageUrlPlug" layoutX="450.0" layoutY="247.0" prefHeight="25.0" prefWidth="364.0" />
+                              <Label fx:id="lbUrlP" layoutX="834.0" layoutY="251.0" text="Url imagen">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbTypeP" layoutX="525.0" layoutY="292.0" text="Tipo">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <WebView fx:id="wbTypePlugImage" layoutX="450.0" layoutY="353.0" prefHeight="128.0" prefWidth="141.0" />
+                              <ComboBox fx:id="cbPlugType" layoutX="450.0" layoutY="288.0" prefHeight="25.0" prefWidth="68.0" />
+                              <Button fx:id="btModifyPlug" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyPlug" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btCancelPlug" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionPlug" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <Button fx:id="btSaveNewPlug" layoutX="703.0" layoutY="373.0" mnemonicParsing="false" onAction="#addNewPlug" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewPlug" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewPlug" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeletePlug" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deletePlug" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -179,17 +268,58 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvElectricity" layoutX="49.0" layoutY="86.0" onMouseClicked="#getElectricityFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Button fx:id="btModifyElectricity" layoutX="737.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyElectricity" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE TIPOS DE ELECTRICIDAD" />
-                              <Button fx:id="btCancelElectricity" layoutX="49.0" layoutY="487.0" mnemonicParsing="false" onAction="#cancelActionElectricity" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <TextField fx:id="tfVoltage" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="220" />
-                              <Label layoutX="523.0" layoutY="132.0" text="Voltaje" />
-                              <Label layoutX="680.0" layoutY="132.0" text="Frecuencia" />
-                              <Button fx:id="btSaveNewElectricity" layoutX="536.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewElectricity" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <TextField fx:id="tfFrecuency" layoutX="588.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="50" />
-                              <Button fx:id="btNewElectricity" layoutX="423.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewElectricity" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteElectricity" layoutX="847.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteElectricity" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvElectricity" layoutX="49.0" layoutY="97.0" onMouseClicked="#getElectricityFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Button fx:id="btModifyElectricity" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyElectricity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE TIPOS DE ELECTRICIDAD">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <Button fx:id="btCancelElectricity" layoutX="48.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionElectricity" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <TextField fx:id="tfVoltage" layoutX="420.0" layoutY="288.0" prefHeight="25.0" prefWidth="74.0" promptText="220" />
+                              <Label fx:id="lbVoltageElec" layoutX="513.0" layoutY="292.0" text="Voltaje">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbFrecuencyElec" layoutX="670.0" layoutY="292.0" text="Frecuencia">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Button fx:id="btSaveNewElectricity" layoutX="779.0" layoutY="281.0" mnemonicParsing="false" onAction="#addNewElectricity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <TextField fx:id="tfFrecuency" layoutX="578.0" layoutY="288.0" prefHeight="25.0" prefWidth="74.0" promptText="50" />
+                              <Button fx:id="btNewElectricity" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewElectricity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteElectricity" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteElectricity" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -198,19 +328,63 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvCoins" layoutX="49.0" layoutY="86.0" onMouseClicked="#getCoinFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE MONEDAS" />
-                              <TextField fx:id="tfCodeISOCoin" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="74.0" promptText="EUR" />
-                              <Label layoutX="523.0" layoutY="132.0" text="Código ISO" />
-                              <Label layoutX="525.0" layoutY="178.0" text="Símbolo (Copia y pega el carácter)" />
-                              <TextField fx:id="tfSymbolCoin" layoutX="430.0" layoutY="174.0" prefHeight="25.0" prefWidth="74.0" promptText="€" />
-                              <TextField fx:id="tfMonetaryUnitCoin" layoutX="430.0" layoutY="222.0" prefHeight="25.0" prefWidth="170.0" promptText="Euro" />
-                              <Label layoutX="624.0" layoutY="226.0" text="Nombre de la moneda" />
-                              <Button fx:id="btModifyCoin" layoutX="729.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyCoin" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btCancelCoin" layoutX="49.0" layoutY="484.0" mnemonicParsing="false" onAction="#cancelActionCoin" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btSaveNewCoin" layoutX="525.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewCoin" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewCoin" layoutX="415.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewCoin" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteCoin" layoutX="841.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteCoin" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvCoins" layoutX="49.0" layoutY="97.0" onMouseClicked="#getCoinFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE MONEDAS">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfCodeISOCoin" layoutX="460.0" layoutY="208.0" prefHeight="25.0" prefWidth="74.0" promptText="EUR" />
+                              <Label fx:id="lbIsoCodeCoin" layoutX="553.0" layoutY="212.0" text="Código ISO">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbSymbolCoin" layoutX="555.0" layoutY="258.0" text="Símbolo (Copia y pega el carácter)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfSymbolCoin" layoutX="460.0" layoutY="254.0" prefHeight="25.0" prefWidth="74.0" promptText="€" />
+                              <TextField fx:id="tfMonetaryUnitCoin" layoutX="460.0" layoutY="302.0" prefHeight="25.0" prefWidth="170.0" promptText="Euro" />
+                              <Label fx:id="lbNameCoin" layoutX="654.0" layoutY="306.0" text="Nombre de la moneda">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Button fx:id="btModifyCoin" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyCoin" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btCancelCoin" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionCoin" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <Button fx:id="btSaveNewCoin" layoutX="525.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewCoin" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewCoin" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewCoin" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteCoin" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteCoin" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -219,15 +393,50 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvLanguages" layoutX="49.0" layoutY="86.0" onMouseClicked="#getLanguageFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE IDIOMAS" />
-                              <TextField fx:id="tfLanguageName" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="199.0" promptText="Castellano" />
-                              <Label layoutX="646.0" layoutY="132.0" text="Nombre" />
-                              <Button fx:id="btModifyLanguage" layoutX="730.0" layoutY="431.0" mnemonicParsing="false" onAction="#activateModifyLanguage" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btCancelLanguage" layoutX="49.0" layoutY="497.0" mnemonicParsing="false" onAction="#cancelActionLanguage" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btSaveNewLanguage" layoutX="516.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewLanguage" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewLanguage" layoutX="398.0" layoutY="431.0" mnemonicParsing="false" onAction="#activateNewLanguage" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteLanguage" layoutX="851.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteLanguage" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvLanguages" layoutX="49.0" layoutY="97.0" onMouseClicked="#getLanguageFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE IDIOMAS">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfLanguageName" layoutX="400.0" layoutY="318.0" prefHeight="25.0" prefWidth="199.0" promptText="Castellano" />
+                              <Label fx:id="lbNameLang" layoutX="616.0" layoutY="322.0" text="Nombre">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Button fx:id="btModifyLanguage" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyLanguage" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btCancelLanguage" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionLanguage" prefHeight="57.0" prefWidth="109.0" text="CANCELAR" />
+                              <Button fx:id="btSaveNewLanguage" layoutX="732.0" layoutY="308.0" mnemonicParsing="false" onAction="#addNewLanguage" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewLanguage" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewLanguage" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteLanguage" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteLanguage" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -236,19 +445,63 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvVaccines" layoutX="49.0" layoutY="86.0" onMouseClicked="#getVaccineFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE VACUNAS" />
-                              <TextField fx:id="tfNameVaccine" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="249.0" promptText="Astrazeneca Covid19" />
-                              <Label layoutX="695.0" layoutY="132.0" text="Nombre de la vacuna" />
-                              <TextField fx:id="tfEffectivityVaccine" layoutX="430.0" layoutY="165.0" prefHeight="25.0" prefWidth="69.0" promptText="90%" />
-                              <Label layoutX="515.0" layoutY="169.0" text="Efectividad (%)" />
-                              <TextField fx:id="tfDurabilityVaccine" layoutX="610.0" layoutY="165.0" prefHeight="25.0" prefWidth="69.0" promptText="90" />
-                              <Label layoutX="699.0" layoutY="169.0" text="Durabilidad (en días)" />
-                              <Button fx:id="btCancelVaccine" layoutX="49.0" layoutY="487.0" mnemonicParsing="false" onAction="#cancelActionVaccine" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btModifyVaccine" layoutX="719.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyVaccine" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btSaveNewVaccine" layoutX="511.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewVaccine" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewVaccine" layoutX="398.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewVaccine" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteVaccine" layoutX="834.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteVaccine" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvVaccines" layoutX="49.0" layoutY="97.0" onMouseClicked="#getVaccineFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE VACUNAS">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfNameVaccine" layoutX="430.0" layoutY="258.0" prefHeight="25.0" prefWidth="286.0" promptText="Astrazeneca Covid19" />
+                              <Label fx:id="lbNameVac" layoutX="735.0" layoutY="262.0" text="Nombre de la vacuna">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfEffectivityVaccine" layoutX="430.0" layoutY="295.0" prefHeight="25.0" prefWidth="69.0" promptText="90%" />
+                              <Label fx:id="lbEffectivityVac" layoutX="511.0" layoutY="299.0" text="Efectividad (%)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfDurabilityVaccine" layoutX="647.0" layoutY="295.0" prefHeight="25.0" prefWidth="69.0" promptText="90" />
+                              <Label fx:id="lbDurabilityVac" layoutX="737.0" layoutY="299.0" text="Durabilidad (en días)">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Button fx:id="btCancelVaccine" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionVaccine" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Button>
+                              <Button fx:id="btModifyVaccine" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyVaccine" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btSaveNewVaccine" layoutX="430.0" layoutY="362.0" mnemonicParsing="false" onAction="#addNewVaccine" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewVaccine" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewVaccine" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteVaccine" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteVaccine" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>
@@ -257,19 +510,63 @@
                      <content>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: F5F5F5;">
                            <children>
-                              <ListView fx:id="lvEmergencyPhones" layoutX="49.0" layoutY="86.0" onMouseClicked="#getEmergencyPhoneFromListView" prefHeight="382.0" prefWidth="271.0" />
-                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE TELÉFONOS DE EMERGENCIA" />
-                              <TextField fx:id="tfPhoneNumberEmergencyPhone" layoutX="430.0" layoutY="128.0" prefHeight="25.0" prefWidth="199.0" promptText="112" />
-                              <Label layoutX="646.0" layoutY="132.0" text="Número de teléfono" />
-                              <Label layoutX="646.0" layoutY="178.0" text="Servicio al que pertenece" />
-                              <TextField fx:id="tfServiceEmergencyPhone" layoutX="430.0" layoutY="174.0" prefHeight="25.0" prefWidth="199.0" promptText="Emergencias generales" />
-                              <ComboBox fx:id="cbCountry" layoutX="430.0" layoutY="228.0" prefHeight="25.0" prefWidth="199.0" />
-                              <Label layoutX="646.0" layoutY="232.0" text="País al que pertenece" />
-                              <Button fx:id="btCancelEmergencyPhone" layoutX="49.0" layoutY="490.0" mnemonicParsing="false" onAction="#cancelActionEmergencyPhone" prefHeight="40.0" prefWidth="89.0" text="CANCELAR" />
-                              <Button fx:id="btModifyEmergencyPhone" layoutX="667.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateModifyEmergencyPhone" prefHeight="40.0" prefWidth="89.0" text="MODIFICAR" />
-                              <Button fx:id="btSaveNewEmergencyPhone" layoutX="485.0" layoutY="428.0" mnemonicParsing="false" onAction="#addNewEmergencyPhone" prefHeight="40.0" prefWidth="89.0" text="GUARDAR" />
-                              <Button fx:id="btNewEmergencyPhone" layoutX="371.0" layoutY="428.0" mnemonicParsing="false" onAction="#activateNewEmergencyPhone" prefHeight="40.0" prefWidth="89.0" text="NUEVO" />
-                              <Button fx:id="btDeleteEmergencyPhone" layoutX="779.0" layoutY="428.0" mnemonicParsing="false" onAction="#deleteEmergencyPhone" prefHeight="40.0" prefWidth="89.0" text="BORRAR" />
+                              <ListView fx:id="lvEmergencyPhones" layoutX="49.0" layoutY="97.0" onMouseClicked="#getEmergencyPhoneFromListView" prefHeight="486.0" prefWidth="271.0" />
+                              <Label layoutX="49.0" layoutY="50.0" text="LISTADO DE TELÉFONOS DE EMERGENCIA">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfPhoneNumberEmergencyPhone" layoutX="430.0" layoutY="268.0" prefHeight="25.0" prefWidth="199.0" promptText="112" />
+                              <Label fx:id="lbPhoneTel" layoutX="646.0" layoutY="272.0" text="Número de teléfono">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Label fx:id="lbServiceTel" layoutX="646.0" layoutY="318.0" text="Servicio al que pertenece">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <TextField fx:id="tfServiceEmergencyPhone" layoutX="430.0" layoutY="314.0" prefHeight="25.0" prefWidth="199.0" promptText="Emergencias generales" />
+                              <ComboBox fx:id="cbCountry" layoutX="430.0" layoutY="368.0" prefHeight="25.0" prefWidth="199.0" />
+                              <Label fx:id="lbComboBoxCountryTel" layoutX="646.0" layoutY="372.0" text="País al que pertenece">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font></Label>
+                              <Button fx:id="btCancelEmergencyPhone" layoutX="49.0" layoutY="612.0" mnemonicParsing="false" onAction="#cancelActionEmergencyPhone" prefHeight="57.0" prefWidth="109.0" text="CANCELAR">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Button>
+                              <Button fx:id="btModifyEmergencyPhone" layoutX="475.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateModifyEmergencyPhone" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/edit.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btSaveNewEmergencyPhone" layoutX="430.0" layoutY="450.0" mnemonicParsing="false" onAction="#addNewEmergencyPhone" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/save-file.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btNewEmergencyPhone" layoutX="390.0" layoutY="95.0" mnemonicParsing="false" onAction="#activateNewEmergencyPhone" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plus.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="btDeleteEmergencyPhone" layoutX="561.0" layoutY="95.0" mnemonicParsing="false" onAction="#deleteEmergencyPhone" prefHeight="49.0" prefWidth="59.0">
+                                 <graphic>
+                                    <ImageView fitHeight="39.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/delete.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="389.0" layoutY="63.0" prefHeight="17.0" prefWidth="372.0" text="* Selecciona una de las operaciones (NUEVO, MODIFICAR o BORRAR)" />
                            </children>
                         </AnchorPane>
                      </content>

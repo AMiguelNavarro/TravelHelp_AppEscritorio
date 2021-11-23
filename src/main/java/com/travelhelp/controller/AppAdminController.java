@@ -49,7 +49,14 @@ public class AppAdminController implements Initializable {
 
     public TabPane tpGeneral;
     public Tab tabCountries,tabCities,tabPlugs,tabElectricity,tabCoins,tabLanguages,tabVaccines,tabEmergencyPhones;
-    public Label lbUrl,lbname,lbPrefix,lbContinent,lbSiglas,lbNumberHabitants,lbCoin,lbElectricity;
+    public Label lbUrl,lbname,lbPrefix,lbContinent,lbSiglas,lbNumberHabitants,lbCoin,lbElectricity,
+                 lbNameC,lbExtC,lbNumberHabC,lbComboCity,
+                 lbUrlP,lbTypeP,
+                 lbVoltageElec,lbFrecuencyElec,
+                 lbIsoCodeCoin,lbSymbolCoin,lbNameCoin,
+                 lbNameLang,
+                 lbNameVac,lbEffectivityVac,lbDurabilityVac,
+                 lbPhoneTel,lbServiceTel,lbComboBoxCountryTel;
     public TextField
             tfFrecuency, tfVoltage,
             tfCodeISOCoin,tfSymbolCoin,tfMonetaryUnitCoin,
@@ -215,7 +222,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Plug> call, Response<Plug> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Enchufe añadido correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Enchufe añadido correctamente: ");
                         reloadAllDatas();
                         activateNewPlugMode(false);
                         resetTextFieldsComboBoxAndWebViews(PLUG);
@@ -254,7 +261,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Plug> call, Response<Plug> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Enchufe modificado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Enchufe modificado correctamente: ");
                         reloadAllDatas();
                         activateEditPlugMode(false);
                         resetTextFieldsComboBoxAndWebViews(PLUG);
@@ -362,50 +369,75 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewPlugMode(boolean mode) {
-        btModifyPlug.setDisable(mode);
-        btDeletePlug.setDisable(mode);
-        btNewPlug.setDisable(mode);
+        btModifyPlug.setVisible(!mode);
+        btDeletePlug.setVisible(!mode);
+        btNewPlug.setVisible(!mode);
 
-        btCancelPlug.setDisable(!mode);
-        btSaveNewPlug.setDisable(!mode);
+        btCancelPlug.setVisible(mode);
+        btSaveNewPlug.setVisible(mode);
 
         tfImageUrlPlug.setDisable(!mode);
         cbPlugType.setDisable(!mode);
+        tfImageUrlPlug.setVisible(mode);
+        cbPlugType.setVisible(mode);
 
-        wbTypePlugImage.setVisible(mode);
+        wbTypePlugImage.setVisible(!mode);
+
+        lbUrlP.setVisible(mode);
+        lbTypeP.setVisible(mode);
 
     }
 
     private void activateEditPlugMode(boolean mode) {
-        btModifyPlug.setDisable(mode);
-        btDeletePlug.setDisable(mode);
-        btNewPlug.setDisable(mode);
 
-        btCancelPlug.setDisable(!mode);
-        btSaveNewPlug.setDisable(!mode);
+        btDeletePlug.setLayoutX(561);
+        btDeletePlug.setLayoutY(95);
+
+        btModifyPlug.setVisible(!mode);
+        btDeletePlug.setVisible(!mode);
+        btNewPlug.setVisible(!mode);
+
+        btCancelPlug.setVisible(mode);
+        btSaveNewPlug.setVisible(mode);
 
         tfImageUrlPlug.setDisable(!mode);
         cbPlugType.setDisable(!mode);
+        tfImageUrlPlug.setVisible(mode);
+        cbPlugType.setVisible(mode);
 
         wbTypePlugImage.setVisible(mode);
+        wbImageCountry.getEngine().load("");
 
         lvPlug.setDisable(!mode);
+
+        lbUrlP.setVisible(mode);
+        lbTypeP.setVisible(mode);
     }
 
     private void activateDeletePlugMode(boolean mode) {
-        btModifyPlug.setDisable(mode);
-        btNewPlug.setDisable(mode);
-        btSaveNewPlug.setDisable(mode);
 
-        btCancelPlug.setDisable(!mode);
-        btDeletePlug.setDisable(!mode);
+        btDeletePlug.setLayoutX(703);
+        btDeletePlug.setLayoutY(373);
+
+        btModifyPlug.setVisible(!mode);
+        btNewPlug.setVisible(!mode);
+        btSaveNewPlug.setVisible(!mode);
+
+        btCancelPlug.setVisible(mode);
+        btDeletePlug.setVisible(mode);
 
         tfImageUrlPlug.setDisable(mode);
         cbPlugType.setDisable(mode);
+        tfImageUrlPlug.setVisible(mode);
+        cbPlugType.setVisible(mode);
 
         wbTypePlugImage.setVisible(mode);
+        wbImageCountry.getEngine().load("");
 
         lvPlug.setDisable(!mode);
+
+        lbUrlP.setVisible(mode);
+        lbTypeP.setVisible(mode);
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -434,7 +466,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<City> call, Response<City> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nueva ciudad creada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nueva ciudad creada correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateNewCityMode(false);
                         resetTextFieldsComboBoxAndWebViews(CITY);
@@ -477,7 +509,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<City> call, Response<City> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nueva ciudad modificada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nueva ciudad modificada correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateEditCityMode(false);
                         resetTextFieldsComboBoxAndWebViews(CITY);
@@ -585,53 +617,88 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewCityMode(boolean mode) {
-        btModifyCity.setDisable(mode);
-        btDeleteCity.setDisable(mode);
-        btNewCity.setDisable(mode);
+        btModifyCity.setVisible(!mode);
+        btDeleteCity.setVisible(!mode);
+        btNewCity.setVisible(!mode);
 
-        btCancelCity.setDisable(!mode);
-        btSaveNewCity.setDisable(!mode);
+        btCancelCity.setVisible(mode);
+        btSaveNewCity.setVisible(mode);
 
         tfNameCity.setDisable(!mode);
         tfExtensionCity.setDisable(!mode);
         tfNumberOfHabitantsCity.setDisable(!mode);
+        tfNameCity.setVisible(mode);
+        tfExtensionCity.setVisible(mode);
+        tfNumberOfHabitantsCity.setVisible(mode);
 
+        cbCountriesCity.setVisible(mode);
         cbCountriesCity.setDisable(!mode);
+
+        lbNameC.setVisible(mode);
+        lbExtC.setVisible(mode);
+        lbNumberHabC.setVisible(mode);
+        lbComboCity.setVisible(mode);
 
     }
 
     private void activateEditCityMode(boolean mode) {
-        btModifyCity.setDisable(mode);
-        btDeleteCity.setDisable(mode);
-        btNewCity.setDisable(mode);
 
-        btCancelCity.setDisable(!mode);
-        btSaveNewCity.setDisable(!mode);
+        btDeleteCity.setLayoutX(561);
+        btDeleteCity.setLayoutY(95);
+
+        btModifyCity.setVisible(!mode);
+        btDeleteCity.setVisible(!mode);
+        btNewCity.setVisible(!mode);
+
+        btCancelCity.setVisible(mode);
+        btSaveNewCity.setVisible(mode);
 
         tfNameCity.setDisable(!mode);
         tfExtensionCity.setDisable(!mode);
         tfNumberOfHabitantsCity.setDisable(!mode);
+        tfNameCity.setVisible(mode);
+        tfExtensionCity.setVisible(mode);
+        tfNumberOfHabitantsCity.setVisible(mode);
 
+        cbCountriesCity.setVisible(mode);
         cbCountriesCity.setDisable(!mode);
 
         lvCities.setDisable(!mode);
+
+        lbNameC.setVisible(mode);
+        lbExtC.setVisible(mode);
+        lbNumberHabC.setVisible(mode);
+        lbComboCity.setVisible(mode);
     }
 
     private void activateDeleteCityMode(boolean mode) {
-        btModifyCity.setDisable(mode);
-        btNewCity.setDisable(mode);
-        btSaveNewCity.setDisable(mode);
 
-        btCancelCity.setDisable(!mode);
-        btDeleteCity.setDisable(!mode);
+        btDeleteCity.setLayoutX(517);
+        btDeleteCity.setLayoutY(474);
+
+        btModifyCity.setVisible(!mode);
+        btNewCity.setVisible(!mode);
+        btSaveNewCity.setVisible(!mode);
+
+        btCancelCity.setVisible(mode);
+        btDeleteCity.setVisible(mode);
 
         tfExtensionCity.setDisable(mode);
         tfNameCity.setDisable(mode);
         tfNumberOfHabitantsCity.setDisable(mode);
+        tfNameCity.setVisible(mode);
+        tfExtensionCity.setVisible(mode);
+        tfNumberOfHabitantsCity.setVisible(mode);
 
         cbCountriesCity.setDisable(mode);
+        cbCountriesCity.setVisible(mode);
 
         lvCities.setDisable(!mode);
+
+        lbNameC.setVisible(mode);
+        lbExtC.setVisible(mode);
+        lbNumberHabC.setVisible(mode);
+        lbComboCity.setVisible(mode);
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -656,7 +723,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Language> call, Response<Language> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nuevo idioma creado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nuevo idioma creado correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateNewLanguageMode(false);
                         resetTextFieldsComboBoxAndWebViews(LANGUAGE);
@@ -694,7 +761,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Language> call, Response<Language> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Idioma monificado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Idioma monificado correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateEditLanguageMode(false);
                         resetTextFieldsComboBoxAndWebViews(LANGUAGE);
@@ -800,41 +867,57 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewLanguageMode(boolean mode) {
-        btModifyLanguage.setDisable(mode);
-        btDeleteLanguage.setDisable(mode);
-        btNewLanguage.setDisable(mode);
+        btModifyLanguage.setVisible(!mode);
+        btDeleteLanguage.setVisible(!mode);
+        btNewLanguage.setVisible(!mode);
 
-        btCancelLanguage.setDisable(!mode);
-        btSaveNewLanguage.setDisable(!mode);
+        btCancelLanguage.setVisible(mode);
+        btSaveNewLanguage.setVisible(mode);
 
         tfLanguageName.setDisable(!mode);
+        tfLanguageName.setVisible(mode);
+
+        lbNameLang.setVisible(mode);
     }
 
     private void activateEditLanguageMode(boolean mode) {
-        btModifyLanguage.setDisable(mode);
-        btDeleteLanguage.setDisable(mode);
-        btNewLanguage.setDisable(mode);
 
-        btCancelLanguage.setDisable(!mode);
-        btSaveNewLanguage.setDisable(!mode);
+        btDeleteLanguage.setLayoutX(561);
+        btDeleteLanguage.setLayoutY(95);
+
+        btModifyLanguage.setVisible(!mode);
+        btDeleteLanguage.setVisible(!mode);
+        btNewLanguage.setVisible(!mode);
+
+        btCancelLanguage.setVisible(mode);
+        btSaveNewLanguage.setVisible(mode);
 
         tfLanguageName.setDisable(!mode);
+        tfLanguageName.setVisible(mode);
 
         lvLanguages.setDisable(!mode);
+
+        lbNameLang.setVisible(mode);
     }
 
     private void activateDeleteLanguageMode(boolean mode) {
-        btModifyLanguage.setDisable(mode);
-        btNewLanguage.setDisable(mode);
-        btSaveNewLanguage.setDisable(mode);
 
-        btCancelLanguage.setDisable(!mode);
-        btDeleteLanguage.setDisable(!mode);
+        btDeleteLanguage.setLayoutX(732);
+        btDeleteLanguage.setLayoutY(308);
+
+        btModifyLanguage.setVisible(!mode);
+        btNewLanguage.setVisible(!mode);
+        btSaveNewLanguage.setVisible(!mode);
+
+        btCancelLanguage.setVisible(mode);
+        btDeleteLanguage.setVisible(mode);
 
         tfLanguageName.setDisable(mode);
-
+        tfLanguageName.setVisible(mode);
 
         lvLanguages.setDisable(!mode);
+
+        lbNameLang.setVisible(mode);
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -864,7 +947,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<EmergencyPhone> call, Response<EmergencyPhone> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nuevo teléfono de emergencia creado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nuevo teléfono de emergencia creado correctamente: " + response.body().getService());
                         reloadAllDatas();
                         activateNewEmergencyPhoneMode(false);
                         resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
@@ -907,7 +990,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<EmergencyPhone> call, Response<EmergencyPhone> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nuevo teléfono de emergencia modificado correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Teléfono de emergencia modificado correctamente: " + response.body().getService() );
                         reloadAllDatas();
                         activateNewEmergencyPhoneMode(false);
                         resetTextFieldsComboBoxAndWebViews(EMERGENCYPHONE);
@@ -1015,47 +1098,76 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewEmergencyPhoneMode(boolean mode) {
-        btModifyEmergencyPhone.setDisable(mode);
-        btDeleteEmergencyPhone.setDisable(mode);
-        btNewEmergencyPhone.setDisable(mode);
+        btModifyEmergencyPhone.setVisible(!mode);
+        btDeleteEmergencyPhone.setVisible(!mode);
+        btNewEmergencyPhone.setVisible(!mode);
 
-        btCancelEmergencyPhone.setDisable(!mode);
-        btSaveNewEmergencyPhone.setDisable(!mode);
-        cbCountry.setDisable(!mode);
+        btCancelEmergencyPhone.setVisible(mode);
+        btSaveNewEmergencyPhone.setVisible(mode);
 
         tfPhoneNumberEmergencyPhone.setDisable(!mode);
         tfServiceEmergencyPhone.setDisable(!mode);
+        tfPhoneNumberEmergencyPhone.setVisible(mode);
+        tfServiceEmergencyPhone.setVisible(mode);
+        cbCountry.setVisible(mode);
+        cbCountry.setDisable(!mode);
+
+        lbPhoneTel.setVisible(mode);
+        lbServiceTel.setVisible(mode);
+        lbComboBoxCountryTel.setVisible(mode);
     }
 
     private void activateEditEmergencyPhoneMode(boolean mode) {
-        btModifyEmergencyPhone.setDisable(mode);
-        btDeleteEmergencyPhone.setDisable(mode);
-        btNewEmergencyPhone.setDisable(mode);
 
-        btCancelEmergencyPhone.setDisable(!mode);
-        btSaveNewEmergencyPhone.setDisable(!mode);
-        cbCountry.setDisable(!mode);
+        btDeleteEmergencyPhone.setLayoutX(561);
+        btDeleteEmergencyPhone.setLayoutY(95);
+
+        btModifyEmergencyPhone.setVisible(!mode);
+        btDeleteEmergencyPhone.setVisible(!mode);
+        btNewEmergencyPhone.setVisible(!mode);
+
+        btCancelEmergencyPhone.setVisible(mode);
+        btSaveNewEmergencyPhone.setVisible(mode);
 
         tfPhoneNumberEmergencyPhone.setDisable(!mode);
         tfServiceEmergencyPhone.setDisable(!mode);
+        tfPhoneNumberEmergencyPhone.setVisible(mode);
+        tfServiceEmergencyPhone.setVisible(mode);
+        cbCountry.setDisable(!mode);
+        cbCountry.setVisible(mode);
 
         lvEmergencyPhones.setDisable(!mode);
+
+        lbPhoneTel.setVisible(mode);
+        lbServiceTel.setVisible(mode);
+        lbComboBoxCountryTel.setVisible(mode);
     }
 
     private void activateDeleteEmergencyPhoneMode(boolean mode) {
-        btModifyEmergencyPhone.setDisable(mode);
-        btNewEmergencyPhone.setDisable(mode);
-        btSaveNewEmergencyPhone.setDisable(mode);
 
-        btCancelEmergencyPhone.setDisable(!mode);
-        btDeleteEmergencyPhone.setDisable(!mode);
-        cbCountry.setDisable(!mode);
+        btDeleteEmergencyPhone.setLayoutX(430);
+        btDeleteEmergencyPhone.setLayoutY(450);
+
+        btModifyEmergencyPhone.setVisible(!mode);
+        btNewEmergencyPhone.setVisible(!mode);
+        btSaveNewEmergencyPhone.setVisible(!mode);
+
+        btCancelEmergencyPhone.setVisible(mode);
+        btDeleteEmergencyPhone.setVisible(mode);
 
         tfPhoneNumberEmergencyPhone.setDisable(mode);
         tfServiceEmergencyPhone.setDisable(mode);
+        tfPhoneNumberEmergencyPhone.setVisible(mode);
+        tfServiceEmergencyPhone.setVisible(mode);
+        cbCountry.setDisable(mode);
+        cbCountry.setVisible(mode);
 
 
         lvEmergencyPhones.setDisable(!mode);
+
+        lbPhoneTel.setVisible(mode);
+        lbServiceTel.setVisible(mode);
+        lbComboBoxCountryTel.setVisible(mode);
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -1082,7 +1194,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Vaccine> call, Response<Vaccine> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nueva vacuna añadida correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nueva vacuna añadida correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateNewVaccineMode(false);
                         resetTextFieldsComboBoxAndWebViews(VACCINE);
@@ -1122,7 +1234,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Vaccine> call, Response<Vaccine> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Vacuna monificada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Vacuna monificada correctamente: " + response.body().getName());
                         reloadAllDatas();
                         activateEditVaccineMode(false);
                         resetTextFieldsComboBoxAndWebViews(VACCINE);
@@ -1229,47 +1341,78 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewVaccineMode(boolean mode) {
-        btModifyVaccine.setDisable(mode);
-        btDeleteVaccine.setDisable(mode);
-        btNewVaccine.setDisable(mode);
+        btModifyVaccine.setVisible(!mode);
+        btDeleteVaccine.setVisible(!mode);
+        btNewVaccine.setVisible(!mode);
 
-        btCancelVaccine.setDisable(!mode);
-        btSaveNewVaccine.setDisable(!mode);
+        btCancelVaccine.setVisible(mode);
+        btSaveNewVaccine.setVisible(mode);
 
         tfDurabilityVaccine.setDisable(!mode);
         tfEffectivityVaccine.setDisable(!mode);
         tfNameVaccine.setDisable(!mode);
+        tfDurabilityVaccine.setVisible(mode);
+        tfEffectivityVaccine.setVisible(mode);
+        tfNameVaccine.setVisible(mode);
+
+        lbNameVac.setVisible(mode);
+        lbEffectivityVac.setVisible(mode);
+        lbDurabilityVac.setVisible(mode);
+
     }
 
     private void activateEditVaccineMode(boolean mode) {
-        btModifyVaccine.setDisable(mode);
-        btDeleteVaccine.setDisable(mode);
-        btNewVaccine.setDisable(mode);
 
-        btCancelVaccine.setDisable(!mode);
-        btSaveNewVaccine.setDisable(!mode);
+        btDeleteVaccine.setLayoutX(561);
+        btDeleteVaccine.setLayoutY(95);
+
+        btModifyVaccine.setVisible(!mode);
+        btDeleteVaccine.setVisible(!mode);
+        btNewVaccine.setVisible(!mode);
+
+        btCancelVaccine.setVisible(mode);
+        btSaveNewVaccine.setVisible(mode);
 
         tfDurabilityVaccine.setDisable(!mode);
         tfEffectivityVaccine.setDisable(!mode);
         tfNameVaccine.setDisable(!mode);
+        tfDurabilityVaccine.setVisible(mode);
+        tfEffectivityVaccine.setVisible(mode);
+        tfNameVaccine.setVisible(mode);
 
         lvVaccines.setDisable(!mode);
+
+        lbNameVac.setVisible(mode);
+        lbEffectivityVac.setVisible(mode);
+        lbDurabilityVac.setVisible(mode);
     }
 
     private void activateDeleteVaccineMode(boolean mode) {
-        btModifyVaccine.setDisable(mode);
-        btNewVaccine.setDisable(mode);
-        btSaveNewVaccine.setDisable(mode);
 
-        btCancelVaccine.setDisable(!mode);
-        btDeleteVaccine.setDisable(!mode);
+        btDeleteVaccine.setLayoutX(430);
+        btDeleteVaccine.setLayoutY(362);
+
+        btModifyVaccine.setVisible(!mode);
+        btNewVaccine.setVisible(!mode);
+        btSaveNewVaccine.setVisible(!mode);
+
+        btCancelVaccine.setVisible(mode);
+        btDeleteVaccine.setVisible(mode);
 
         tfDurabilityVaccine.setDisable(mode);
         tfEffectivityVaccine.setDisable(mode);
         tfNameVaccine.setDisable(mode);
+        tfDurabilityVaccine.setVisible(mode);
+        tfEffectivityVaccine.setVisible(mode);
+        tfNameVaccine.setVisible(mode);
 
 
         lvVaccines.setDisable(!mode);
+
+        lbNameVac.setVisible(mode);
+        lbEffectivityVac.setVisible(mode);
+        lbDurabilityVac.setVisible(mode);
+
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -1293,7 +1436,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Coin> call, Response<Coin> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nueva moneda añadida correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nueva moneda añadida correctamente: " + response.body().getMonetaryUnit());
                         reloadAllDatas();
                         activateNewCoinMode(false);
                         resetTextFieldsComboBoxAndWebViews(COIN);
@@ -1332,7 +1475,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Coin> call, Response<Coin> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Moneda monificada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Moneda monificada correctamente: " + response.body().getMonetaryUnit());
                         reloadAllDatas();
                         activateEditCoinMode(false);
                         resetTextFieldsComboBoxAndWebViews(COIN);
@@ -1440,47 +1583,76 @@ public class AppAdminController implements Initializable {
     }
 
     private void activateNewCoinMode(boolean mode) {
-        btModifyCoin.setDisable(mode);
-        btDeleteCoin.setDisable(mode);
-        btNewCoin.setDisable(mode);
+        btModifyCoin.setVisible(!mode);
+        btDeleteCoin.setVisible(!mode);
+        btNewCoin.setVisible(!mode);
 
-        btCancelCoin.setDisable(!mode);
-        btSaveNewCoin.setDisable(!mode);
+        btCancelCoin.setVisible(mode);
+        btSaveNewCoin.setVisible(mode);
 
         tfSymbolCoin.setDisable(!mode);
         tfMonetaryUnitCoin.setDisable(!mode);
         tfCodeISOCoin.setDisable(!mode);
+        tfSymbolCoin.setVisible(mode);
+        tfMonetaryUnitCoin.setVisible(mode);
+        tfCodeISOCoin.setVisible(mode);
+
+        lbNameCoin.setVisible(mode);
+        lbSymbolCoin.setVisible(mode);
+        lbIsoCodeCoin.setVisible(mode);
 
     }
 
     private void activateEditCoinMode(boolean mode) {
-        btModifyCoin.setDisable(mode);
-        btDeleteCoin.setDisable(mode);
-        btNewCoin.setDisable(mode);
 
-        btCancelCoin.setDisable(!mode);
-        btSaveNewCoin.setDisable(!mode);
+        btDeleteCoin.setLayoutX(561);
+        btDeleteCoin.setLayoutY(95);
+
+        btModifyCoin.setVisible(!mode);
+        btDeleteCoin.setVisible(!mode);
+        btNewCoin.setVisible(!mode);
+
+        btCancelCoin.setVisible(mode);
+        btSaveNewCoin.setVisible(mode);
 
         tfSymbolCoin.setDisable(!mode);
         tfMonetaryUnitCoin.setDisable(!mode);
         tfCodeISOCoin.setDisable(!mode);
+        tfSymbolCoin.setVisible(mode);
+        tfMonetaryUnitCoin.setVisible(mode);
+        tfCodeISOCoin.setVisible(mode);
 
         lvCoins.setDisable(!mode);
+
+        lbNameCoin.setVisible(mode);
+        lbSymbolCoin.setVisible(mode);
+        lbIsoCodeCoin.setVisible(mode);
     }
 
     private void activateDeleteCoinMode(boolean mode) {
-        btModifyCoin.setDisable(mode);
-        btNewCoin.setDisable(mode);
-        btSaveNewCoin.setDisable(mode);
 
-        btCancelCoin.setDisable(!mode);
-        btDeleteCoin.setDisable(!mode);
+        btDeleteCoin.setLayoutX(525);
+        btDeleteCoin.setLayoutY(428);
+
+        btModifyCoin.setVisible(!mode);
+        btNewCoin.setVisible(!mode);
+        btSaveNewCoin.setVisible(!mode);
+
+        btCancelCoin.setVisible(mode);
+        btDeleteCoin.setVisible(mode);
 
         tfSymbolCoin.setDisable(mode);
         tfMonetaryUnitCoin.setDisable(mode);
         tfCodeISOCoin.setDisable(mode);
+        tfSymbolCoin.setVisible(mode);
+        tfMonetaryUnitCoin.setVisible(mode);
+        tfCodeISOCoin.setVisible(mode);
 
         lvCoins.setDisable(!mode);
+
+        lbNameCoin.setVisible(mode);
+        lbSymbolCoin.setVisible(mode);
+        lbIsoCodeCoin.setVisible(mode);
     }
 
 
@@ -1883,7 +2055,7 @@ public class AppAdminController implements Initializable {
                 public void onResponse(Call<Electricity> call, Response<Electricity> response) {
                     // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Nueva electricidad creada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Nueva electricidad creada correctamente: ");
                         reloadAllDatas();
                         activateNewElectricityMode(false);
                         resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
@@ -1917,7 +2089,7 @@ public class AppAdminController implements Initializable {
                 @Override
                 public void onResponse(Call<Electricity> call, Response<Electricity> response) {
                     Platform.runLater(() -> {
-                        Alerts.showInfoAlert("Electricidad modificada correctamente: " + new Gson().toJson(response.body()));
+                        Alerts.showInfoAlert("Electricidad modificada correctamente: ");
                         reloadAllDatas();
                         activateEditElectricityMode(false);
                         resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
@@ -1962,9 +2134,6 @@ public class AppAdminController implements Initializable {
     @FXML
     public void deleteElectricity(Event event) {
         if (lvElectricity.isDisable()) {
-            lvElectricity.setDisable(false);
-            tfVoltage.setDisable(true);
-            tfFrecuency.setDisable(true);
             activateDeleteElectricityMode(true);
             Alerts.showInfoAlert("Selecciona un item de la lista y después pulsa BORRAR");
             return;
@@ -1983,12 +2152,8 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showInfoAlert("Electricidad eliminada correctamente");
                     resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
+                    activateEditElectricityMode(false);
                     reloadAllDatas();
-                    btNewElectricity.setDisable(false);
-                    btModifyElectricity.setDisable(false);
-                    btDeleteElectricity.setDisable(false);
-                    btSaveNewElectricity.setDisable(true);
-                    lvElectricity.setDisable(true);
                 });
             }
 
@@ -1997,11 +2162,7 @@ public class AppAdminController implements Initializable {
                 Platform.runLater(() -> {
                     Alerts.showErrorAlert("Error al intentar eliminar la electricidad " + throwable.getLocalizedMessage());
                     resetTextFieldsComboBoxAndWebViews(ELECTRICITY);
-                    btNewElectricity.setDisable(false);
-                    btModifyElectricity.setDisable(false);
-                    btDeleteElectricity.setDisable(false);
-                    btSaveNewElectricity.setDisable(true);
-                    lvElectricity.setDisable(true);
+                    activateEditElectricityMode(false);
                 });
             }
         });
@@ -2034,29 +2195,67 @@ public class AppAdminController implements Initializable {
 
 
     private void activateNewElectricityMode(boolean mode) {
-        btCancelElectricity.setDisable(!mode);
-        btModifyElectricity.setDisable(mode);
-        btSaveNewElectricity.setDisable(!mode);
-        btNewElectricity.setDisable(mode);
-        btDeleteElectricity.setDisable(mode);
+        btCancelElectricity.setVisible(mode);
+        btModifyElectricity.setVisible(!mode);
+        btSaveNewElectricity.setVisible(mode);
+        btNewElectricity.setVisible(!mode);
+        btDeleteElectricity.setVisible(!mode);
+
         tfFrecuency.setDisable(!mode);
         tfVoltage.setDisable(!mode);
+        tfFrecuency.setVisible(mode);
+        tfVoltage.setVisible(mode);
+
+        lbVoltageElec.setVisible(mode);
+        lbFrecuencyElec.setVisible(mode);
     }
 
     private void activateDeleteElectricityMode(boolean mode) {
-        btCancelElectricity.setDisable(!mode);
-        btModifyElectricity.setDisable(mode);
-        btSaveNewElectricity.setDisable(mode);
-        btNewElectricity.setDisable(mode);
+
+        btDeleteElectricity.setLayoutX(779);
+        btDeleteElectricity.setLayoutY(281);
+
+        btCancelElectricity.setVisible(mode);
+        btModifyElectricity.setVisible(!mode);
+        btSaveNewElectricity.setVisible(!mode);
+        btNewElectricity.setVisible(!mode);
+        btNewElectricity.setVisible(!mode);
+        btDeleteElectricity.setVisible(mode);
+
+        tfFrecuency.setDisable(mode);
+        tfVoltage.setDisable(mode);
+        tfFrecuency.setVisible(mode);
+        tfVoltage.setVisible(mode);
+
+        lvElectricity.setDisable(!mode);
+
+        lbVoltageElec.setVisible(mode);
+        lbFrecuencyElec.setVisible(mode);
     }
 
 
     private void activateEditElectricityMode(boolean mode) {
-        activateNewElectricityMode(mode);
-        lvElectricity.setDisable(!mode);
-        btDeleteElectricity.setDisable(mode);
+
+        btDeleteElectricity.setLayoutX(561);
+        btDeleteElectricity.setLayoutY(95);
+
+        btModifyElectricity.setVisible(!mode);
+        btDeleteElectricity.setVisible(!mode);
+        btNewElectricity.setVisible(!mode);
+
+        btCancelElectricity.setVisible(mode);
+        btSaveNewElectricity.setVisible(mode);
+
         tfFrecuency.setDisable(!mode);
         tfVoltage.setDisable(!mode);
+        tfFrecuency.setVisible(mode);
+        tfVoltage.setVisible(mode);
+
+        lvElectricity.setDisable(!mode);
+
+        lbVoltageElec.setVisible(mode);
+        lbFrecuencyElec.setVisible(mode);
+
     }
 
     /** --------------------------------------------------------------------------------------------------------------*/
@@ -2105,20 +2304,20 @@ public class AppAdminController implements Initializable {
      */
     private void initialViewMode(boolean mode) {
 
-        btSaveNewElectricity.setDisable(mode);
-        btCancelElectricity.setDisable(mode);
-        btSaveNewCoin.setDisable(mode);
-        btCancelCoin.setDisable(mode);
-        btSaveNewLanguage.setDisable(mode);
-        btCancelLanguage.setDisable(mode);
-        btSaveNewVaccine.setDisable(mode);
-        btCancelVaccine.setDisable(mode);
-        btSaveNewEmergencyPhone.setDisable(mode);
-        btCancelEmergencyPhone.setDisable(mode);
-        btSaveNewPlug.setDisable(mode);
-        btCancelPlug.setDisable(mode);
-        btSaveNewCity.setDisable(mode);
-        btCancelCity.setDisable(mode);
+        btSaveNewElectricity.setVisible(!mode);
+        btCancelElectricity.setVisible(!mode);
+        btSaveNewCoin.setVisible(!mode);
+        btCancelCoin.setVisible(!mode);
+        btSaveNewLanguage.setVisible(!mode);
+        btCancelLanguage.setVisible(!mode);
+        btSaveNewVaccine.setVisible(!mode);
+        btCancelVaccine.setVisible(!mode);
+        btSaveNewEmergencyPhone.setVisible(!mode);
+        btCancelEmergencyPhone.setVisible(!mode);
+        btSaveNewPlug.setVisible(!mode);
+        btCancelPlug.setVisible(!mode);
+        btSaveNewCity.setVisible(!mode);
+        btCancelCity.setVisible(!mode);
         btSaveNewCountry.setVisible(!mode);
         btCancelCountry.setVisible(!mode);
 
@@ -2131,31 +2330,30 @@ public class AppAdminController implements Initializable {
         lvCities.setDisable(mode);
         lvCountries.setDisable(mode);
 
-        tfFrecuency.setDisable(mode);
-        tfVoltage.setDisable(mode);
-        tfCodeISOCoin.setDisable(mode);
-        tfSymbolCoin.setDisable(mode);
-        tfMonetaryUnitCoin.setDisable(mode);
-        tfLanguageName.setDisable(mode);
-        tfNameVaccine.setDisable(mode);
-        tfDurabilityVaccine.setDisable(mode);
-        tfEffectivityVaccine.setDisable(mode);
-        tfPhoneNumberEmergencyPhone.setDisable(mode);
-        tfServiceEmergencyPhone.setDisable(mode);
-        tfImageUrlPlug.setDisable(mode);
-        tfNameCity.setDisable(mode);
-        tfExtensionCity.setDisable(mode);
-        tfNumberOfHabitantsCity.setDisable(mode);
-
+        tfPhoneNumberEmergencyPhone.setVisible(!mode);
+        tfServiceEmergencyPhone.setVisible(!mode);
+        tfNameVaccine.setVisible(!mode);
+        tfDurabilityVaccine.setVisible(!mode);
+        tfEffectivityVaccine.setVisible(!mode);
+        tfLanguageName.setVisible(!mode);
+        tfCodeISOCoin.setVisible(!mode);
+        tfSymbolCoin.setVisible(!mode);
+        tfMonetaryUnitCoin.setVisible(!mode);
+        tfFrecuency.setVisible(!mode);
+        tfVoltage.setVisible(!mode);
+        tfImageUrlPlug.setVisible(!mode);
+        tfNameCity.setVisible(!mode);
+        tfExtensionCity.setVisible(!mode);
+        tfNumberOfHabitantsCity.setVisible(!mode);
         tfUrlImageCountry.setVisible(!mode);
         tfNameCountry.setVisible(!mode);
         tfAcronymCountry.setVisible(!mode);
         tfNumberOfHabitantsCountry.setVisible(!mode);
         tfPrefixCountry.setVisible(!mode);
 
-        cbCountry.setDisable(mode);
-        cbPlugType.setDisable(mode);
-        cbCountriesCity.setDisable(mode);
+        cbCountry.setVisible(!mode);
+        cbPlugType.setVisible(!mode);
+        cbCountriesCity.setVisible(!mode);
         cbContinentCountry.setVisible(!mode);
         cbCoinCountry.setVisible(!mode);
         cbElectricityCountry.setVisible(!mode);
@@ -2174,6 +2372,24 @@ public class AppAdminController implements Initializable {
         lbNumberHabitants.setVisible(!mode);
         lbPrefix.setVisible(!mode);
         lbSiglas.setVisible(!mode);
+        lbNameC.setVisible(!mode);
+        lbExtC.setVisible(!mode);
+        lbNumberHabC.setVisible(!mode);
+        lbComboCity.setVisible(!mode);
+        lbUrlP.setVisible(!mode);
+        lbTypeP.setVisible(!mode);
+        lbVoltageElec.setVisible(!mode);
+        lbFrecuencyElec.setVisible(!mode);
+        lbNameCoin.setVisible(!mode);
+        lbIsoCodeCoin.setVisible(!mode);
+        lbSymbolCoin.setVisible(!mode);
+        lbNameLang.setVisible(!mode);
+        lbNameVac.setVisible(!mode);
+        lbDurabilityVac.setVisible(!mode);
+        lbEffectivityVac.setVisible(!mode);
+        lbPhoneTel.setVisible(!mode);
+        lbServiceTel.setVisible(!mode);
+        lbComboBoxCountryTel.setVisible(!mode);
     }
 
     /**
