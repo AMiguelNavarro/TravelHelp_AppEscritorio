@@ -8,49 +8,182 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.web.WebView?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="1121.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="686.0" prefWidth="1172.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <AnchorPane prefHeight="539.0" prefWidth="1121.0">
+      <AnchorPane prefHeight="690.0" prefWidth="1159.0">
          <children>
-            <Separator layoutX="241.0" layoutY="29.0" orientation="VERTICAL" prefHeight="453.0" prefWidth="19.0" />
-            <ListView fx:id="lvCountries" layoutX="33.0" layoutY="65.0" onMouseClicked="#getCountryFromListView" prefHeight="424.0" prefWidth="194.0" />
-            <Text layoutX="291.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bandera" wrappingWidth="51.0" />
-            <Text layoutX="544.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:" wrappingWidth="51.0" />
-            <Text layoutX="544.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="continente:" wrappingWidth="70.0" />
-            <Text layoutX="544.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="siglas:" wrappingWidth="70.0" />
-            <Text layoutX="544.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" text="numero de habitantes:" wrappingWidth="123.0" />
-            <Text layoutX="830.0" layoutY="129.0" strokeType="OUTSIDE" strokeWidth="0.0" text="agua potable:" wrappingWidth="85.0" />
-            <Text layoutX="826.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="sanidad pública:" wrappingWidth="94.0" />
-            <Text layoutX="830.0" layoutY="165.0" strokeType="OUTSIDE" strokeWidth="0.0" text="prefijo:" wrappingWidth="51.0" />
-            <Label fx:id="lbName" layoutX="614.0" layoutY="83.0" prefHeight="17.0" prefWidth="167.0" />
-            <Label fx:id="lbContinent" layoutX="614.0" layoutY="118.0" prefHeight="17.0" prefWidth="167.0" />
-            <Label fx:id="lbAcronym" layoutX="595.0" layoutY="152.0" prefHeight="17.0" prefWidth="167.0" />
-            <Label fx:id="lbNumberOfHabitants" layoutX="679.0" layoutY="188.0" prefHeight="17.0" prefWidth="104.0" />
-            <Label fx:id="lbPublicHealthcare" layoutX="927.0" layoutY="83.0" prefHeight="17.0" prefWidth="104.0" />
-            <Label fx:id="lbDrinkingWater" layoutX="914.0" layoutY="116.0" prefHeight="17.0" prefWidth="104.0" />
-            <Label fx:id="lbPrefix" layoutX="880.0" layoutY="152.0" prefHeight="17.0" prefWidth="104.0" />
-            <Separator layoutX="336.0" layoutY="279.0" prefHeight="0.0" prefWidth="672.0" />
-            <Button fx:id="btShowCoinView" layoutX="330.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCoinView" prefHeight="25.0" prefWidth="116.0" text="MONEDA" />
-            <Button fx:id="btShowElectricityView" layoutX="328.0" layoutY="390.0" mnemonicParsing="false" onAction="#showElectricityView" prefHeight="25.0" prefWidth="116.0" text="ELECTRICIDAD" />
-            <Button fx:id="btShowPlugView" layoutX="549.0" layoutY="333.0" mnemonicParsing="false" onAction="#showPlugView" prefHeight="25.0" prefWidth="116.0" text="ENCHUFES" />
-            <Button fx:id="btShowEmergencyPhoneView" layoutX="755.0" layoutY="390.0" mnemonicParsing="false" onAction="#showEmergencyPhoneView" text="TLFS EMERGENCIA" />
-            <Button fx:id="btShowVaccineView" layoutX="755.0" layoutY="333.0" mnemonicParsing="false" onAction="#showVaccineView" prefHeight="25.0" prefWidth="116.0" text="VACUNAS" />
-            <Button fx:id="btShowLanguageView" layoutX="549.0" layoutY="390.0" mnemonicParsing="false" onAction="#showLanguageView" prefHeight="25.0" prefWidth="116.0" text="IDIOMAS" />
-            <Button fx:id="btHome" layoutX="1055.0" layoutY="11.0" mnemonicParsing="false" onAction="#goHome" prefHeight="46.0" prefWidth="43.0">
+            <Separator layoutX="272.0" layoutY="155.0" orientation="VERTICAL" prefHeight="502.0" prefWidth="19.0" />
+            <ListView fx:id="lvCountries" layoutX="53.0" layoutY="199.0" onMouseClicked="#getCountryFromListView" prefHeight="436.0" prefWidth="194.0" />
+            <Text layoutX="614.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre:" wrappingWidth="60.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="614.0" layoutY="259.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Continente:" wrappingWidth="85.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="614.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Siglas:" wrappingWidth="51.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="614.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nº Habitantes:" wrappingWidth="94.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="888.0" layoutY="260.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agua potable:" wrappingWidth="94.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="888.0" layoutY="220.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sanidad pública:" wrappingWidth="104.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Text layoutX="888.0" layoutY="298.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Prefijo:" wrappingWidth="51.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Text>
+            <Label fx:id="lbName" layoutX="685.0" layoutY="206.0" prefHeight="17.0" prefWidth="167.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbContinent" layoutX="699.0" layoutY="246.0" prefHeight="17.0" prefWidth="154.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbAcronym" layoutX="665.0" layoutY="282.0" prefHeight="17.0" prefWidth="167.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbNumberOfHabitants" layoutX="717.0" layoutY="321.0" prefHeight="17.0" prefWidth="104.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbPublicHealthcare" layoutX="1000.0" layoutY="206.0" prefHeight="17.0" prefWidth="104.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbDrinkingWater" layoutX="982.0" layoutY="246.0" prefHeight="17.0" prefWidth="104.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Label fx:id="lbPrefix" layoutX="942.0" layoutY="286.0" prefHeight="17.0" prefWidth="104.0">
+               <font>
+                  <Font size="14.0" />
+               </font></Label>
+            <Button fx:id="btShowCoinView" layoutX="444.0" layoutY="468.0" mnemonicParsing="false" onAction="#showCoinView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
                <graphic>
-                  <ImageView fitHeight="38.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/casa.png" />
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/coins.png" />
                      </image>
                   </ImageView>
-               </graphic>
-            </Button>
-            <Button fx:id="btShowCityView" layoutX="936.0" layoutY="333.0" mnemonicParsing="false" onAction="#showCityView" prefHeight="25.0" prefWidth="116.0" text="CIUDADES" />
-            <Text layoutX="33.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona un país" wrappingWidth="194.0" />
-            <WebView fx:id="wbFlagImage" layoutX="288.0" layoutY="80.0" prefHeight="144.0" prefWidth="200.0" />
+               </graphic></Button>
+            <Button fx:id="btShowElectricityView" layoutX="329.0" layoutY="468.0" mnemonicParsing="false" onAction="#showElectricityView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/electric-meter.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btShowPlugView" layoutX="675.0" layoutY="468.0" mnemonicParsing="false" onAction="#showPlugView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/plug.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btShowEmergencyPhoneView" layoutX="790.0" layoutY="468.0" mnemonicParsing="false" onAction="#showEmergencyPhoneView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/emergency-call.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btShowVaccineView" layoutX="914.0" layoutY="468.0" mnemonicParsing="false" onAction="#showVaccineView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/vaccine.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btShowLanguageView" layoutX="559.0" layoutY="468.0" mnemonicParsing="false" onAction="#showLanguageView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/languages.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="btShowCityView" layoutX="1025.0" layoutY="468.0" mnemonicParsing="false" onAction="#showCityView" prefHeight="90.0" prefWidth="90.0">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="69.0" fitWidth="69.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/city.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Text layoutX="53.0" layoutY="180.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selecciona un país" wrappingWidth="194.0">
+               <font>
+                  <Font size="15.0" />
+               </font></Text>
+            <WebView fx:id="wbFlagImage" layoutX="329.0" layoutY="193.0" prefHeight="152.0" prefWidth="244.0" />
+            <AnchorPane prefHeight="124.0" prefWidth="1172.0" style="-fx-background-color: #30373e;">
+               <children>
+                  <Button fx:id="btHome" layoutX="1064.0" layoutY="41.0" mnemonicParsing="false" onAction="#goHome" prefHeight="46.0" prefWidth="43.0">
+                     <graphic>
+                        <ImageView fitHeight="38.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/casa.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <ImageView fitHeight="38.0" fitWidth="339.0" layoutX="194.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/letras.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="79.0" fitWidth="94.0" layoutX="49.0" layoutY="25.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="file:/D:/TFG/desarrollo/JavaFX/src/main/resources/images/logosinletrasblanco.png" />
+                     </image>
+                  </ImageView>
+                  <Label layoutX="478.0" layoutY="70.0" text="Toda la información a tu alcance" textFill="WHITE">
+                     <font>
+                        <Font name="System Italic" size="13.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </AnchorPane>
    </children>
