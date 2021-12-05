@@ -12,20 +12,21 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SignInController implements Initializable {
 
-    public TextField tfUserNameSignIn,tfPasswordSignIn;
+    public TextField tfUserNameSignIn;
+    public PasswordField tfPasswordSignIn;
     public Button btSignIn,btHome;
     public ImageView imageViewLogo;
 

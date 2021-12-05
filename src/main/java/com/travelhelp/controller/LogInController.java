@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +30,8 @@ import java.util.ResourceBundle;
 
 public class LogInController  implements Initializable {
 
-    public TextField tfUserNameLogIn,tfPasswordLogIn;
+    public TextField tfUserNameLogIn;
+    public PasswordField tfPasswordLogIn;
     public Button btLogIn,btHome;
     public ImageView imageViewLogo;
 

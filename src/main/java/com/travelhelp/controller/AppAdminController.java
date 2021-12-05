@@ -225,6 +225,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Enchufe añadido correctamente: ");
                         reloadAllDatas();
                         activateNewPlugMode(false);
+                        wbTypePlugImage.setVisible(false);
                         resetTextFieldsComboBoxAndWebViews(PLUG);
                     });
                 }
@@ -264,6 +265,7 @@ public class AppAdminController implements Initializable {
                         Alerts.showInfoAlert("Enchufe modificado correctamente: ");
                         reloadAllDatas();
                         activateEditPlugMode(false);
+                        wbTypePlugImage.setVisible(false);
                         resetTextFieldsComboBoxAndWebViews(PLUG);
                     });
                 }
@@ -1115,6 +1117,8 @@ public class AppAdminController implements Initializable {
         lbPhoneTel.setVisible(mode);
         lbServiceTel.setVisible(mode);
         lbComboBoxCountryTel.setVisible(mode);
+
+        lvEmergencyPhones.setDisable(mode);
     }
 
     private void activateEditEmergencyPhoneMode(boolean mode) {
@@ -1905,6 +1909,12 @@ public class AppAdminController implements Initializable {
         tfNameCountry.setVisible(mode);
         tfNumberOfHabitantsCountry.setVisible(mode);
         tfPrefixCountry.setVisible(mode);
+
+        tfUrlImageCountry.setDisable(!mode);
+        tfAcronymCountry.setDisable(!mode);
+        tfNameCountry.setDisable(!mode);
+        tfNumberOfHabitantsCountry.setDisable(!mode);
+        tfPrefixCountry.setDisable(!mode);
 
         cbCoinCountry.setVisible(mode);
         cbElectricityCountry.setVisible(mode);

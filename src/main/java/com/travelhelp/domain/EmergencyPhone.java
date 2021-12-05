@@ -22,7 +22,7 @@ public class EmergencyPhone {
 
     @Override
     public String toString() {
-        return service;
+        return service + " (" + country.getAcronym() + ")";
     }
 
 
