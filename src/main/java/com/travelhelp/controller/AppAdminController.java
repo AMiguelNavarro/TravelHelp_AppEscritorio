@@ -1919,6 +1919,9 @@ public class AppAdminController implements Initializable {
         cbCoinCountry.setVisible(mode);
         cbElectricityCountry.setVisible(mode);
         cbContinentCountry.setVisible(mode);
+        cbCoinCountry.setDisable(!mode);
+        cbElectricityCountry.setDisable(!mode);
+        cbContinentCountry.setDisable(!mode);
 
         wbImageCountry.setVisible(!mode);
 
