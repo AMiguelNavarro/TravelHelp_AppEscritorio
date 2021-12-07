@@ -1927,6 +1927,8 @@ public class AppAdminController implements Initializable {
 
         checkBoxDrinkingWater.setVisible(mode);
         checkBoxPublicHealthcare.setVisible(mode);
+        checkBoxDrinkingWater.setDisable(!mode);
+        checkBoxPublicHealthcare.setDisable(!mode);
 
         lbUrl.setVisible(mode);
         lbCoin.setVisible(mode);
